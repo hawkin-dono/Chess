@@ -2,7 +2,7 @@ import pygame
 import os
 import chess
 from UI.screen import Screen
-
+from UI.render import PieceRenderer
 unicode_to_algebraic = {
     '♚': 'K', '♛': 'Q', '♜': 'R', '♝': 'B', '♞': 'N', '♟': 'P',
     '♔': 'k', '♕': 'q', '♖': 'r', '♗': 'b', '♘': 'n', '♙': 'p'
@@ -16,6 +16,7 @@ class game_screen(Screen):
         super().__init__(window_size)
         self.square_height = self.height // 8
         self.square_width = self.width // 8
+        self.piece_renderer = PieceRenderer(self.square_width, self.square_height)
         
     def click(self, mx, my):
         """_summary_
@@ -43,51 +44,17 @@ class game_screen(Screen):
         
     def draw(self, screen, board, draw_board, game_mode):
         screen.fill('white')
+        selected_color = (150, 255, 100)
         
         for x in range(8):
             for y in range(8):
                 # 0, 0 = a, 8; 0, 1 = b, 8 --> x 
 
-                rect = self.draw_square(screen, x, y, draw_board)
-                selected_color = (150, 255, 100)
+                self.draw_square(screen, x, y, draw_board)
                 
-                pos = chr(y + ord('a')) + chr((7 - x) + ord('1'))
-                piece = board.piece_at(chess.parse_square(pos))
+                self.piece_renderer.render_pieces(screen, board)
 
-                if piece is not None:
-                    piece_code = unicode_to_algebraic[piece.unicode_symbol()]
-                    piece_str = None
-                    match piece_code.lower():
-                        case 'r':
-                            piece_str = "rook" 
-                        case 'n':
-                            piece_str = "knight"
-                        case 'b':
-                            piece_str = "bishop"
-                        case 'q':
-                            piece_str = "queen"
-                        case 'k':
-                            piece_str = "king"
-                        case 'p':
-                            piece_str = "pawn"
-                    
-                    team_code = 'white' if piece_code.islower() else 'black'
-                    
-                    # img_path = 'C:/Users/kingk/Desktop/UET/CSTTNT/Chess/ChessAI1000elo/data/imgs/{0}-{1}.png'.format(team_code, piece_str)
-                    # img_path = 'D:\\code\\co so AI\\ChessAI1000elo\\data\\imgs\\{0}-{1}.png'.format(team_code, piece_str)
-                    
-                    root = os.path.dirname(__file__) # 'D:\\code\\co so AI\\self_chess\\UI'
-                    open_path = 'data\\imgs\\{0}-{1}.png'.format(team_code, piece_str)
-                    # print(root)
-                    
-                    img_path = os.path.join('\\'.join(root.split('\\')[: -1]), open_path)
-                    
-                    image = pygame.image.load(img_path)
-                    image = pygame.transform.scale(image, (self.square_width, self.square_height))
-
-                    centering_rect = image.get_rect()
-                    centering_rect.center = rect.center
-                    screen.blit(image, centering_rect.topleft)
+                
 
         if game_mode[0] + game_mode[1] > 0:
             pygame.draw.rect(screen, selected_color, pygame.Rect(600 + 20, self.square_height * 7, self.square_width, self.square_height))
