@@ -188,6 +188,7 @@ class board:
         screen.blit(temp_surface, (pos[0], pos[1]))
         
     def draw_promotion(self, screen):
+        
         team = 'white' if self.board.turn == chess.WHITE else 'black'
 
         for i in range(4):
@@ -196,9 +197,9 @@ class board:
             rect = pygame.Rect(600 + 20, loc + i * 2, self.square_width, self.square_height)
             pygame.draw.rect(screen, draw_color, rect, 2)
     
-            img_path = 'data/imgs/{0}-{1}.png'.format(team, promotion_list[i])              
-            base_path = os.path.dirname(__file__)
-            dude_path = os.path.join(base_path, img_path)
+            img_path = f'./data/imgs/{team}-{promotion_list[i]}.png'            
+            
+            dude_path = os.path.join(img_path)
             image = pygame.image.load(dude_path)
             image = pygame.transform.scale(image, (self.square_width, self.square_height))
 

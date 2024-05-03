@@ -39,7 +39,7 @@ def alpha_beta_pruning(board : chess.Board, depth, alpha, beta, turn):
 def get_best_move(board: chess.Board, depth):
     return alpha_beta_pruning(board, depth, -float('inf'), float('inf'), 1)
 
-# Puzzle 1: 2-move checkmate (Rook Sac)
-board = chess.Board("6k1/pp4p1/2p5/2bp4/8/P5Pb/1P3rrP/2BRRN1K b - - 0 1")
-move, heu = alpha_beta_pruning(board, 5, -float('inf'), float('inf'), 1)
-print(move, heu)
+# # Puzzle 1: 2-move checkmate (Rook Sac)
+# board = chess.Board("6k1/pp4p1/2p5/2bp4/8/P5Pb/1P3rrP/2BRRN1K b - - 0 1")
+# move, heu = alpha_beta_pruning(board, 5, -float('inf'), float('inf'), 1)
+# print(move, heu)

@@ -131,7 +131,7 @@ wpiece_values = {
         chess.QUEEN: WQUEEN_MG,
         chess.KING: WKING_MG
     }
-    
+
 bpiece_values = {
         chess.PAWN: BPAWN_MG,
         chess.KNIGHT: BKNIGHT_MG,
