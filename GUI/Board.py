@@ -20,6 +20,7 @@ class board:
         self.square_width = width // 8
         self.selected_piece = None
         self.promotion = None
+        self.list_valid_moves = []
 
         self.board = chess.Board() 
         self.draw_board = self.convert_board()
@@ -79,8 +80,11 @@ class board:
 
                 if self.board.turn != team:
                     self.selected_piece = [x, y]
-                    self.draw_board[7-x][y] = [unicode_to_algebraic[piece.unicode_symbol()], 1]   
+                    self.draw_board[7-x][y] = [unicode_to_algebraic[piece.unicode_symbol()], 1]
+                    self.show_valid_moves_to_list()
+                    self.render_valid_moves(screen)   
                     updated = True
+
         else:
             # promotion
             piece = self.board.piece_at(chess.parse_square(chr(self.selected_piece[1] + ord('a')) + chr(7 - self.selected_piece[0] + ord('1'))))   
@@ -93,6 +97,7 @@ class board:
             else:
                 self.promotion = None
                 self.draw_board[7-self.selected_piece[0]][self.selected_piece[1]][1] = 0
+                self.list_valid_moves = []
 
                 # undo selected square by click again
                 if x == self.selected_piece[0] and y == self.selected_piece[1]:
@@ -146,6 +151,29 @@ class board:
                 updated = self.draw_board[x][y][1] if mode == 1 else 0
                 self.draw_board[x][y] = [piece if piece is not None else ".", updated]
 
+    def show_valid_moves_to_list(self): # xử lý
+        x, y = self.selected_piece  
+        selected_piece_pos = chr(y + ord('a')) + chr((7 - x) + ord('1'))  
+        for i in range(8):
+            for j in range(8):
+                target_pos = chr(j + ord('a')) + chr((7 - i) + ord('1'))
+                move = selected_piece_pos + target_pos  
+                if move != selected_piece_pos + selected_piece_pos:
+                    if self.board.is_legal(chess.Move.from_uci(move)):
+                        self.list_valid_moves.append([i, j])
+
+    def render_valid_moves(self, screen): #render
+        
+        for move in self.list_valid_moves:
+            if move != self.selected_piece:
+                square_center = (move[1] * self.square_width + self.square_width // 2, 
+                move[0] * self.square_height + self.square_height // 2)
+                pygame.draw.circle(screen, (255, 255, 100), square_center, self.square_width // 5)
+
+
+
+
+
     def draw(self, screen):
         self.update()
         for x in range(8):
@@ -179,6 +207,18 @@ class board:
 
         if self.promotion is not None:
             self.draw_promotion(screen)
+
+        if self.list_valid_moves:
+            self.render_valid_moves(screen) 
+
+        for x in range(8):
+            for y in range(8):
+                if piece is not None:
+                    piece_code = unicode_to_algebraic[piece.unicode_symbol()]
+                    team_code = 'white' if piece_code.islower() else 'black'
+                    piece_pos = (loc[1] + self.square_width // 2, loc[0] + self.square_height // 2)
+                    piece_obj = Piece(piece_code, team_code, self.square_width, self.square_height)
+                    piece_obj.draw(screen, piece_pos)
     
     def addText(self, screen, pos, text, color = (0, 0, 0), backgroundColor = (255, 255, 255), button=False):
         title = pygame.font.SysFont('Arial', 25).render(text, True, color)
