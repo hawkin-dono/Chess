@@ -18,6 +18,7 @@ class board:
         self.square_width = width // 8
         self.selected_piece = None
         self.promotion = None
+        self.list_valid_moves = []
 
         self.board = chess.Board() 
         self.draw_board = self.convert_board()
@@ -78,8 +79,11 @@ class board:
 
                 if self.board.turn != team:
                     self.selected_piece = [x, y]
-                    self.draw_board[7-x][y] = [unicode_to_algebraic[piece.unicode_symbol()], 1]   
+                    self.draw_board[7-x][y] = [unicode_to_algebraic[piece.unicode_symbol()], 1]
+                    self.show_valid_moves_to_list()
+                    self.render_valid_moves(screen)   
                     updated = True
+
         else:
             # promotion
             piece = self.board.piece_at(chess.parse_square(chr(self.selected_piece[1] + ord('a')) + chr(7 - self.selected_piece[0] + ord('1'))))   
@@ -92,6 +96,7 @@ class board:
             else:
                 self.promotion = None
                 self.draw_board[7-self.selected_piece[0]][self.selected_piece[1]][1] = 0
+                self.list_valid_moves = []
 
                 # undo selected square by click again
                 if x == self.selected_piece[0] and y == self.selected_piece[1]:
