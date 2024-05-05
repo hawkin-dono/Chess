@@ -4,6 +4,7 @@ import chess
 from GUI.Board import board
 from chessMain import get_best_move
 from start_window import start_screen
+from GUI.board_graphics import draw_board 
 
 pygame.init()
 
@@ -11,10 +12,12 @@ window_size = (800, 600)
 board_size = (600, 600)
 team = [-1, -1]
 
+
 # start screen
 screen = pygame.display.set_mode(window_size)
 main_start_screen = start_screen(window_size)
 def draw_start_screen(screen):
+    #screen.blit(background, (0, 0))
     screen.fill('white')
     main_start_screen.draw_screen(screen)
     pygame.display.update()
@@ -36,7 +39,7 @@ print(main_board)
 
 def draw(screen):
     screen.fill('white')
-    main_board.draw(screen)
+    draw_board(main_board, screen)
     pygame.display.update()
 
 best_move = -1
@@ -50,6 +53,7 @@ while True:
             if event.button == 1:
                 if main_board.player[main_board.turn]:
                     main_board.player_click(mx, my, screen)
+                
     if main_board.player[main_board.turn] == 0:
         draw(screen)
         best_move, _ = get_best_move(main_board.board, 4)

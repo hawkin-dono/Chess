@@ -1,8 +1,6 @@
-import pygame
 import chess
-import os
 
-from GUI.piece import Piece
+from .board_graphics import *
 
 unicode_to_algebraic = {
     '♚': 'K', '♛': 'Q', '♜': 'R', '♝': 'B', '♞': 'N', '♟': 'P',
@@ -27,6 +25,7 @@ class board:
         self.turn = True
 
         self.move_history = []
+   
 
         
     def convert_board(self): #type(board) == chess.Board()
@@ -89,7 +88,7 @@ class board:
             if (unicode_to_algebraic[piece.unicode_symbol()] == 'p' and ((move[1] == '7' and move[3] == '8')) 
             or (unicode_to_algebraic[piece.unicode_symbol()] == 'P' and (move[1] == '2' and move[3] == '1'))):
                 self.promotion = move
-                self.draw_promotion(screen)
+                draw_promotion(self,screen)
             else:
                 self.promotion = None
                 self.draw_board[7-self.selected_piece[0]][self.selected_piece[1]][1] = 0
@@ -104,7 +103,7 @@ class board:
                     self.selected_piece = None
                     self.move(move)
 
-                self.draw(screen)
+                draw_board(self,screen)
             updated = True
     
         if updated:
@@ -146,63 +145,64 @@ class board:
                 updated = self.draw_board[x][y][1] if mode == 1 else 0
                 self.draw_board[x][y] = [piece if piece is not None else ".", updated]
 
-    def draw(self, screen):
-        self.update()
-        for x in range(8):
-            for y in range(8):
-                # 0, 0 = a, 8; 0, 1 = b, 8 --> x 
 
-                loc = (x * (self.square_width), y * (self.square_height)) #position relative to the screen (pixel)
+    # def draw(self, screen):
+    #     self.update()
+    #     for x in range(8):
+    #         for y in range(8):
+    #             # 0, 0 = a, 8; 0, 1 = b, 8 --> x 
 
-                color = 'light' if (x + y) % 2 == 1 else 'dark'
-                pos = chr(y + ord('a')) + chr((7 - x) + ord('1'))
+    #             loc = (x * (self.square_width), y * (self.square_height)) #position relative to the screen (pixel)
+
+    #             color = 'light' if (x + y) % 2 == 1 else 'dark'
+    #             pos = chr(y + ord('a')) + chr((7 - x) + ord('1'))
                 
-                piece = self.board.piece_at(chess.parse_square(pos))
+    #             piece = self.board.piece_at(chess.parse_square(pos))
         
-                draw_color = (238, 238, 210) if color == 'light' else (118, 150, 86)
-                selected_color = (150, 255, 100)
+    #             draw_color = (238, 238, 210) if color == 'light' else (118, 150, 86)
+    #             selected_color = (150, 255, 100)
 
-                rect = pygame.Rect(loc[1], loc[0], self.square_width, self.square_height)
+    #             rect = pygame.Rect(loc[1], loc[0], self.square_width, self.square_height)
 
-                pygame.draw.rect(screen, selected_color if self.draw_board[7-x][y][1] == 1 else draw_color, rect)
+    #             pygame.draw.rect(screen, selected_color if self.draw_board[7-x][y][1] == 1 else draw_color, rect)
 
-                if piece is not None:
-                    piece_code = unicode_to_algebraic[piece.unicode_symbol()]
-                    team_code = 'white' if piece_code.islower() else 'black'
-                    piece_pos = (loc[1] + self.square_width // 2, loc[0] + self.square_height // 2)
-                    piece_obj = Piece(piece_code, team_code, self.square_width, self.square_height)
-                    piece_obj.draw(screen, piece_pos)
+    #             if piece is not None:
+    #                 piece_code = unicode_to_algebraic[piece.unicode_symbol()]
+    #                 team_code = 'white' if piece_code.islower() else 'black'
+    #                 piece_pos = (loc[1] + self.square_width // 2, loc[0] + self.square_height // 2)
+    #                 piece_obj = Piece(piece_code, team_code, self.square_width, self.square_height)
+    #                 piece_obj.draw(screen, piece_pos)
 
-        if self.player[0] + self.player[1] > 0:
-            pygame.draw.rect(screen, selected_color, pygame.Rect(600 + 20, self.square_height * 7, self.square_width, self.square_height))
-            self.addText(screen, (630, self.square_height * 7 + (self.square_height * 1) // 5), "Undo")
+    #     if self.player[0] + self.player[1] > 0:
+    #         pygame.draw.rect(screen, selected_color, pygame.Rect(600 + 20, self.square_height * 7, self.square_width, self.square_height))
+    #         self.addText(screen, (630, self.square_height * 7 + (self.square_height * 1) // 5), "Undo")
 
-        if self.promotion is not None:
-            self.draw_promotion(screen)
+    #     if self.promotion is not None:
+    #         self.draw_promotion(screen)
     
-    def addText(self, screen, pos, text, color = (0, 0, 0), backgroundColor = (255, 255, 255), button=False):
-        title = pygame.font.SysFont('Arial', 25).render(text, True, color)
-        temp_surface = pygame.Surface(title.get_size())
-        temp_surface.fill(backgroundColor)
-        temp_surface.blit(title, (0, 0))
-        screen.blit(temp_surface, (pos[0], pos[1]))
+    # def addText(self, screen, pos, text, color = (0, 0, 0), backgroundColor = (255, 255, 255), button=False):
+    #     title = pygame.font.SysFont('Arial', 25).render(text, True, color)
+    #     temp_surface = pygame.Surface(title.get_size())
+    #     temp_surface.fill(backgroundColor)
+    #     temp_surface.blit(title, (0, 0))
+    #     screen.blit(temp_surface, (pos[0], pos[1]))
         
-    def draw_promotion(self, screen):
+    # def draw_promotion(self, screen):
         
-        team = 'white' if self.board.turn == chess.WHITE else 'black'
+        # team = 'white' if self.board.turn == chess.WHITE else 'black'
 
-        for i in range(4):
-            loc = self.square_height * i
-            draw_color = (0, 0, 0)
-            rect = pygame.Rect(600 + 20, loc + i * 2, self.square_width, self.square_height)
-            pygame.draw.rect(screen, draw_color, rect, 2)
+        # for i in range(4):
+        #     loc = self.square_height * i
+        #     draw_color = (0, 0, 0)
+        #     rect = pygame.Rect(600 + 20, loc + i * 2, self.square_width, self.square_height)
+        #     pygame.draw.rect(screen, draw_color, rect, 2)
     
-            img_path = f'./data/imgs/{team}-{promotion_list[i]}.png'            
+        #     img_path = f'./data/imgs/{team}-{promotion_list[i]}.png'            
             
-            dude_path = os.path.join(img_path)
-            image = pygame.image.load(dude_path)
-            image = pygame.transform.scale(image, (self.square_width, self.square_height))
+        #     dude_path = os.path.join(img_path)
+        #     image = pygame.image.load(dude_path)
+        #     image = pygame.transform.scale(image, (self.square_width, self.square_height))
 
-            centering_rect = image.get_rect()
-            centering_rect.center = rect.center
-            screen.blit(image, centering_rect.topleft)
+        #     centering_rect = image.get_rect()
+        #     centering_rect.center = rect.center
+        #     screen.blit(image, centering_rect.topleft)
