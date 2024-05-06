@@ -1,7 +1,9 @@
 import chess
 
-# https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
-# https://www.chessprogramming.org/Tapered_Eval
+"""
+https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
+https://www.chessprogramming.org/Tapered_Eval
+"""
 
 MG_PIECE_VALUES = {
     chess.PAWN: 82,
@@ -151,7 +153,7 @@ EG_PESTO = {
 
 def score(board: chess.Board, is_game_over: bool = False):
     if is_game_over:
-        if board.is_checkmate(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)
+        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)
         else: return 0
     return calculate_score(board) 
 
@@ -168,8 +170,6 @@ def calculate_score(board: chess.Board):
     score = (mg_score * (256 - phase) + eg_score * phase) / 256
     return score * (-1 if board.turn else 1)
 
-
-######################################0 Phân loại giai đoạn trò chơi
 PHASE_VALUES = {
     chess.PAWN: 0,
     chess.KNIGHT: 1,
@@ -184,10 +184,7 @@ def get_phase(board: chess.Board):
     phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())
     phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
     return phase
-######################################1 Phân loại giai đoạn trò chơi
 
-
-######################################0 Sắp xếp nước đi
 def sort_moves(board: chess.Board, moves: list[chess.Move]):
     moves.sort(key=lambda move: move_ordering(board, move), reverse=True)
 
@@ -206,10 +203,7 @@ def move_ordering(board: chess.Board, move: chess.Move):
         if board.is_en_passant(move): return 0
         return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]
     return -PIECE_VALUES[chess.KING]
-######################################1 Sắp xếp nước đi
 
-
-######################################0 Lọc các nước đi ồn ào (noisy moves)
 def is_noisy_move(board : chess.Board, move : chess.Move) -> bool:
     if move.promotion == chess.QUEEN: return True
     if board.is_capture(move) and not board.is_en_passant(move):
@@ -218,4 +212,13 @@ def is_noisy_move(board : chess.Board, move : chess.Move) -> bool:
         if len(board.attackers(not board.turn, move.to_square)) == 0:
             return True
     return False
-######################################1 Lọc các nước đi ồn ào (noisy moves)
+
+def is_null_ok(board: chess.Board) -> bool:
+    if board.is_check(): return False
+    if board.peek == chess.Move.null(): return False
+    for piece in board.piece_map().values():
+        if (piece.color == board.turn) and (piece.piece_type not in [chess.KING, chess.PAWN]):
+            return True
+    return False
+
+
