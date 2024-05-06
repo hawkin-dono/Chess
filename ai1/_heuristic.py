@@ -168,6 +168,8 @@ def calculate_score(board: chess.Board):
     score = (mg_score * (256 - phase) + eg_score * phase) / 256
     return score * (-1 if board.turn else 1)
 
+
+######################################0 Phân loại giai đoạn trò chơi
 PHASE_VALUES = {
     chess.PAWN: 0,
     chess.KNIGHT: 1,
@@ -182,11 +184,38 @@ def get_phase(board: chess.Board):
     phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())
     phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
     return phase
+######################################1 Phân loại giai đoạn trò chơi
 
+
+######################################0 Sắp xếp nước đi
 def sort_moves(board: chess.Board, moves: list[chess.Move]):
     moves.sort(key=lambda move: move_ordering(board, move), reverse=True)
 
+PIECE_VALUES = {
+    chess.PAWN: 10,
+    chess.KNIGHT: 30,
+    chess.BISHOP: 30,
+    chess.ROOK: 50,
+    chess.QUEEN: 90,
+    chess.KING: 1000,
+}
+
 def move_ordering(board: chess.Board, move: chess.Move):
-    if move.promotion: return 2
-    if board.is_capture(move): return 1
-    return 0
+    if move.promotion == chess.QUEEN: return 1
+    if board.is_capture(move): 
+        if board.is_en_passant(move): return 0
+        return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]
+    return -PIECE_VALUES[chess.KING]
+######################################1 Sắp xếp nước đi
+
+
+######################################0 Lọc các nước đi ồn ào (noisy moves)
+def is_noisy_move(board : chess.Board, move : chess.Move) -> bool:
+    if move.promotion == chess.QUEEN: return True
+    if board.is_capture(move) and not board.is_en_passant(move):
+        if PIECE_VALUES[board.piece_type_at(move.from_square)] < PIECE_VALUES[board.piece_type_at(move.to_square)]:
+            return True
+        if len(board.attackers(not board.turn, move.to_square)) == 0:
+            return True
+    return False
+######################################1 Lọc các nước đi ồn ào (noisy moves)

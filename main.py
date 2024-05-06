@@ -54,9 +54,8 @@ def main():
                         main_board.player_click(mx, my, screen)
         if main_board.player[main_board.turn] == 0:
             draw(screen)
-            best_move, _ = ai1.get_best_move(main_board.board)
-            print(best_move, "eval: ", _)
-            main_board.move(best_move.uci())
+            best_move = ai1.get_best_move(main_board.board)
+            main_board.move(best_move)
         draw(screen)
 
         # Result handling
