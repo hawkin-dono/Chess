@@ -6,7 +6,7 @@ https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
 https://www.chessprogramming.org/Tapered_Eval
 """
 
-tablebase = chess.syzygy.open_tablebase("ai1/data/syzygy/3-4-5")
+TABLEBASE = chess.syzygy.open_tablebase("ai1/data/syzygy/3-4-5")
 
 MG_PIECE_VALUES = {
     chess.PAWN: 82,
@@ -154,10 +154,15 @@ EG_PESTO = {
     chess.KING: KING_EG,
 }
 
-def score(board: chess.Board, is_game_over: bool = False):
+def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):
     if is_game_over:
         if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)
         else: return 0
+    if is_end_game:
+        dtz = -TABLEBASE.probe_dtz(board)
+        if dtz > 0: return END_GAME_SCORE - dtz
+        if dtz < 0: return -END_GAME_SCORE - dtz
+        return 0
     return calculate_score(board) 
 
 def calculate_score(board: chess.Board):
@@ -185,8 +190,7 @@ TOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 +
 
 def get_phase(board: chess.Board):
     phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())
-    phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
-    return phase
+    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
 
 PIECE_VALUES = {
     chess.PAWN: 10,

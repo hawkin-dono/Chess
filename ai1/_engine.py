@@ -1,23 +1,24 @@
 import GUI.Board
 import random
 import chess
-from ._heuristic import score, organize_moves_quiescence, is_null_ok, organize_moves
+from ._heuristic import is_null_ok, organize_moves, organize_moves_quiescence, score, TABLEBASE
 from ._opening_book import OPENING_BOOK
 
 cache = dict()
+is_end_game = False
 
-def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, beta: float, turn: int):
-    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_game_over=True)
-    if depth == 0: return -turn * score(board)
+def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):
+    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)
+    if depth == 0: return -turn * score(board, is_end_game)
 
     moves = organize_moves_quiescence(board)
-    if len(moves) == 0: return -turn * score(board)
+    if len(moves) == 0: return -turn * score(board, is_end_game)
     
     if turn == 1:
         max_eval = float('-inf')
         for move in moves:
             board.push(move)
-            eval = quiesecence(board, depth - 1, MAX_DEPTH, alpha, beta, -1)
+            eval = quiesecence(board, depth - 1, MAX_DEPTH, is_end_game, alpha, beta, -1)
             board.pop()
             if eval > max_eval:
                 max_eval = eval
@@ -29,7 +30,7 @@ def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, b
         min_eval = float('inf')
         for move in moves:
             board.push(move)
-            eval = quiesecence(board, depth - 1, MAX_DEPTH, alpha, beta, 1)
+            eval = quiesecence(board, depth - 1, MAX_DEPTH, is_end_game, alpha, beta, 1)
             board.pop()
             if eval < min_eval:
                 min_eval = eval
@@ -38,31 +39,31 @@ def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, b
                 break
         return min_eval    
 
-def minimax(board : chess.Board, depth: int, cache : dict, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
+def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
     # game over sẽ được xử lý trước, tránh trường hơp đang lợi thế mà các nước đi lặp lại liên tục dẫn đến hòa cờ.
-    if board.is_game_over(): return None, -turn * score(board, is_game_over=True)
+    if board.is_game_over(): return None, -turn * score(board, is_end_game, is_game_over=True)
     
     cache_key = (board.fen(), (depth if depth >= 0 else 0), alpha, beta, turn)
     if cache_key in cache: return cache[cache_key]
 
     if depth <= 0: 
-        eval = quiesecence(board, 10, 10, alpha, beta, turn)
+        eval = quiesecence(board, 10, 10, is_end_game, alpha, beta, turn)
         cache[cache_key] = (None, eval)
         return None, eval
                 
     # null move pruning
     if turn == 1:
-        if (beta != float('inf')) and ((1 < depth < 4) or ((-turn * score(board)) >= beta)):
+        if (not is_end_game) and (beta != float('inf')) and ((1 < depth < 4) or ((-turn * score(board, is_end_game)) >= beta)):
             if is_null_ok(board):
                 board.push(chess.Move.null())
-                _, eval = minimax(board, depth - 3, cache, alpha, beta, -1)
+                _, eval = minimax(board, depth - 3, cache, is_end_game, alpha, beta, -1)
                 board.pop()
                 if eval >= beta: return None, beta
     else:
-        if (alpha != -float('inf')) and ((1 < depth < 4) or ((-turn * score(board)) <= alpha)):
+        if (not is_end_game) and (alpha != -float('inf')) and ((1 < depth < 4) or ((-turn * score(board, is_end_game)) <= alpha)):
             if is_null_ok(board):
                 board.push(chess.Move.null())
-                _, eval = minimax(board, depth - 3, cache, alpha, beta, 1)
+                _, eval = minimax(board, depth - 3, cache, is_end_game, alpha, beta, 1)
                 board.pop()
                 if eval <= alpha: return None, alpha
 
@@ -73,7 +74,7 @@ def minimax(board : chess.Board, depth: int, cache : dict, alpha: float = -float
         best_move = None
         for move in legal_moves:
             board.push(move)
-            _, eval = minimax(board, depth - 1, cache, alpha, beta, -1)
+            _, eval = minimax(board, depth - 1, cache, is_end_game, alpha, beta, -1)
             board.pop()
             if eval > max_eval:
                 max_eval = eval
@@ -88,7 +89,7 @@ def minimax(board : chess.Board, depth: int, cache : dict, alpha: float = -float
         best_move = None
         for move in legal_moves:
             board.push(move)
-            _, eval = minimax(board, depth - 1, cache, alpha, beta, 1)
+            _, eval = minimax(board, depth - 1, cache, is_end_game, alpha, beta, 1)
             board.pop()
             if eval < min_eval:
                 min_eval = eval
@@ -105,6 +106,12 @@ def _get_best_move(board: chess.Board):
         if board_fen in OPENING_BOOK[board.turn]:
             move = random.choice(OPENING_BOOK[board.turn][board_fen])
             return move
-    global cache
-    move, _ = minimax(board, 4, cache)
+        
+    global cache, is_end_game
+    # Nếu số quân cờ trên bàn cờ nhỏ hơn hoặc bằng 5 thì sử dụng tablebase
+    if (not is_end_game) and (len(board.piece_map()) <= 5) and (TABLEBASE.probe_wdl(board) != 0):
+        is_end_game = True
+        cache.clear()
+
+    move, _ = minimax(board, 4, cache, is_end_game)
     return move.uci()

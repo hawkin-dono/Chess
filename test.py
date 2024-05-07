@@ -25,17 +25,31 @@ if __name__ == "__main__":
     # board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1PK3P1/P7/5P2/3q4 b - - 0 38")
     # board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1P1K2P1/P7/2q2P2/8 b - - 2 39")
     # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
+    # board = chess.Board("1k6/1N6/1K2B3/8/8/8/8/8 w - - 54 28")
+    board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") 
+    # board = chess.Board("4k3/8/8/8/8/3B4/8/4K1N1 b - - 1 1")
 
-    # start_time = time.time()
-    # move = ai1.get_best_move(board)
-    # end_time = time.time()  
-    # print(move, end_time - start_time)
-
-    board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
-    path_to_tablebase = "ai1/data/syzygy/3-4-5"
-    tablebase = chess.syzygy.open_tablebase(path_to_tablebase)
     start_time = time.time()
-    print(tablebase.get_dtz(board))
+    move = ai1.get_best_move(board)
     end_time = time.time()  
-    print(end_time - start_time)
+    print(move, end_time - start_time)
+
+    # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
+    # board = chess.Board("8/4k3/8/8/8/3B4/8/4K1N1 w - - 2 2")
+    # board = chess.Board("8/4k3/8/8/8/3B4/8/4K1N1 w - - 2 2")
+    # board = chess.Board("k7/3B4/NK6/8/8/8/8/8 w - - 60 31")
+    # board = chess.Board("1k6/3B4/1K6/2N5/8/8/8/8 w - - 58 30")
+    # board = chess.Board("4k3/8/8/8/8/3B4/8/4K1N1 b - - 1 1")
+
+    # board = chess.Board("1k6/8/1K2B3/2N5/8/8/8/8 b - - 55 28")
+    # path_to_tablebase = "ai1/data/syzygy/3-4-5"
+    # tablebase = chess.syzygy.open_tablebase(path_to_tablebase)
+    # start_time = time.time()
+    # z = tablebase.probe_wdl(board)
+    # end_time = time.time()  
+    # print(z)
+    # print(end_time - start_time)
+
+    # hàm lấy số quân cờ trên bàn cờ
+
     

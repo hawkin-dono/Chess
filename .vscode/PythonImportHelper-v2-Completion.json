@@ -109,7 +109,7 @@
         "kind": 2,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_game_over=True)\n    if depth == 0: return -turn * score(board)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)\n            eval = quiesecence(board, depth - 1, MAX_DEPTH, alpha, beta, -1)",
+        "peekOfCode": "def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)\n            eval = quiesecence(board, depth - 1, MAX_DEPTH, is_end_game, alpha, beta, -1)",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -118,7 +118,7 @@
         "kind": 2,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "def minimax(board : chess.Board, depth: int, cache : dict, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    # game over sẽ được xử lý trước, tránh trường hơp đang lợi thế mà các nước đi lặp lại liên tục dẫn đến hòa cờ.\n    if board.is_game_over(): return None, -turn * score(board, is_game_over=True)\n    cache_key = (board.fen(), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if cache_key in cache: return cache[cache_key]\n    if depth <= 0: \n        eval = quiesecence(board, 10, 10, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval\n    # null move pruning",
+        "peekOfCode": "def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    # game over sẽ được xử lý trước, tránh trường hơp đang lợi thế mà các nước đi lặp lại liên tục dẫn đến hòa cờ.\n    if board.is_game_over(): return None, -turn * score(board, is_end_game, is_game_over=True)\n    cache_key = (board.fen(), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if cache_key in cache: return cache[cache_key]\n    if depth <= 0: \n        eval = quiesecence(board, 10, 10, is_end_game, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval\n    # null move pruning",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -127,7 +127,16 @@
         "kind": 5,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "cache = dict()\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_game_over=True)\n    if depth == 0: return -turn * score(board)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
+        "peekOfCode": "cache = dict()\nis_end_game = False\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:",
+        "detail": "ai1._engine",
+        "documentation": {}
+    },
+    {
+        "label": "is_end_game",
+        "kind": 5,
+        "importPath": "ai1._engine",
+        "description": "ai1._engine",
+        "peekOfCode": "is_end_game = False\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -145,7 +154,7 @@
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def score(board: chess.Board, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    return calculate_score(board) \ndef calculate_score(board: chess.Board):\n    mg_score, eg_score = 0, 0\n    for square, piece in board.piece_map().items():\n        if piece.color == chess.WHITE:\n            mg_score += MG_PESTO[piece.piece_type][square ^ 56] + MG_PIECE_VALUES[piece.piece_type]",
+        "peekOfCode": "def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -TABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n        return 0\n    return calculate_score(board) ",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -163,7 +172,7 @@
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\n    return phase\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,\n    chess.QUEEN: 90,",
+        "peekOfCode": "def get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,\n    chess.QUEEN: 90,\n    chess.KING: 1000,",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -204,11 +213,11 @@
         "documentation": {}
     },
     {
-        "label": "tablebase",
+        "label": "TABLEBASE",
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "tablebase = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\nMG_PIECE_VALUES = {\n    chess.PAWN: 82,\n    chess.KNIGHT: 337,\n    chess.BISHOP: 365,\n    chess.ROOK: 477,\n    chess.QUEEN: 1025,\n    chess.KING: 24000,\n}\nEG_PIECE_VALUES = {",
+        "peekOfCode": "TABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\nMG_PIECE_VALUES = {\n    chess.PAWN: 82,\n    chess.KNIGHT: 337,\n    chess.BISHOP: 365,\n    chess.ROOK: 477,\n    chess.QUEEN: 1025,\n    chess.KING: 24000,\n}\nEG_PIECE_VALUES = {",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -361,7 +370,7 @@
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "EG_PESTO = {\n    chess.PAWN: PAWN_EG,\n    chess.KNIGHT: KNIGHT_EG,\n    chess.BISHOP: BISHOP_EG,\n    chess.ROOK: ROOK_EG,\n    chess.QUEEN: QUEEN_EG,\n    chess.KING: KING_EG,\n}\ndef score(board: chess.Board, is_game_over: bool = False):\n    if is_game_over:",
+        "peekOfCode": "EG_PESTO = {\n    chess.PAWN: PAWN_EG,\n    chess.KNIGHT: KNIGHT_EG,\n    chess.BISHOP: BISHOP_EG,\n    chess.ROOK: ROOK_EG,\n    chess.QUEEN: QUEEN_EG,\n    chess.KING: KING_EG,\n}\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -379,7 +388,7 @@
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "TOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + \n               PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)\ndef get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\n    return phase\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,",
+        "peekOfCode": "TOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + \n               PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)\ndef get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
