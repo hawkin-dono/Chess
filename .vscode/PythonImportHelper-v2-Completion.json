@@ -154,16 +154,7 @@
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\n    return phase\ndef sort_moves(board: chess.Board, moves: list[chess.Move]):\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "sort_moves",
-        "kind": 2,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "def sort_moves(board: chess.Board, moves: list[chess.Move]):\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,\n    chess.QUEEN: 90,\n    chess.KING: 1000,\n}",
+        "peekOfCode": "def get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\n    return phase\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,\n    chess.QUEEN: 90,",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -172,7 +163,7 @@
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def get_move_score(board: chess.Board, move: chess.Move):\n    if move.promotion == chess.QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if len(board.attackers(not board.turn, move.to_square)) == 0: \n            return PIECE_VALUES[board.piece_type_at(move.to_square)]\n        return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]\n    return -PIECE_VALUES[chess.KING]\ndef organize_moves_quiescence(board: chess.Board):\n    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]",
+        "peekOfCode": "def get_move_score(board: chess.Board, move: chess.Move):\n    if move.promotion == chess.QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if len(board.attackers(not board.turn, move.to_square)) == 0: return PIECE_VALUES[board.piece_type_at(move.to_square)]\n        return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]\n    return -PIECE_VALUES[chess.KING]\ndef organize_moves_quiescence(board: chess.Board):\n    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -181,7 +172,16 @@
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def organize_moves_quiescence(board: chess.Board):\n    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]\n    sort_moves(board, moves)\n    return moves\ndef is_null_ok(board: chess.Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == chess.Move.null(): return False\n    for piece in board.piece_map().values():\n        if (piece.color == board.turn) and (piece.piece_type not in [chess.KING, chess.PAWN]):\n            return True",
+        "peekOfCode": "def organize_moves_quiescence(board: chess.Board):\n    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\n    return moves\ndef organize_moves(board: chess.Board):\n    moves = list(board.legal_moves)\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\n    return moves\ndef is_null_ok(board: chess.Board) -> bool:\n    if board.is_check(): return False",
+        "detail": "ai1._heuristic",
+        "documentation": {}
+    },
+    {
+        "label": "organize_moves",
+        "kind": 2,
+        "importPath": "ai1._heuristic",
+        "description": "ai1._heuristic",
+        "peekOfCode": "def organize_moves(board: chess.Board):\n    moves = list(board.legal_moves)\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\n    return moves\ndef is_null_ok(board: chess.Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == chess.Move.null(): return False\n    for piece in board.piece_map().values():\n        if (piece.color == board.turn) and (piece.piece_type not in [chess.KING, chess.PAWN]):\n            return True",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -361,7 +361,7 @@
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "TOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + \n               PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)\ndef get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\n    return phase\ndef sort_moves(board: chess.Board, moves: list[chess.Move]):\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\nPIECE_VALUES = {\n    chess.PAWN: 10,",
+        "peekOfCode": "TOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + \n               PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)\ndef get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    phase = (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\n    return phase\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,",
         "detail": "ai1._heuristic",
         "documentation": {}
     },

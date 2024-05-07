@@ -1,7 +1,7 @@
 import GUI.Board
 import random
 import chess
-from ._heuristic import score, sort_moves, organize_moves_quiescence, is_null_ok
+from ._heuristic import score, organize_moves_quiescence, is_null_ok, organize_moves
 from ._opening_book import OPENING_BOOK
 
 cache = dict()
@@ -66,8 +66,7 @@ def minimax(board : chess.Board, depth: int, cache : dict, alpha: float = -float
                 board.pop()
                 if eval <= alpha: return None, alpha
 
-    legal_moves = list(board.legal_moves)
-    sort_moves(board, legal_moves)
+    legal_moves = organize_moves(board)
     
     if turn == 1:
         max_eval = float('-inf')

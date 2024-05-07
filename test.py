@@ -28,5 +28,3 @@ if __name__ == "__main__":
     move = ai1.get_best_move(board)
     end_time = time.time()  
     print(move, end_time - start_time)
-   
-    import chess.syzygy
