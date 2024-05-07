@@ -4,14 +4,7 @@ import chess
 from ._heuristic import score, sort_moves, is_noisy_move, is_null_ok
 from ._opening_book import OPENING_BOOK
 
-PIECE_VALUES = {
-    chess.PAWN: 10,
-    chess.KNIGHT: 30,
-    chess.BISHOP: 30,
-    chess.ROOK: 50,
-    chess.QUEEN: 90,
-    chess.KING: 1000,
-}
+cache = dict()
 
 def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, beta: float, turn: int):
     if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_game_over=True)
@@ -46,23 +39,31 @@ def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, b
                 break
         return min_eval    
 
-def minimax(board : chess.Board, depth: int, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
+def minimax(board : chess.Board, depth: int, cache : dict, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
+    # game over sẽ được xử lý trước, tránh trường hơp đang lợi thế mà các nước đi lặp lại liên tục dẫn đến hòa cờ.
     if board.is_game_over(): return None, -turn * score(board, is_game_over=True)
-    if depth <= 0: return None, quiesecence(board, 10, 10, alpha, beta, turn)
+    
+    cache_key = (board.fen(), (depth if depth >= 0 else 0), alpha, beta, turn)
+    if cache_key in cache: return cache[cache_key]
+
+    if depth <= 0: 
+        eval = quiesecence(board, 10, 10, alpha, beta, turn)
+        cache[cache_key] = (None, eval)
+        return None, eval
                 
     # null move pruning
     if turn == 1:
         if (beta != float('inf')) and ((1 < depth < 4) or ((-turn * score(board)) >= beta)):
             if is_null_ok(board):
                 board.push(chess.Move.null())
-                _, eval = minimax(board, depth - 3, alpha, beta, -1)
+                _, eval = minimax(board, depth - 3, cache, alpha, beta, -1)
                 board.pop()
                 if eval >= beta: return None, beta
     else:
         if (alpha != -float('inf')) and ((1 < depth < 4) or ((-turn * score(board)) <= alpha)):
             if is_null_ok(board):
                 board.push(chess.Move.null())
-                _, eval = minimax(board, depth - 3, alpha, beta, 1)
+                _, eval = minimax(board, depth - 3, cache, alpha, beta, 1)
                 board.pop()
                 if eval <= alpha: return None, alpha
 
@@ -74,7 +75,7 @@ def minimax(board : chess.Board, depth: int, alpha: float = -float('inf'), beta:
         best_move = None
         for move in legal_moves:
             board.push(move)
-            _, eval = minimax(board, depth - 1, alpha, beta, -1)
+            _, eval = minimax(board, depth - 1, cache, alpha, beta, -1)
             board.pop()
             if eval > max_eval:
                 max_eval = eval
@@ -82,13 +83,14 @@ def minimax(board : chess.Board, depth: int, alpha: float = -float('inf'), beta:
             alpha = max(alpha, eval)
             if beta <= alpha:
                 break
+        cache[cache_key] = (best_move, max_eval)
         return (best_move, max_eval)
     else:
         min_eval = float('inf')
         best_move = None
         for move in legal_moves:
             board.push(move)
-            _, eval = minimax(board, depth - 1, alpha, beta, 1)
+            _, eval = minimax(board, depth - 1, cache, alpha, beta, 1)
             board.pop()
             if eval < min_eval:
                 min_eval = eval
@@ -96,8 +98,8 @@ def minimax(board : chess.Board, depth: int, alpha: float = -float('inf'), beta:
             beta = min(beta, eval)
             if beta <= alpha:
                 break
+        cache[cache_key] = (best_move, min_eval)
         return (best_move, min_eval)
-
 
 def _get_best_move(board: chess.Board):
     if (board.fullmove_number <= 20):
@@ -105,6 +107,7 @@ def _get_best_move(board: chess.Board):
         if board_fen in OPENING_BOOK[board.turn]:
             move = random.choice(OPENING_BOOK[board.turn][board_fen])
             return move
-    move, _ = minimax(board, 4)
+    global cache
+    move, _ = minimax(board, 4, cache)
     return move.uci()
 

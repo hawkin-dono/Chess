@@ -109,16 +109,16 @@
         "kind": 2,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "def minimax(board : chess.Board, depth: int, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    if board.is_game_over(): return None, -turn * score(board, is_game_over=True)\n    if depth <= 0: return None, quiesecence(board, 10, 10, alpha, beta, turn)\n    # null move pruning\n    if turn == 1:\n        if (beta != float('inf')) and ((1 < depth < 4) or ((-turn * score(board)) >= beta)):\n            if is_null_ok(board):\n                board.push(chess.Move.null())\n                _, eval = minimax(board, depth - 3, alpha, beta, -1)\n                board.pop()",
+        "peekOfCode": "def minimax(board : chess.Board, depth: int, cache : dict, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    # game over sẽ được xử lý trước, tránh trường hơp đang lợi thế mà các nước đi lặp lại liên tục dẫn đến hòa cờ.\n    if board.is_game_over(): return None, -turn * score(board, is_game_over=True)\n    cache_key = (board.fen(), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if cache_key in cache: return cache[cache_key]\n    if depth <= 0: \n        eval = quiesecence(board, 10, 10, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval\n    # null move pruning",
         "detail": "ai1._engine",
         "documentation": {}
     },
     {
-        "label": "PIECE_VALUES",
+        "label": "cache",
         "kind": 5,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "PIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,\n    chess.QUEEN: 90,\n    chess.KING: 1000,\n}\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_game_over=True)",
+        "peekOfCode": "cache = dict()\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_game_over=True)\n    if depth == 0: return -turn * score(board)\n    legal_moves = [move for move in board.legal_moves if is_noisy_move(board, move)]\n    if len(legal_moves) == 0: return -turn * score(board)\n    sort_moves(board, legal_moves)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in legal_moves:",
         "detail": "ai1._engine",
         "documentation": {}
     },
