@@ -186,7 +186,7 @@ def get_phase(board: chess.Board):
     return phase
 
 def sort_moves(board: chess.Board, moves: list[chess.Move]):
-    moves.sort(key=lambda move: move_ordering(board, move), reverse=True)
+    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)
 
 PIECE_VALUES = {
     chess.PAWN: 10,
@@ -197,22 +197,19 @@ PIECE_VALUES = {
     chess.KING: 1000,
 }
 
-def move_ordering(board: chess.Board, move: chess.Move):
+def get_move_score(board: chess.Board, move: chess.Move):
     if move.promotion == chess.QUEEN: return 1
     if board.is_capture(move): 
         if board.is_en_passant(move): return 0
-        if len(board.attackers(not board.turn, move.to_square)) == 0: return PIECE_VALUES[board.piece_type_at(move.to_square)]
+        if len(board.attackers(not board.turn, move.to_square)) == 0: 
+            return PIECE_VALUES[board.piece_type_at(move.to_square)]
         return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]
     return -PIECE_VALUES[chess.KING]
 
-def is_noisy_move(board : chess.Board, move : chess.Move) -> bool:
-    if move.promotion == chess.QUEEN: return True
-    if board.is_capture(move) and not board.is_en_passant(move):
-        if PIECE_VALUES[board.piece_type_at(move.from_square)] < PIECE_VALUES[board.piece_type_at(move.to_square)]:
-            return True
-        if len(board.attackers(not board.turn, move.to_square)) == 0:
-            return True
-    return False
+def organize_moves_quiescence(board: chess.Board):
+    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]
+    sort_moves(board, moves)
+    return moves
 
 def is_null_ok(board: chess.Board) -> bool:
     if board.is_check(): return False

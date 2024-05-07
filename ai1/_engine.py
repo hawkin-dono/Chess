@@ -1,7 +1,7 @@
 import GUI.Board
 import random
 import chess
-from ._heuristic import score, sort_moves, is_noisy_move, is_null_ok
+from ._heuristic import score, sort_moves, organize_moves_quiescence, is_null_ok
 from ._opening_book import OPENING_BOOK
 
 cache = dict()
@@ -10,13 +10,12 @@ def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, b
     if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_game_over=True)
     if depth == 0: return -turn * score(board)
 
-    legal_moves = [move for move in board.legal_moves if is_noisy_move(board, move)]
-    if len(legal_moves) == 0: return -turn * score(board)
-    sort_moves(board, legal_moves)
+    moves = organize_moves_quiescence(board)
+    if len(moves) == 0: return -turn * score(board)
     
     if turn == 1:
         max_eval = float('-inf')
-        for move in legal_moves:
+        for move in moves:
             board.push(move)
             eval = quiesecence(board, depth - 1, MAX_DEPTH, alpha, beta, -1)
             board.pop()
@@ -28,7 +27,7 @@ def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, alpha: float, b
         return max_eval
     else:
         min_eval = float('inf')
-        for move in legal_moves:
+        for move in moves:
             board.push(move)
             eval = quiesecence(board, depth - 1, MAX_DEPTH, alpha, beta, 1)
             board.pop()
