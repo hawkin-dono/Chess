@@ -1,9 +1,12 @@
 import chess
+import chess.syzygy
 
 """
 https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
 https://www.chessprogramming.org/Tapered_Eval
 """
+
+tablebase = chess.syzygy.open_tablebase("ai1/data/syzygy/3-4-5")
 
 MG_PIECE_VALUES = {
     chess.PAWN: 82,

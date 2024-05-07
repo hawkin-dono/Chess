@@ -44,6 +44,15 @@
         "documentation": {}
     },
     {
+        "label": "chess.syzygy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "chess.syzygy",
+        "description": "chess.syzygy",
+        "detail": "chess.syzygy",
+        "documentation": {}
+    },
+    {
         "label": "pygame",
         "kind": 6,
         "isExtraImport": true,
@@ -191,6 +200,15 @@
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
         "peekOfCode": "def is_null_ok(board: chess.Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == chess.Move.null(): return False\n    for piece in board.piece_map().values():\n        if (piece.color == board.turn) and (piece.piece_type not in [chess.KING, chess.PAWN]):\n            return True\n    return False",
+        "detail": "ai1._heuristic",
+        "documentation": {}
+    },
+    {
+        "label": "tablebase",
+        "kind": 5,
+        "importPath": "ai1._heuristic",
+        "description": "ai1._heuristic",
+        "peekOfCode": "tablebase = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\nMG_PIECE_VALUES = {\n    chess.PAWN: 82,\n    chess.KNIGHT: 337,\n    chess.BISHOP: 365,\n    chess.ROOK: 477,\n    chess.QUEEN: 1025,\n    chess.KING: 24000,\n}\nEG_PIECE_VALUES = {",
         "detail": "ai1._heuristic",
         "documentation": {}
     },

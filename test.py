@@ -1,9 +1,10 @@
 import chess
+import chess.syzygy
 import time
 import ai1
 
 if __name__ == "__main__":
-    board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
+    # board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
     # board = chess.Board("6k1/pp4p1/2p5/2bp4/8/P5Pb/1P3rrP/2BRRN1K b - - 0 1")
     # board = chess.Board("8/5P2/8/8/8/6K1/3k4/8 w - - 1 9")
     # board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
@@ -23,8 +24,18 @@ if __name__ == "__main__":
     # board = chess.Board("8/5k2/1p2p3/2p2p2/p1Pn2q1/P2Q2P1/1P3P2/5BK1 b - - 0 37")
     # board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1PK3P1/P7/5P2/3q4 b - - 0 38")
     # board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1P1K2P1/P7/2q2P2/8 b - - 2 39")
+    # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
 
+    # start_time = time.time()
+    # move = ai1.get_best_move(board)
+    # end_time = time.time()  
+    # print(move, end_time - start_time)
+
+    board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
+    path_to_tablebase = "ai1/data/syzygy/3-4-5"
+    tablebase = chess.syzygy.open_tablebase(path_to_tablebase)
     start_time = time.time()
-    move = ai1.get_best_move(board)
+    print(tablebase.get_dtz(board))
     end_time = time.time()  
-    print(move, end_time - start_time)
+    print(end_time - start_time)
+    
