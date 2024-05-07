@@ -201,6 +201,7 @@ def move_ordering(board: chess.Board, move: chess.Move):
     if move.promotion == chess.QUEEN: return 1
     if board.is_capture(move): 
         if board.is_en_passant(move): return 0
+        if len(board.attackers(not board.turn, move.to_square)) == 0: return PIECE_VALUES[board.piece_type_at(move.to_square)]
         return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]
     return -PIECE_VALUES[chess.KING]
 
@@ -220,5 +221,4 @@ def is_null_ok(board: chess.Board) -> bool:
         if (piece.color == board.turn) and (piece.piece_type not in [chess.KING, chess.PAWN]):
             return True
     return False
-
 

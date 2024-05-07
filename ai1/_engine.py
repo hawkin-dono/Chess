@@ -110,4 +110,3 @@ def _get_best_move(board: chess.Board):
     global cache
     move, _ = minimax(board, 4, cache)
     return move.uci()
-
