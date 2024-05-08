@@ -1,4 +1,3 @@
-import GUI.Board
 import random
 import chess
 from ._heuristic import is_null_ok, organize_moves, organize_moves_quiescence, score, TABLEBASE
@@ -111,7 +110,7 @@ def _get_best_move(board: chess.Board):
     # Nếu số quân cờ trên bàn cờ nhỏ hơn hoặc bằng 5 thì sử dụng tablebase
     if (not is_end_game) and (len(board.piece_map()) <= 5) and (TABLEBASE.probe_wdl(board) != 0):
         is_end_game = True
-        cache.clear()
+        cache = dict()
 
     move, _ = minimax(board, 4, cache, is_end_game)
     return move.uci()

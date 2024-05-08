@@ -1,22 +1,5 @@
 [
     {
-        "label": "GUI.Board",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "GUI.Board",
-        "description": "GUI.Board",
-        "detail": "GUI.Board",
-        "documentation": {}
-    },
-    {
-        "label": "board",
-        "importPath": "GUI.Board",
-        "description": "GUI.Board",
-        "isExtraImport": true,
-        "detail": "GUI.Board",
-        "documentation": {}
-    },
-    {
         "label": "random",
         "kind": 6,
         "isExtraImport": true,
@@ -76,6 +59,14 @@
         "description": "GUI.piece",
         "isExtraImport": true,
         "detail": "GUI.piece",
+        "documentation": {}
+    },
+    {
+        "label": "board",
+        "importPath": "GUI.Board",
+        "description": "GUI.Board",
+        "isExtraImport": true,
+        "detail": "GUI.Board",
         "documentation": {}
     },
     {
@@ -159,29 +150,11 @@
         "documentation": {}
     },
     {
-        "label": "calculate_score",
-        "kind": 2,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "def calculate_score(board: chess.Board):\n    mg_score, eg_score = 0, 0\n    for square, piece in board.piece_map().items():\n        if piece.color == chess.WHITE:\n            mg_score += MG_PESTO[piece.piece_type][square ^ 56] + MG_PIECE_VALUES[piece.piece_type]\n            eg_score += EG_PESTO[piece.piece_type][square ^ 56] + EG_PIECE_VALUES[piece.piece_type]\n        else:\n            mg_score -= MG_PESTO[piece.piece_type][square] + MG_PIECE_VALUES[piece.piece_type]\n            eg_score -= EG_PESTO[piece.piece_type][square] + EG_PIECE_VALUES[piece.piece_type]\n    phase = get_phase(board)",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "get_phase",
-        "kind": 2,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "def get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,\n    chess.QUEEN: 90,\n    chess.KING: 1000,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
         "label": "get_move_score",
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def get_move_score(board: chess.Board, move: chess.Move):\n    if move.promotion == chess.QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if len(board.attackers(not board.turn, move.to_square)) == 0: return PIECE_VALUES[board.piece_type_at(move.to_square)]\n        return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]\n    return -PIECE_VALUES[chess.KING]\ndef organize_moves_quiescence(board: chess.Board):\n    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)",
+        "peekOfCode": "def get_move_score(board: chess.Board, move: chess.Move):\n    if move.promotion == chess.QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if len(board.attackers(not board.turn, move.to_square)) == 0: return PIECE_VALUES[board.piece_type_at(move.to_square)]\n        return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]\n    return get_move_static_score(board, move, PIECE_VALUES[chess.KING])\ndef organize_moves_quiescence(board: chess.Board):\n    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -213,182 +186,20 @@
         "documentation": {}
     },
     {
-        "label": "TABLEBASE",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "TABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\nMG_PIECE_VALUES = {\n    chess.PAWN: 82,\n    chess.KNIGHT: 337,\n    chess.BISHOP: 365,\n    chess.ROOK: 477,\n    chess.QUEEN: 1025,\n    chess.KING: 24000,\n}\nEG_PIECE_VALUES = {",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "MG_PIECE_VALUES",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "MG_PIECE_VALUES = {\n    chess.PAWN: 82,\n    chess.KNIGHT: 337,\n    chess.BISHOP: 365,\n    chess.ROOK: 477,\n    chess.QUEEN: 1025,\n    chess.KING: 24000,\n}\nEG_PIECE_VALUES = {\n    chess.PAWN: 94,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "EG_PIECE_VALUES",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "EG_PIECE_VALUES = {\n    chess.PAWN: 94,\n    chess.KNIGHT: 281,\n    chess.BISHOP: 297,\n    chess.ROOK: 512,\n    chess.QUEEN: 936,\n    chess.KING: 24000,\n}\nEND_GAME_SCORE = 1000000000\nPAWN_MG = (0,   0,   0,   0,   0,   0,  0,   0,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
         "label": "END_GAME_SCORE",
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "END_GAME_SCORE = 1000000000\nPAWN_MG = (0,   0,   0,   0,   0,   0,  0,   0,\n          98, 134,  61,  95,  68, 126, 34, -11,\n          -6,   7,  26,  31,  65,  56, 25, -20,\n         -14,  13,   6,  21,  23,  12, 17, -23,\n         -27,  -2,  -5,  12,  17,   6, 10, -25,\n         -26,  -4,  -4, -10,   3,   3, 33, -12,\n         -35,  -1, -20, -23, -15,  24, 38, -22,\n           0,   0,   0,   0,   0,   0,  0,   0,)\nPAWN_EG = (0,   0,   0,   0,   0,   0,   0,   0,",
+        "peekOfCode": "END_GAME_SCORE = 1000000000\nTABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -TABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
     {
-        "label": "PAWN_MG",
+        "label": "TABLEBASE",
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "PAWN_MG = (0,   0,   0,   0,   0,   0,  0,   0,\n          98, 134,  61,  95,  68, 126, 34, -11,\n          -6,   7,  26,  31,  65,  56, 25, -20,\n         -14,  13,   6,  21,  23,  12, 17, -23,\n         -27,  -2,  -5,  12,  17,   6, 10, -25,\n         -26,  -4,  -4, -10,   3,   3, 33, -12,\n         -35,  -1, -20, -23, -15,  24, 38, -22,\n           0,   0,   0,   0,   0,   0,  0,   0,)\nPAWN_EG = (0,   0,   0,   0,   0,   0,   0,   0,\n         178, 173, 158, 134, 147, 132, 165, 187,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "PAWN_EG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "PAWN_EG = (0,   0,   0,   0,   0,   0,   0,   0,\n         178, 173, 158, 134, 147, 132, 165, 187,\n          94, 100,  85,  67,  56,  53,  82,  84,\n          32,  24,  13,   5,  -2,   4,  17,  17,\n          13,   9,  -3,  -7,  -7,  -8,   3,  -1,\n           4,   7,  -6,   1,   0,  -5,  -1,  -8,\n          13,   8,   8,  10,  13,   0,   2,  -7,\n           0,   0,   0,   0,   0,   0,   0,   0,)\nKNIGHT_MG = (-167, -89, -34, -49,  61, -97, -15, -107,\n              -73, -41,  72,  36,  23,  62,   7,  -17,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "KNIGHT_MG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "KNIGHT_MG = (-167, -89, -34, -49,  61, -97, -15, -107,\n              -73, -41,  72,  36,  23,  62,   7,  -17,\n              -47,  60,  37,  65,  84, 129,  73,   44,\n               -9,  17,  19,  53,  37,  69,  18,   22,\n              -13,   4,  16,  13,  28,  19,  21,   -8,\n              -23,  -9,  12,  10,  19,  17,  25,  -16,\n              -29, -53, -12,  -3,  -1,  18, -14,  -19,\n             -105, -21, -58, -33, -17, -28, -19,  -23,)\nKNIGHT_EG = (-58, -38, -13, -28, -31, -27, -63, -99,\n             -25,  -8, -25,  -2,  -9, -25, -24, -52,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "KNIGHT_EG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "KNIGHT_EG = (-58, -38, -13, -28, -31, -27, -63, -99,\n             -25,  -8, -25,  -2,  -9, -25, -24, -52,\n             -24, -20,  10,   9,  -1,  -9, -19, -41,\n             -17,   3,  22,  22,  22,  11,   8, -18,\n             -18,  -6,  16,  25,  16,  17,   4, -18,\n             -23,  -3,  -1,  15,  10,  -3, -20, -22,\n             -42, -20, -10,  -5,  -2, -20, -23, -44,\n             -29, -51, -23, -15, -22, -18, -50, -64,)\nBISHOP_MG = (-29,   4, -82, -37, -25, -42,   7,  -8,\n             -26,  16, -18, -13,  30,  59,  18, -47,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "BISHOP_MG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "BISHOP_MG = (-29,   4, -82, -37, -25, -42,   7,  -8,\n             -26,  16, -18, -13,  30,  59,  18, -47,\n             -16,  37,  43,  40,  35,  50,  37,  -2,\n              -4,   5,  19,  50,  37,  37,   7,  -2,\n              -6,  13,  13,  26,  34,  12,  10,   4,\n               0,  15,  15,  15,  14,  27,  18,  10,\n               4,  15,  16,   0,   7,  21,  33,   1,\n             -33,  -3, -14, -21, -13, -12, -39, -21,)\nBISHOP_EG = (-14, -21, -11,  -8, -7,  -9, -17, -24,\n              -8,  -4,   7, -12, -3, -13,  -4, -14,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "BISHOP_EG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "BISHOP_EG = (-14, -21, -11,  -8, -7,  -9, -17, -24,\n              -8,  -4,   7, -12, -3, -13,  -4, -14,\n               2,  -8,   0,  -1, -2,   6,   0,   4,\n              -3,   9,  12,   9, 14,  10,   3,   2,\n              -6,   3,  13,  19,  7,  10,  -3,  -9,\n             -12,  -3,   8,  10, 13,   3,  -7, -15,\n             -14, -18,  -7,  -1,  4,  -9, -15, -27,\n             -23,  -9, -23,  -5, -9, -16,  -5, -17,)\nROOK_MG = (32,  42,  32,  51, 63,  9,  31,  43,\n           27,  32,  58,  62, 80, 67,  26,  44,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "ROOK_MG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "ROOK_MG = (32,  42,  32,  51, 63,  9,  31,  43,\n           27,  32,  58,  62, 80, 67,  26,  44,\n           -5,  19,  26,  36, 17, 45,  61,  16,\n          -24, -11,   7,  26, 24, 35,  -8, -20,\n          -36, -26, -12,  -1,  9, -7,   6, -23,\n          -45, -25, -16, -17,  3,  0,  -5, -33,\n          -44, -16, -20,  -9, -1, 11,  -6, -71,\n          -19, -13,   1,  17, 16,  7, -37, -26,)\nROOK_EG = (13, 10, 18, 15, 12,  12,   8,   5,\n           11, 13, 13, 11, -3,   3,   8,   3,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "ROOK_EG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "ROOK_EG = (13, 10, 18, 15, 12,  12,   8,   5,\n           11, 13, 13, 11, -3,   3,   8,   3,\n            7,  7,  7,  5,  4,  -3,  -5,  -3,\n            4,  3, 13,  1,  2,   1,  -1,   2,\n            3,  5,  8,  4, -5,  -6,  -8, -11,\n           -4,  0, -5, -1, -7, -12,  -8, -16,\n           -6, -6,  0,  2, -9,  -9, -11,  -3,\n           -9,  2,  3, -1, -5, -13,   4, -20,)\nQUEEN_MG = (-28,   0,  29,  12,  59,  44,  43,  45,\n            -24, -39,  -5,   1, -16,  57,  28,  54,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "QUEEN_MG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "QUEEN_MG = (-28,   0,  29,  12,  59,  44,  43,  45,\n            -24, -39,  -5,   1, -16,  57,  28,  54,\n            -13, -17,   7,   8,  29,  56,  47,  57,\n            -27, -27, -16, -16,  -1,  17,  -2,   1,\n             -9, -26,  -9, -10,  -2,  -4,   3,  -3,\n            -14,   2, -11,  -2,  -5,   2,  14,   5,\n            -35,  -8,  11,   2,   8,  15,  -3,   1,\n             -1, -18,  -9,  10, -15, -25, -31, -50,)\nQUEEN_EG = (-9,  22,  22,  27,  27,  19,  10,  20,\n           -17,  20,  32,  41,  58,  25,  30,   0,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "QUEEN_EG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "QUEEN_EG = (-9,  22,  22,  27,  27,  19,  10,  20,\n           -17,  20,  32,  41,  58,  25,  30,   0,\n           -20,   6,   9,  49,  47,  35,  19,   9,\n             3,  22,  24,  45,  57,  40,  57,  36,\n           -18,  28,  19,  47,  31,  34,  39,  23,\n           -16, -27,  15,   6,   9,  17,  10,   5,\n           -22, -23, -30, -16, -16, -23, -36, -32,\n           -33, -28, -22, -43,  -5, -32, -20, -41,)\nKING_MG = (-65,  23,  16, -15, -56, -34,   2,  13,\n            29,  -1, -20,  -7,  -8,  -4, -38, -29,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "KING_MG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "KING_MG = (-65,  23,  16, -15, -56, -34,   2,  13,\n            29,  -1, -20,  -7,  -8,  -4, -38, -29,\n            -9,  24,   2, -16, -20,   6,  22, -22,\n           -17, -20, -12, -27, -30, -25, -14, -36,\n           -49,  -1, -27, -39, -46, -44, -33, -51,\n           -14, -14, -22, -46, -44, -30, -15, -27,\n             1,   7,  -8, -64, -43, -16,   9,   8,\n           -15,  36,  12, -54,   8, -28,  24,  14,)\nKING_EG = (-74, -35, -18, -18, -11,  15,   4, -17,\n           -12,  17,  14,  17,  17,  38,  23,  11,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "KING_EG",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "KING_EG = (-74, -35, -18, -18, -11,  15,   4, -17,\n           -12,  17,  14,  17,  17,  38,  23,  11,\n            10,  17,  23,  15,  20,  45,  44,  13,\n            -8,  22,  24,  27,  26,  33,  26,   3,\n           -18,  -4,  21,  24,  27,  23,   9, -11,\n           -19,  -3,  11,  21,  23,  16,   7,  -9,\n           -27, -11,   4,  13,  14,   4,  -5, -17,\n           -53, -34, -21, -11, -28, -14, -24, -43,)\nMG_PESTO = {\n    chess.PAWN: PAWN_MG,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "MG_PESTO",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "MG_PESTO = {\n    chess.PAWN: PAWN_MG,\n    chess.KNIGHT: KNIGHT_MG,\n    chess.BISHOP: BISHOP_MG,\n    chess.ROOK: ROOK_MG,\n    chess.QUEEN: QUEEN_MG,\n    chess.KING: KING_MG,\n}\nEG_PESTO = {\n    chess.PAWN: PAWN_EG,",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "EG_PESTO",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "EG_PESTO = {\n    chess.PAWN: PAWN_EG,\n    chess.KNIGHT: KNIGHT_EG,\n    chess.BISHOP: BISHOP_EG,\n    chess.ROOK: ROOK_EG,\n    chess.QUEEN: QUEEN_EG,\n    chess.KING: KING_EG,\n}\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "PHASE_VALUES",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "PHASE_VALUES = {\n    chess.PAWN: 0,\n    chess.KNIGHT: 1,\n    chess.BISHOP: 1,\n    chess.ROOK: 2,\n    chess.QUEEN: 4,\n}\nTOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + \n               PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)\ndef get_phase(board: chess.Board):",
-        "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "TOTAL_PHASE",
-        "kind": 5,
-        "importPath": "ai1._heuristic",
-        "description": "ai1._heuristic",
-        "peekOfCode": "TOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + \n               PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)\ndef get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE\nPIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,",
+        "peekOfCode": "TABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -TABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n        return 0",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -426,6 +237,258 @@
         "description": "ai1._opening_book",
         "peekOfCode": "OPENING_BOOK = {\n    True: WHITE_OPENING_BOOK,\n    False: BLACK_OPENING_BOOK,\n}",
         "detail": "ai1._opening_book",
+        "documentation": {}
+    },
+    {
+        "label": "calculate_score",
+        "kind": 2,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "def calculate_score(board: chess.Board):\n    mg_score, eg_score = 0, 0\n    for square, piece in board.piece_map().items():\n        if piece.color == chess.WHITE:\n            mg_score += MG_PESTO[piece.piece_type][square ^ 56] + MG_PIECE_VALUES[piece.piece_type]\n            eg_score += EG_PESTO[piece.piece_type][square ^ 56] + EG_PIECE_VALUES[piece.piece_type]\n        else:\n            mg_score -= MG_PESTO[piece.piece_type][square] + MG_PIECE_VALUES[piece.piece_type]\n            eg_score -= EG_PESTO[piece.piece_type][square] + EG_PIECE_VALUES[piece.piece_type]\n    phase = get_phase(board)",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "get_phase",
+        "kind": 2,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "def get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "MG_PIECE_VALUES",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "MG_PIECE_VALUES = {\n    chess.PAWN: 82,\n    chess.KNIGHT: 337,\n    chess.BISHOP: 365,\n    chess.ROOK: 477,\n    chess.QUEEN: 1025,\n    chess.KING: 24000,\n}\nEG_PIECE_VALUES = {\n    chess.PAWN: 94,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "EG_PIECE_VALUES",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "EG_PIECE_VALUES = {\n    chess.PAWN: 94,\n    chess.KNIGHT: 281,\n    chess.BISHOP: 297,\n    chess.ROOK: 512,\n    chess.QUEEN: 936,\n    chess.KING: 24000,\n}\nPAWN_MG = (0,   0,   0,   0,   0,   0,  0,   0,\n          98, 134,  61,  95,  68, 126, 34, -11,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "PAWN_MG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "PAWN_MG = (0,   0,   0,   0,   0,   0,  0,   0,\n          98, 134,  61,  95,  68, 126, 34, -11,\n          -6,   7,  26,  31,  65,  56, 25, -20,\n         -14,  13,   6,  21,  23,  12, 17, -23,\n         -27,  -2,  -5,  12,  17,   6, 10, -25,\n         -26,  -4,  -4, -10,   3,   3, 33, -12,\n         -35,  -1, -20, -23, -15,  24, 38, -22,\n           0,   0,   0,   0,   0,   0,  0,   0,)\nPAWN_EG = (0,   0,   0,   0,   0,   0,   0,   0,\n         178, 173, 158, 134, 147, 132, 165, 187,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "PAWN_EG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "PAWN_EG = (0,   0,   0,   0,   0,   0,   0,   0,\n         178, 173, 158, 134, 147, 132, 165, 187,\n          94, 100,  85,  67,  56,  53,  82,  84,\n          32,  24,  13,   5,  -2,   4,  17,  17,\n          13,   9,  -3,  -7,  -7,  -8,   3,  -1,\n           4,   7,  -6,   1,   0,  -5,  -1,  -8,\n          13,   8,   8,  10,  13,   0,   2,  -7,\n           0,   0,   0,   0,   0,   0,   0,   0,)\nKNIGHT_MG = (-167, -89, -34, -49,  61, -97, -15, -107,\n              -73, -41,  72,  36,  23,  62,   7,  -17,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "KNIGHT_MG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "KNIGHT_MG = (-167, -89, -34, -49,  61, -97, -15, -107,\n              -73, -41,  72,  36,  23,  62,   7,  -17,\n              -47,  60,  37,  65,  84, 129,  73,   44,\n               -9,  17,  19,  53,  37,  69,  18,   22,\n              -13,   4,  16,  13,  28,  19,  21,   -8,\n              -23,  -9,  12,  10,  19,  17,  25,  -16,\n              -29, -53, -12,  -3,  -1,  18, -14,  -19,\n             -105, -21, -58, -33, -17, -28, -19,  -23,)\nKNIGHT_EG = (-58, -38, -13, -28, -31, -27, -63, -99,\n             -25,  -8, -25,  -2,  -9, -25, -24, -52,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "KNIGHT_EG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "KNIGHT_EG = (-58, -38, -13, -28, -31, -27, -63, -99,\n             -25,  -8, -25,  -2,  -9, -25, -24, -52,\n             -24, -20,  10,   9,  -1,  -9, -19, -41,\n             -17,   3,  22,  22,  22,  11,   8, -18,\n             -18,  -6,  16,  25,  16,  17,   4, -18,\n             -23,  -3,  -1,  15,  10,  -3, -20, -22,\n             -42, -20, -10,  -5,  -2, -20, -23, -44,\n             -29, -51, -23, -15, -22, -18, -50, -64,)\nBISHOP_MG = (-29,   4, -82, -37, -25, -42,   7,  -8,\n             -26,  16, -18, -13,  30,  59,  18, -47,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "BISHOP_MG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "BISHOP_MG = (-29,   4, -82, -37, -25, -42,   7,  -8,\n             -26,  16, -18, -13,  30,  59,  18, -47,\n             -16,  37,  43,  40,  35,  50,  37,  -2,\n              -4,   5,  19,  50,  37,  37,   7,  -2,\n              -6,  13,  13,  26,  34,  12,  10,   4,\n               0,  15,  15,  15,  14,  27,  18,  10,\n               4,  15,  16,   0,   7,  21,  33,   1,\n             -33,  -3, -14, -21, -13, -12, -39, -21,)\nBISHOP_EG = (-14, -21, -11,  -8, -7,  -9, -17, -24,\n              -8,  -4,   7, -12, -3, -13,  -4, -14,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "BISHOP_EG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "BISHOP_EG = (-14, -21, -11,  -8, -7,  -9, -17, -24,\n              -8,  -4,   7, -12, -3, -13,  -4, -14,\n               2,  -8,   0,  -1, -2,   6,   0,   4,\n              -3,   9,  12,   9, 14,  10,   3,   2,\n              -6,   3,  13,  19,  7,  10,  -3,  -9,\n             -12,  -3,   8,  10, 13,   3,  -7, -15,\n             -14, -18,  -7,  -1,  4,  -9, -15, -27,\n             -23,  -9, -23,  -5, -9, -16,  -5, -17,)\nROOK_MG = (32,  42,  32,  51, 63,  9,  31,  43,\n           27,  32,  58,  62, 80, 67,  26,  44,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "ROOK_MG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "ROOK_MG = (32,  42,  32,  51, 63,  9,  31,  43,\n           27,  32,  58,  62, 80, 67,  26,  44,\n           -5,  19,  26,  36, 17, 45,  61,  16,\n          -24, -11,   7,  26, 24, 35,  -8, -20,\n          -36, -26, -12,  -1,  9, -7,   6, -23,\n          -45, -25, -16, -17,  3,  0,  -5, -33,\n          -44, -16, -20,  -9, -1, 11,  -6, -71,\n          -19, -13,   1,  17, 16,  7, -37, -26,)\nROOK_EG = (13, 10, 18, 15, 12,  12,   8,   5,\n           11, 13, 13, 11, -3,   3,   8,   3,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "ROOK_EG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "ROOK_EG = (13, 10, 18, 15, 12,  12,   8,   5,\n           11, 13, 13, 11, -3,   3,   8,   3,\n            7,  7,  7,  5,  4,  -3,  -5,  -3,\n            4,  3, 13,  1,  2,   1,  -1,   2,\n            3,  5,  8,  4, -5,  -6,  -8, -11,\n           -4,  0, -5, -1, -7, -12,  -8, -16,\n           -6, -6,  0,  2, -9,  -9, -11,  -3,\n           -9,  2,  3, -1, -5, -13,   4, -20,)\nQUEEN_MG = (-28,   0,  29,  12,  59,  44,  43,  45,\n            -24, -39,  -5,   1, -16,  57,  28,  54,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "QUEEN_MG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "QUEEN_MG = (-28,   0,  29,  12,  59,  44,  43,  45,\n            -24, -39,  -5,   1, -16,  57,  28,  54,\n            -13, -17,   7,   8,  29,  56,  47,  57,\n            -27, -27, -16, -16,  -1,  17,  -2,   1,\n             -9, -26,  -9, -10,  -2,  -4,   3,  -3,\n            -14,   2, -11,  -2,  -5,   2,  14,   5,\n            -35,  -8,  11,   2,   8,  15,  -3,   1,\n             -1, -18,  -9,  10, -15, -25, -31, -50,)\nQUEEN_EG = (-9,  22,  22,  27,  27,  19,  10,  20,\n           -17,  20,  32,  41,  58,  25,  30,   0,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "QUEEN_EG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "QUEEN_EG = (-9,  22,  22,  27,  27,  19,  10,  20,\n           -17,  20,  32,  41,  58,  25,  30,   0,\n           -20,   6,   9,  49,  47,  35,  19,   9,\n             3,  22,  24,  45,  57,  40,  57,  36,\n           -18,  28,  19,  47,  31,  34,  39,  23,\n           -16, -27,  15,   6,   9,  17,  10,   5,\n           -22, -23, -30, -16, -16, -23, -36, -32,\n           -33, -28, -22, -43,  -5, -32, -20, -41,)\nKING_MG = (-65,  23,  16, -15, -56, -34,   2,  13,\n            29,  -1, -20,  -7,  -8,  -4, -38, -29,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "KING_MG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "KING_MG = (-65,  23,  16, -15, -56, -34,   2,  13,\n            29,  -1, -20,  -7,  -8,  -4, -38, -29,\n            -9,  24,   2, -16, -20,   6,  22, -22,\n           -17, -20, -12, -27, -30, -25, -14, -36,\n           -49,  -1, -27, -39, -46, -44, -33, -51,\n           -14, -14, -22, -46, -44, -30, -15, -27,\n             1,   7,  -8, -64, -43, -16,   9,   8,\n           -15,  36,  12, -54,   8, -28,  24,  14,)\nKING_EG = (-74, -35, -18, -18, -11,  15,   4, -17,\n           -12,  17,  14,  17,  17,  38,  23,  11,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "KING_EG",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "KING_EG = (-74, -35, -18, -18, -11,  15,   4, -17,\n           -12,  17,  14,  17,  17,  38,  23,  11,\n            10,  17,  23,  15,  20,  45,  44,  13,\n            -8,  22,  24,  27,  26,  33,  26,   3,\n           -18,  -4,  21,  24,  27,  23,   9, -11,\n           -19,  -3,  11,  21,  23,  16,   7,  -9,\n           -27, -11,   4,  13,  14,   4,  -5, -17,\n           -53, -34, -21, -11, -28, -14, -24, -43,)\nMG_PESTO = {\n    chess.PAWN: PAWN_MG,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "MG_PESTO",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "MG_PESTO = {\n    chess.PAWN: PAWN_MG,\n    chess.KNIGHT: KNIGHT_MG,\n    chess.BISHOP: BISHOP_MG,\n    chess.ROOK: ROOK_MG,\n    chess.QUEEN: QUEEN_MG,\n    chess.KING: KING_MG,\n}\nEG_PESTO = {\n    chess.PAWN: PAWN_EG,",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "EG_PESTO",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "EG_PESTO = {\n    chess.PAWN: PAWN_EG,\n    chess.KNIGHT: KNIGHT_EG,\n    chess.BISHOP: BISHOP_EG,\n    chess.ROOK: ROOK_EG,\n    chess.QUEEN: QUEEN_EG,\n    chess.KING: KING_EG,\n}\ndef calculate_score(board: chess.Board):\n    mg_score, eg_score = 0, 0",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "PHASE_VALUES",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "PHASE_VALUES = {\n    chess.PAWN: 0,\n    chess.KNIGHT: 1,\n    chess.BISHOP: 1,\n    chess.ROOK: 2,\n    chess.QUEEN: 4,\n}\nTOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + \n               PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)\ndef get_phase(board: chess.Board):",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "TOTAL_PHASE",
+        "kind": 5,
+        "importPath": "ai1._pesto_evaluation",
+        "description": "ai1._pesto_evaluation",
+        "peekOfCode": "TOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + \n               PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)\ndef get_phase(board: chess.Board):\n    phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())\n    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE",
+        "detail": "ai1._pesto_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "get_move_static_score",
+        "kind": 2,
+        "importPath": "ai1._piece_evaluation",
+        "description": "ai1._piece_evaluation",
+        "peekOfCode": "def get_move_static_score(board: chess.Board, move: chess.Move, king_value: int):\n    piece = board.piece_at(move.from_square)\n    if piece.color == chess.WHITE:\n        return (-2 * king_value) + PIECES[piece.piece_type][move.to_square] - PIECES[piece.piece_type][move.from_square]\n    return (-2 * king_value) + PIECES[piece.piece_type][move.to_square ^ 56] - PIECES[piece.piece_type][move.from_square ^ 56]",
+        "detail": "ai1._piece_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "KNIGHT",
+        "kind": 5,
+        "importPath": "ai1._piece_evaluation",
+        "description": "ai1._piece_evaluation",
+        "peekOfCode": "KNIGHT = ( 0, 10, 20, 20, 20, 10, 10,  0,\n          10, 24, 26, 26, 26, 24, 24, 10,\n          10, 28, 40, 50, 50, 28, 28, 10,\n          10, 23, 36, 40, 40, 23, 23, 10,  \n          10, 22, 28, 30, 30, 22, 22, 10,  \n           0, 26, 26, 30, 30, 26, 26,  0,  \n           5, 20, 20, 23, 20, 20, 20,  5,  \n           0,  5, 15, 15, 15, 15,  0,  0,)\nBISHOP = (0, 20, 20, 20, 20, 20, 20,  0,\n         20, 40, 40, 40, 40, 40, 40, 20,",
+        "detail": "ai1._piece_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "BISHOP",
+        "kind": 5,
+        "importPath": "ai1._piece_evaluation",
+        "description": "ai1._piece_evaluation",
+        "peekOfCode": "BISHOP = (0, 20, 20, 20, 20, 20, 20,  0,\n         20, 40, 40, 40, 40, 40, 40, 20,\n         20, 40, 50, 60, 60, 50, 40, 20,\n         20, 50, 50, 60, 60, 50, 50, 20,\n         20, 40, 60, 60, 60, 60, 40, 20,\n         20, 60, 60, 60, 60, 60, 60, 20,\n         20, 50, 40, 40, 40, 40, 50, 20,\n          0, 20, 20, 20, 20, 20, 20, 0,)\nROOK = (25, 25, 25, 25, 25, 25, 25, 25,\n        50, 75, 75, 75, 75, 75, 75, 50,",
+        "detail": "ai1._piece_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "ROOK",
+        "kind": 5,
+        "importPath": "ai1._piece_evaluation",
+        "description": "ai1._piece_evaluation",
+        "peekOfCode": "ROOK = (25, 25, 25, 25, 25, 25, 25, 25,\n        50, 75, 75, 75, 75, 75, 75, 50,\n         0, 25, 25, 25, 25, 25, 25,  0,\n         0, 25, 25, 25, 25, 25, 25,  0,\n         0, 25, 25, 25, 25, 25, 25,  0,\n         0, 25, 25, 25, 25, 25, 25,  0,\n         0, 25, 25, 25, 25, 25, 25,  0,\n        25, 25, 25, 50, 50, 25, 25, 25,)\nQUEEN = ( 0, 20, 20, 30, 30, 20, 20,  0,\n         20, 40, 40, 40, 40, 40, 40, 20,",
+        "detail": "ai1._piece_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "QUEEN",
+        "kind": 5,
+        "importPath": "ai1._piece_evaluation",
+        "description": "ai1._piece_evaluation",
+        "peekOfCode": "QUEEN = ( 0, 20, 20, 30, 30, 20, 20,  0,\n         20, 40, 40, 40, 40, 40, 40, 20,\n         20, 40, 50, 50, 50, 50, 40, 20,\n         30, 40, 50, 50, 50, 50, 40, 30,\n         40, 40, 50, 50, 50, 50, 40, 30,\n         20, 50, 50, 50, 50, 50, 40, 20,\n         20, 40, 50, 40, 40, 40, 40, 20,\n          0, 20, 20, 30, 30, 20, 20,  0,)\nPAWN = (80, 80, 80, 80, 80, 80, 80, 80,\n        70, 70, 70, 70, 70, 70, 70, 70,",
+        "detail": "ai1._piece_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "PAWN",
+        "kind": 5,
+        "importPath": "ai1._piece_evaluation",
+        "description": "ai1._piece_evaluation",
+        "peekOfCode": "PAWN = (80, 80, 80, 80, 80, 80, 80, 80,\n        70, 70, 70, 70, 70, 70, 70, 70,\n        30, 30, 40, 50, 50, 40, 30, 30,\n        25, 25, 30, 45, 45, 30, 25, 25,\n        20, 20, 20, 40, 40, 20, 20, 20,\n        25, 15, 10, 20, 20, 10, 15, 25,\n        25, 30, 30,  0,  0, 30, 30, 25,\n        20, 20, 20, 20, 20, 20, 20, 20,)\nKING = (0, 0, 0, 0, 0, 0, 0, 0,\n        0, 0, 0, 0, 0, 0, 0, 0,",
+        "detail": "ai1._piece_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "KING",
+        "kind": 5,
+        "importPath": "ai1._piece_evaluation",
+        "description": "ai1._piece_evaluation",
+        "peekOfCode": "KING = (0, 0, 0, 0, 0, 0, 0, 0,\n        0, 0, 0, 0, 0, 0, 0, 0,\n        0, 0, 5, 5, 5, 5, 0, 0,\n        0, 0, 5, 10, 10, 5, 0, 0,\n        0, 0, 5, 10, 10, 5, 0, 0,\n        5, 5, 5, 5, 5, 5, 5, 5,\n        5, 5, 5, 5, 5, 5, 5, 5,\n        15, 15, 15, 10, 10, 10, 15, 15,)\nPIECES = {\n    chess.PAWN: PAWN,",
+        "detail": "ai1._piece_evaluation",
+        "documentation": {}
+    },
+    {
+        "label": "PIECES",
+        "kind": 5,
+        "importPath": "ai1._piece_evaluation",
+        "description": "ai1._piece_evaluation",
+        "peekOfCode": "PIECES = {\n    chess.PAWN: PAWN,\n    chess.KNIGHT: KNIGHT,\n    chess.BISHOP: BISHOP,\n    chess.ROOK: ROOK,\n    chess.QUEEN: QUEEN,\n    chess.KING: KING,\n}\ndef get_move_static_score(board: chess.Board, move: chess.Move, king_value: int):\n    piece = board.piece_at(move.from_square)",
+        "detail": "ai1._piece_evaluation",
         "documentation": {}
     },
     {

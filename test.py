@@ -4,7 +4,7 @@ import time
 import ai1
 
 if __name__ == "__main__":
-    # board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
+    board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
     # board = chess.Board("6k1/pp4p1/2p5/2bp4/8/P5Pb/1P3rrP/2BRRN1K b - - 0 1")
     # board = chess.Board("8/5P2/8/8/8/6K1/3k4/8 w - - 1 9")
     # board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1P1K2P1/P7/2q2P2/8 b - - 2 39")
     # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
     # board = chess.Board("1k6/1N6/1K2B3/8/8/8/8/8 w - - 54 28")
-    board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") 
+    # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") 
     # board = chess.Board("4k3/8/8/8/8/3B4/8/4K1N1 b - - 1 1")
 
     start_time = time.time()
