@@ -109,7 +109,7 @@
         "kind": 2,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    # game over sẽ được xử lý trước, tránh trường hơp đang lợi thế mà các nước đi lặp lại liên tục dẫn đến hòa cờ.\n    if board.is_game_over(): return None, -turn * score(board, is_end_game, is_game_over=True)\n    cache_key = (board.fen(), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if cache_key in cache: return cache[cache_key]\n    if depth <= 0: \n        eval = quiesecence(board, 10, 10, is_end_game, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval\n    # null move pruning",
+        "peekOfCode": "def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    # game over sẽ được xử lý trước, tránh trường hơp đang lợi thế mà các nước đi lặp lại liên tục dẫn đến hòa cờ.\n    if board.is_game_over(): return None, -turn * score(board, is_end_game, is_game_over=True)\n    cache_key = (board.fen(), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if cache_key in cache: return cache[cache_key]\n    if depth <= 0: \n        eval = quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval\n    # null move pruning",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -145,7 +145,7 @@
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -TABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n        return 0\n    return calculate_score(board) ",
+        "peekOfCode": "def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n        return 0\n    return calculate_score(board) ",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -190,16 +190,16 @@
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "END_GAME_SCORE = 1000000000\nTABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -TABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz",
+        "peekOfCode": "END_GAME_SCORE = 1000000000\nEGTABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
     {
-        "label": "TABLEBASE",
+        "label": "EGTABLEBASE",
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "TABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -TABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n        return 0",
+        "peekOfCode": "EGTABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n        return 0",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -433,7 +433,7 @@
         "kind": 5,
         "importPath": "ai1._piece_evaluation",
         "description": "ai1._piece_evaluation",
-        "peekOfCode": "KNIGHT = ( 0, 10, 20, 20, 20, 10, 10,  0,\n          10, 24, 26, 26, 26, 24, 24, 10,\n          10, 28, 40, 50, 50, 28, 28, 10,\n          10, 23, 36, 40, 40, 23, 23, 10,  \n          10, 22, 28, 30, 30, 22, 22, 10,  \n           0, 26, 26, 30, 30, 26, 26,  0,  \n           5, 20, 20, 23, 20, 20, 20,  5,  \n           0,  5, 15, 15, 15, 15,  0,  0,)\nBISHOP = (0, 20, 20, 20, 20, 20, 20,  0,\n         20, 40, 40, 40, 40, 40, 40, 20,",
+        "peekOfCode": "KNIGHT = (-50,-40,-30,-30,-30,-30,-40,-50,\n          -40,-20,  0,  0,  0,  0,-20,-40,\n          -30,  0, 10, 15, 15, 10,  0,-30,\n          -30,  5, 15, 20, 20, 15,  5,-30,\n          -30,  0, 15, 20, 20, 15,  0,-30,\n          -30,  5, 10, 15, 15, 10,  5,-30,\n          -40,-20,  0,  5,  5,  0,-20,-40,\n          -50,-40,-30,-30,-30,-30,-40,-50,)\nBISHOP = (-20,-10,-10,-10,-10,-10,-10,-20,\n          -10,  0,  0,  0,  0,  0,  0,-10,",
         "detail": "ai1._piece_evaluation",
         "documentation": {}
     },
@@ -442,7 +442,7 @@
         "kind": 5,
         "importPath": "ai1._piece_evaluation",
         "description": "ai1._piece_evaluation",
-        "peekOfCode": "BISHOP = (0, 20, 20, 20, 20, 20, 20,  0,\n         20, 40, 40, 40, 40, 40, 40, 20,\n         20, 40, 50, 60, 60, 50, 40, 20,\n         20, 50, 50, 60, 60, 50, 50, 20,\n         20, 40, 60, 60, 60, 60, 40, 20,\n         20, 60, 60, 60, 60, 60, 60, 20,\n         20, 50, 40, 40, 40, 40, 50, 20,\n          0, 20, 20, 20, 20, 20, 20, 0,)\nROOK = (25, 25, 25, 25, 25, 25, 25, 25,\n        50, 75, 75, 75, 75, 75, 75, 50,",
+        "peekOfCode": "BISHOP = (-20,-10,-10,-10,-10,-10,-10,-20,\n          -10,  0,  0,  0,  0,  0,  0,-10,\n          -10,  0,  5, 10, 10,  5,  0,-10,\n          -10,  5,  5, 10, 10,  5,  5,-10,\n          -10,  0, 10, 10, 10, 10,  0,-10,\n          -10, 10, 10, 10, 10, 10, 10,-10,\n          -10,  5,  0,  0,  0,  0,  5,-10,\n          -20,-10,-10,-10,-10,-10,-10,-20,)\nROOK =   (0,  0,  0,  0,  0,  0,  0,  0,\n          5, 10, 10, 10, 10, 10, 10,  5,",
         "detail": "ai1._piece_evaluation",
         "documentation": {}
     },
@@ -451,7 +451,7 @@
         "kind": 5,
         "importPath": "ai1._piece_evaluation",
         "description": "ai1._piece_evaluation",
-        "peekOfCode": "ROOK = (25, 25, 25, 25, 25, 25, 25, 25,\n        50, 75, 75, 75, 75, 75, 75, 50,\n         0, 25, 25, 25, 25, 25, 25,  0,\n         0, 25, 25, 25, 25, 25, 25,  0,\n         0, 25, 25, 25, 25, 25, 25,  0,\n         0, 25, 25, 25, 25, 25, 25,  0,\n         0, 25, 25, 25, 25, 25, 25,  0,\n        25, 25, 25, 50, 50, 25, 25, 25,)\nQUEEN = ( 0, 20, 20, 30, 30, 20, 20,  0,\n         20, 40, 40, 40, 40, 40, 40, 20,",
+        "peekOfCode": "ROOK =   (0,  0,  0,  0,  0,  0,  0,  0,\n          5, 10, 10, 10, 10, 10, 10,  5,\n         -5,  0,  0,  0,  0,  0,  0, -5,\n         -5,  0,  0,  0,  0,  0,  0, -5,\n         -5,  0,  0,  0,  0,  0,  0, -5,\n         -5,  0,  0,  0,  0,  0,  0, -5,\n         -5,  0,  0,  0,  0,  0,  0, -5,\n          0,  0,  0,  5,  5,  0,  0,  0)\nQUEEN = (-20,-10,-10, -5, -5,-10,-10,-20,\n         -10,  0,  0,  0,  0,  0,  0,-10,",
         "detail": "ai1._piece_evaluation",
         "documentation": {}
     },
@@ -460,7 +460,7 @@
         "kind": 5,
         "importPath": "ai1._piece_evaluation",
         "description": "ai1._piece_evaluation",
-        "peekOfCode": "QUEEN = ( 0, 20, 20, 30, 30, 20, 20,  0,\n         20, 40, 40, 40, 40, 40, 40, 20,\n         20, 40, 50, 50, 50, 50, 40, 20,\n         30, 40, 50, 50, 50, 50, 40, 30,\n         40, 40, 50, 50, 50, 50, 40, 30,\n         20, 50, 50, 50, 50, 50, 40, 20,\n         20, 40, 50, 40, 40, 40, 40, 20,\n          0, 20, 20, 30, 30, 20, 20,  0,)\nPAWN = (80, 80, 80, 80, 80, 80, 80, 80,\n        70, 70, 70, 70, 70, 70, 70, 70,",
+        "peekOfCode": "QUEEN = (-20,-10,-10, -5, -5,-10,-10,-20,\n         -10,  0,  0,  0,  0,  0,  0,-10,\n         -10,  0,  5,  5,  5,  5,  0,-10,\n          -5,  0,  5,  5,  5,  5,  0, -5,\n           0,  0,  5,  5,  5,  5,  0, -5,\n         -10,  5,  5,  5,  5,  5,  0,-10,\n         -10,  0,  5,  0,  0,  0,  0,-10,\n         -20,-10,-10, -5, -5,-10,-10,-20)\nPAWN =  (0,  0,  0,  0,  0,  0,  0,  0,\n        50, 50, 50, 50, 50, 50, 50, 50,",
         "detail": "ai1._piece_evaluation",
         "documentation": {}
     },
@@ -469,7 +469,7 @@
         "kind": 5,
         "importPath": "ai1._piece_evaluation",
         "description": "ai1._piece_evaluation",
-        "peekOfCode": "PAWN = (80, 80, 80, 80, 80, 80, 80, 80,\n        70, 70, 70, 70, 70, 70, 70, 70,\n        30, 30, 40, 50, 50, 40, 30, 30,\n        25, 25, 30, 45, 45, 30, 25, 25,\n        20, 20, 20, 40, 40, 20, 20, 20,\n        25, 15, 10, 20, 20, 10, 15, 25,\n        25, 30, 30,  0,  0, 30, 30, 25,\n        20, 20, 20, 20, 20, 20, 20, 20,)\nKING = (0, 0, 0, 0, 0, 0, 0, 0,\n        0, 0, 0, 0, 0, 0, 0, 0,",
+        "peekOfCode": "PAWN =  (0,  0,  0,  0,  0,  0,  0,  0,\n        50, 50, 50, 50, 50, 50, 50, 50,\n        10, 10, 20, 30, 30, 20, 10, 10,\n         5,  5, 10, 25, 25, 10,  5,  5,\n         0,  0,  0, 20, 20,  0,  0,  0,\n         5, -5,-10,  0,  0,-10, -5,  5,\n         5, 10, 10,-20,-20, 10, 10,  5,\n         0,  0,  0,  0,  0,  0,  0,  0)\nKING = (-50,-40,-30,-20,-20,-30,-40,-50,\n        -30,-20,-10,  0,  0,-10,-20,-30,",
         "detail": "ai1._piece_evaluation",
         "documentation": {}
     },
@@ -478,7 +478,7 @@
         "kind": 5,
         "importPath": "ai1._piece_evaluation",
         "description": "ai1._piece_evaluation",
-        "peekOfCode": "KING = (0, 0, 0, 0, 0, 0, 0, 0,\n        0, 0, 0, 0, 0, 0, 0, 0,\n        0, 0, 5, 5, 5, 5, 0, 0,\n        0, 0, 5, 10, 10, 5, 0, 0,\n        0, 0, 5, 10, 10, 5, 0, 0,\n        5, 5, 5, 5, 5, 5, 5, 5,\n        5, 5, 5, 5, 5, 5, 5, 5,\n        15, 15, 15, 10, 10, 10, 15, 15,)\nPIECES = {\n    chess.PAWN: PAWN,",
+        "peekOfCode": "KING = (-50,-40,-30,-20,-20,-30,-40,-50,\n        -30,-20,-10,  0,  0,-10,-20,-30,\n        -30,-10, 20, 30, 30, 20,-10,-30,\n        -30,-10, 30, 40, 40, 30,-10,-30,\n        -30,-10, 30, 40, 40, 30,-10,-30,\n        -30,-10,  5, 10, 10,  5,-10,-30,\n         10, 10,  0,  0,  0,  0, 10, 10,\n         10, 15,  5,  0,  0,  5, 15, 10)\nPIECES = {\n    chess.PAWN: PAWN,",
         "detail": "ai1._piece_evaluation",
         "documentation": {}
     },

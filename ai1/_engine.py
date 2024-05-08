@@ -1,6 +1,6 @@
 import random
 import chess
-from ._heuristic import is_null_ok, organize_moves, organize_moves_quiescence, score, TABLEBASE
+from ._heuristic import is_null_ok, organize_moves, organize_moves_quiescence, score, EGTABLEBASE
 from ._opening_book import OPENING_BOOK
 
 cache = dict()
@@ -46,7 +46,7 @@ def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alp
     if cache_key in cache: return cache[cache_key]
 
     if depth <= 0: 
-        eval = quiesecence(board, 10, 10, is_end_game, alpha, beta, turn)
+        eval = quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)
         cache[cache_key] = (None, eval)
         return None, eval
                 
@@ -107,8 +107,8 @@ def _get_best_move(board: chess.Board):
             return move
         
     global cache, is_end_game
-    # Nếu số quân cờ trên bàn cờ nhỏ hơn hoặc bằng 5 thì sử dụng tablebase
-    if (not is_end_game) and (len(board.piece_map()) <= 5) and (TABLEBASE.probe_wdl(board) != 0):
+    # Nếu số quân cờ trên bàn cờ nhỏ hơn hoặc bằng 5 và không hòa thì sử dụng egtablebase
+    if (not is_end_game) and (len(board.piece_map()) <= 5) and (EGTABLEBASE.probe_wdl(board) != 0):
         is_end_game = True
         cache = dict()
 
