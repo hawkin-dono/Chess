@@ -67,8 +67,8 @@ PIECES = {
     chess.KING: KING,
 }
 
-def get_move_static_score(board: chess.Board, move: chess.Move, king_value: int):
+def get_move_static_score(board: chess.Board, move: chess.Move):
     piece = board.piece_at(move.from_square)
     if piece.color == chess.WHITE:
-        return (-2 * king_value) + PIECES[piece.piece_type][move.to_square] - PIECES[piece.piece_type][move.from_square]
-    return (-2 * king_value) + PIECES[piece.piece_type][move.to_square ^ 56] - PIECES[piece.piece_type][move.from_square ^ 56]
+        return PIECES[piece.piece_type][move.to_square] - PIECES[piece.piece_type][move.from_square]
+    return PIECES[piece.piece_type][move.to_square ^ 56] - PIECES[piece.piece_type][move.from_square ^ 56]

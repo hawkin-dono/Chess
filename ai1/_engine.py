@@ -1,10 +1,12 @@
 import random
 import chess
+import chess.polyglot
 from ._heuristic import is_null_ok, organize_moves, organize_moves_quiescence, score, EGTABLEBASE
-from ._opening_book import OPENING_BOOK
 
 cache = dict()
 is_end_game = False
+# OPENING_BOOK: (12 moves opening) 467636 games (>= 30 moves) >= 3210 elo
+OPENING_BOOK = chess.polyglot.MemoryMappedReader("ai1/data/opening_book/3210elo.bin")
 
 def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):
     if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)
@@ -100,17 +102,15 @@ def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alp
         return (best_move, min_eval)
 
 def _get_best_move(board: chess.Board):
-    if (board.fullmove_number <= 20):
-        board_fen = board.fen()
-        if board_fen in OPENING_BOOK[board.turn]:
-            move = random.choice(OPENING_BOOK[board.turn][board_fen])
-            return move
-        
-    global cache, is_end_game
-    # Nếu số quân cờ trên bàn cờ nhỏ hơn hoặc bằng 5 và không hòa thì sử dụng egtablebase
-    if (not is_end_game) and (len(board.piece_map()) <= 5) and (EGTABLEBASE.probe_wdl(board) != 0):
-        is_end_game = True
-        cache = dict()
+    try:
+        move = OPENING_BOOK.weighted_choice(board).move
+        return move.uci()
+    except:
+        global cache, is_end_game
+        # Nếu số quân cờ trên bàn cờ nhỏ hơn hoặc bằng 5 và không hòa thì sử dụng egtablebase
+        if (not is_end_game) and (len(board.piece_map()) <= 5) and (EGTABLEBASE.probe_wdl(board) != 0):
+            is_end_game = True
+            cache = dict()
 
-    move, _ = minimax(board, 4, cache, is_end_game)
-    return move.uci()
+        move, _ = minimax(board, 4, cache, is_end_game)
+        return move.uci()

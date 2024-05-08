@@ -2,9 +2,12 @@ import chess
 import chess.syzygy
 import time
 import ai1
+import chess.polyglot
+
 
 if __name__ == "__main__":
-    board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
+    board = chess.Board()
+    # board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
     # board = chess.Board("6k1/pp4p1/2p5/2bp4/8/P5Pb/1P3rrP/2BRRN1K b - - 0 1")
     # board = chess.Board("8/5P2/8/8/8/6K1/3k4/8 w - - 1 9")
     # board = chess.Board("r2q1rk1/1bpnbppp/p3pn2/1p6/3P1B2/2NBPN2/PPQ2PPP/R4RK1 w - - 2 12")
@@ -51,5 +54,8 @@ if __name__ == "__main__":
     # print(end_time - start_time)
 
     # hàm lấy số quân cờ trên bàn cờ
-
+    # OPENING_BOOK = chess.polyglot.open_reader("ai1/data/opening_book/3210elo.bin")
+    # move = OPENING_BOOK.weighted_choice(board).move
+    # move = OPENING_BOOK.get(board).move
+    # print(move)
     

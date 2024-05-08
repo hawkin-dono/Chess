@@ -32,7 +32,7 @@ def get_move_score(board: chess.Board, move: chess.Move):
         if board.is_en_passant(move): return 0
         if len(board.attackers(not board.turn, move.to_square)) == 0: return PIECE_VALUES[board.piece_type_at(move.to_square)]
         return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]
-    return get_move_static_score(board, move, PIECE_VALUES[chess.KING])
+    return (-2 * PIECE_VALUES[chess.KING]) + get_move_static_score(board, move)
 
 def organize_moves_quiescence(board: chess.Board):
     moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]

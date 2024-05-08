@@ -18,12 +18,12 @@
         "documentation": {}
     },
     {
-        "label": "ast",
+        "label": "chess.polyglot",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "ast",
-        "description": "ast",
-        "detail": "ast",
+        "importPath": "chess.polyglot",
+        "description": "chess.polyglot",
+        "detail": "chess.polyglot",
         "documentation": {}
     },
     {
@@ -118,7 +118,7 @@
         "kind": 5,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "cache = dict()\nis_end_game = False\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:",
+        "peekOfCode": "cache = dict()\nis_end_game = False\n# OPENING_BOOK: (12 moves opening) 467636 games (>= 30 moves) >= 3210 elo\nOPENING_BOOK = chess.polyglot.MemoryMappedReader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -127,17 +127,17 @@
         "kind": 5,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "is_end_game = False\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
+        "peekOfCode": "is_end_game = False\n# OPENING_BOOK: (12 moves opening) 467636 games (>= 30 moves) >= 3210 elo\nOPENING_BOOK = chess.polyglot.MemoryMappedReader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')",
         "detail": "ai1._engine",
         "documentation": {}
     },
     {
-        "label": "load_dict_from_txt",
-        "kind": 2,
-        "importPath": "ai1._helper",
-        "description": "ai1._helper",
-        "peekOfCode": "def load_dict_from_txt(path):\n    result_dict = {}\n    with open(path, 'r') as file:\n        for line in file:\n            key, value = line.strip().split(': ')\n            result_dict[key] = ast.literal_eval(value)\n    return result_dict",
-        "detail": "ai1._helper",
+        "label": "OPENING_BOOK",
+        "kind": 5,
+        "importPath": "ai1._engine",
+        "description": "ai1._engine",
+        "peekOfCode": "OPENING_BOOK = chess.polyglot.MemoryMappedReader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
+        "detail": "ai1._engine",
         "documentation": {}
     },
     {
@@ -154,7 +154,7 @@
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def get_move_score(board: chess.Board, move: chess.Move):\n    if move.promotion == chess.QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if len(board.attackers(not board.turn, move.to_square)) == 0: return PIECE_VALUES[board.piece_type_at(move.to_square)]\n        return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]\n    return get_move_static_score(board, move, PIECE_VALUES[chess.KING])\ndef organize_moves_quiescence(board: chess.Board):\n    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)",
+        "peekOfCode": "def get_move_score(board: chess.Board, move: chess.Move):\n    if move.promotion == chess.QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if len(board.attackers(not board.turn, move.to_square)) == 0: return PIECE_VALUES[board.piece_type_at(move.to_square)]\n        return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]\n    return (-2 * PIECE_VALUES[chess.KING]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: chess.Board):\n    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -210,33 +210,6 @@
         "description": "ai1._heuristic",
         "peekOfCode": "PIECE_VALUES = {\n    chess.PAWN: 10,\n    chess.KNIGHT: 30,\n    chess.BISHOP: 30,\n    chess.ROOK: 50,\n    chess.QUEEN: 90,\n    chess.KING: 1000,\n}\ndef get_move_score(board: chess.Board, move: chess.Move):\n    if move.promotion == chess.QUEEN: return 1",
         "detail": "ai1._heuristic",
-        "documentation": {}
-    },
-    {
-        "label": "WHITE_OPENING_BOOK",
-        "kind": 5,
-        "importPath": "ai1._opening_book",
-        "description": "ai1._opening_book",
-        "peekOfCode": "WHITE_OPENING_BOOK = load_dict_from_txt('ai1/data/white_opening_book.txt')\nBLACK_OPENING_BOOK = load_dict_from_txt('ai1/data/black_opening_book.txt')\nOPENING_BOOK = {\n    True: WHITE_OPENING_BOOK,\n    False: BLACK_OPENING_BOOK,\n}",
-        "detail": "ai1._opening_book",
-        "documentation": {}
-    },
-    {
-        "label": "BLACK_OPENING_BOOK",
-        "kind": 5,
-        "importPath": "ai1._opening_book",
-        "description": "ai1._opening_book",
-        "peekOfCode": "BLACK_OPENING_BOOK = load_dict_from_txt('ai1/data/black_opening_book.txt')\nOPENING_BOOK = {\n    True: WHITE_OPENING_BOOK,\n    False: BLACK_OPENING_BOOK,\n}",
-        "detail": "ai1._opening_book",
-        "documentation": {}
-    },
-    {
-        "label": "OPENING_BOOK",
-        "kind": 5,
-        "importPath": "ai1._opening_book",
-        "description": "ai1._opening_book",
-        "peekOfCode": "OPENING_BOOK = {\n    True: WHITE_OPENING_BOOK,\n    False: BLACK_OPENING_BOOK,\n}",
-        "detail": "ai1._opening_book",
         "documentation": {}
     },
     {
@@ -424,7 +397,7 @@
         "kind": 2,
         "importPath": "ai1._piece_evaluation",
         "description": "ai1._piece_evaluation",
-        "peekOfCode": "def get_move_static_score(board: chess.Board, move: chess.Move, king_value: int):\n    piece = board.piece_at(move.from_square)\n    if piece.color == chess.WHITE:\n        return (-2 * king_value) + PIECES[piece.piece_type][move.to_square] - PIECES[piece.piece_type][move.from_square]\n    return (-2 * king_value) + PIECES[piece.piece_type][move.to_square ^ 56] - PIECES[piece.piece_type][move.from_square ^ 56]",
+        "peekOfCode": "def get_move_static_score(board: chess.Board, move: chess.Move):\n    piece = board.piece_at(move.from_square)\n    if piece.color == chess.WHITE:\n        return PIECES[piece.piece_type][move.to_square] - PIECES[piece.piece_type][move.from_square]\n    return PIECES[piece.piece_type][move.to_square ^ 56] - PIECES[piece.piece_type][move.from_square ^ 56]",
         "detail": "ai1._piece_evaluation",
         "documentation": {}
     },
@@ -487,7 +460,7 @@
         "kind": 5,
         "importPath": "ai1._piece_evaluation",
         "description": "ai1._piece_evaluation",
-        "peekOfCode": "PIECES = {\n    chess.PAWN: PAWN,\n    chess.KNIGHT: KNIGHT,\n    chess.BISHOP: BISHOP,\n    chess.ROOK: ROOK,\n    chess.QUEEN: QUEEN,\n    chess.KING: KING,\n}\ndef get_move_static_score(board: chess.Board, move: chess.Move, king_value: int):\n    piece = board.piece_at(move.from_square)",
+        "peekOfCode": "PIECES = {\n    chess.PAWN: PAWN,\n    chess.KNIGHT: KNIGHT,\n    chess.BISHOP: BISHOP,\n    chess.ROOK: ROOK,\n    chess.QUEEN: QUEEN,\n    chess.KING: KING,\n}\ndef get_move_static_score(board: chess.Board, move: chess.Move):\n    piece = board.piece_at(move.from_square)",
         "detail": "ai1._piece_evaluation",
         "documentation": {}
     },
