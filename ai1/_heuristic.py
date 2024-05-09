@@ -3,7 +3,7 @@ import chess.syzygy
 from ._pesto_evaluation import calculate_score
 from ._piece_evaluation import get_move_static_score
 
-END_GAME_SCORE = 1000000000
+END_GAME_SCORE = 1000000
 EGTABLEBASE = chess.syzygy.open_tablebase("ai1/data/syzygy/3-4-5")
 
 def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):
@@ -11,10 +11,9 @@ def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):
         if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)
         else: return 0
     if is_end_game:
-        dtz = -EGTABLEBASE.probe_dtz(board)
+        dtz = -EGTABLEBASE.get_dtz(board, 0)
         if dtz > 0: return END_GAME_SCORE - dtz
         if dtz < 0: return -END_GAME_SCORE - dtz
-        return 0
     return calculate_score(board) 
 
 PIECE_VALUES = {

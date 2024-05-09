@@ -1,5 +1,6 @@
 """
 https://www.chessprogramming.org/Simplified_Evaluation_Function
+(Có sửa đổi 1 chút)
 """
 
 import chess

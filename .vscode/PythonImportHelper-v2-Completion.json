@@ -1,14 +1,5 @@
 [
     {
-        "label": "random",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "random",
-        "description": "random",
-        "detail": "random",
-        "documentation": {}
-    },
-    {
         "label": "chess",
         "kind": 6,
         "isExtraImport": true,
@@ -118,7 +109,7 @@
         "kind": 5,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "cache = dict()\nis_end_game = False\n# OPENING_BOOK: (12 moves opening) 467636 games (>= 30 moves) >= 3210 elo\nOPENING_BOOK = chess.polyglot.MemoryMappedReader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:",
+        "peekOfCode": "cache = dict()\nis_end_game = False\n# OPENING_BOOK: (12 moves opening) 467636 games (>= 30 moves) >= 3210 elo\nOPENING_BOOK = chess.polyglot.open_reader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -127,7 +118,7 @@
         "kind": 5,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "is_end_game = False\n# OPENING_BOOK: (12 moves opening) 467636 games (>= 30 moves) >= 3210 elo\nOPENING_BOOK = chess.polyglot.MemoryMappedReader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')",
+        "peekOfCode": "is_end_game = False\n# OPENING_BOOK: (12 moves opening) 467636 games (>= 30 moves) >= 3210 elo\nOPENING_BOOK = chess.polyglot.open_reader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -136,7 +127,7 @@
         "kind": 5,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "OPENING_BOOK = chess.polyglot.MemoryMappedReader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
+        "peekOfCode": "OPENING_BOOK = chess.polyglot.open_reader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -145,7 +136,7 @@
         "kind": 2,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n        return 0\n    return calculate_score(board) ",
+        "peekOfCode": "def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n    return calculate_score(board) \nPIECE_VALUES = {",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -190,7 +181,7 @@
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "END_GAME_SCORE = 1000000000\nEGTABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz",
+        "peekOfCode": "END_GAME_SCORE = 1000000\nEGTABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
@@ -199,7 +190,7 @@
         "kind": 5,
         "importPath": "ai1._heuristic",
         "description": "ai1._heuristic",
-        "peekOfCode": "EGTABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.probe_dtz(board)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n        return 0",
+        "peekOfCode": "EGTABLEBASE = chess.syzygy.open_tablebase(\"ai1/data/syzygy/3-4-5\")\ndef score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        else: return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n    return calculate_score(board) ",
         "detail": "ai1._heuristic",
         "documentation": {}
     },
