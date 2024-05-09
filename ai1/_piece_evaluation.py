@@ -1,6 +1,5 @@
 """
 https://www.chessprogramming.org/Simplified_Evaluation_Function
-(Có sửa đổi 1 chút)
 """
 
 import chess
@@ -68,7 +67,7 @@ PIECES = {
     chess.KING: KING,
 }
 
-def get_move_static_score(board: chess.Board, move: chess.Move):
+def get_move_static_score(board: chess.Board, move: chess.Move) -> int:
     piece = board.piece_at(move.from_square)
     if piece.color == chess.WHITE:
         return PIECES[piece.piece_type][move.to_square] - PIECES[piece.piece_type][move.from_square]

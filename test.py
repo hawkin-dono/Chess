@@ -31,7 +31,8 @@ if __name__ == "__main__":
     # board = chess.Board("1k6/1N6/1K2B3/8/8/8/8/8 w - - 54 28")
     # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") 
     # board = chess.Board("4k3/8/8/8/8/3B4/8/4K1N1 b - - 1 1")
-    board = chess.Board("r1q2rk1/1bpnbpp1/p3pn1p/1p6/3P1B2/P1NBPN2/1PQ2PPP/3R1RK1 w - - 1 14")
+    # board = chess.Board("r1q2rk1/1bpnbpp1/p3pn1p/1p6/3P1B2/P1NBPN2/1PQ2PPP/3R1RK1 w - - 1 14")
+    board = chess.Board("r2qr1k1/1bp2ppp/p7/1p1pP3/3P2Q1/1P2R3/1P1N1PPP/R5K1 b - - 2 17")
 
     start_time = time.time()
     move = ai1.get_best_move(board)
@@ -43,8 +44,8 @@ if __name__ == "__main__":
     # print(board.fen())
     # print(board.epd())
     # print(board.board_fen())
-    print(board.legal_moves)
-    print(chess.LegalMoveGenerator(board))
+    # print(board.legal_moves)
+    # print(chess.LegalMoveGenerator(board))
     # print(board.pseudo_legal_moves)
 
     # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
@@ -72,3 +73,6 @@ if __name__ == "__main__":
 
     # print(board.fen())
     # print(board.epd())
+
+    # a = chess.polyglot.zobrist_hash(board)
+    # print(a)

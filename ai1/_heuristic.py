@@ -6,7 +6,7 @@ from ._piece_evaluation import get_move_static_score
 END_GAME_SCORE = 1000000
 EGTABLEBASE = chess.syzygy.open_tablebase("ai1/data/syzygy/3-4-5")
 
-def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False):
+def score(board: chess.Board, is_end_game: bool, is_game_over: bool = False) -> float:
     if is_game_over:
         if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)
         else: return 0
@@ -25,7 +25,7 @@ PIECE_VALUES = {
     chess.KING: 1000,
 }
 
-def get_move_score(board: chess.Board, move: chess.Move):
+def get_move_score(board: chess.Board, move: chess.Move) -> int:
     if move.promotion == chess.QUEEN: return 1
     if board.is_capture(move): 
         if board.is_en_passant(move): return 0
@@ -33,14 +33,12 @@ def get_move_score(board: chess.Board, move: chess.Move):
         return PIECE_VALUES[board.piece_type_at(move.to_square)] - PIECE_VALUES[board.piece_type_at(move.from_square)]
     return (-2 * PIECE_VALUES[chess.KING]) + get_move_static_score(board, move)
 
-def organize_moves_quiescence(board: chess.Board):
-    # moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]
+def organize_moves_quiescence(board: chess.Board) -> list[chess.Move]:
     moves = [move for move in chess.LegalMoveGenerator(board) if (get_move_score(board, move) > 0)]
     moves.sort(key=lambda move: get_move_score(board, move), reverse=True)
     return moves
 
-def organize_moves(board: chess.Board):
-    # moves = list(board.legal_moves)
+def organize_moves(board: chess.Board) -> list[chess.Move]:
     moves = list(chess.LegalMoveGenerator(board))
     moves.sort(key=lambda move: get_move_score(board, move), reverse=True)
     return moves

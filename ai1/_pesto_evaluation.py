@@ -149,7 +149,7 @@ EG_PESTO = {
     chess.KING: KING_EG,
 }
 
-def calculate_score(board: chess.Board):
+def calculate_score(board: chess.Board) -> float:
     mg_score, eg_score = 0, 0
     for square, piece in board.piece_map().items():
         if piece.color == chess.WHITE:
@@ -172,6 +172,6 @@ PHASE_VALUES = {
 TOTAL_PHASE = (PHASE_VALUES[chess.PAWN] * 16 + PHASE_VALUES[chess.KNIGHT] * 4 + 
                PHASE_VALUES[chess.BISHOP] * 4 + PHASE_VALUES[chess.ROOK] * 4 + PHASE_VALUES[chess.QUEEN] * 2)
 
-def get_phase(board: chess.Board):
+def get_phase(board: chess.Board) -> float:
     phase = TOTAL_PHASE - sum(PHASE_VALUES.get(piece.piece_type, 0) for piece in board.piece_map().values())
     return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE

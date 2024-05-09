@@ -1,10 +1,8 @@
 import pygame
 import chess
-
 from GUI.Board import board
 from start_window import start_screen
 import ai1
-
 
 def main():
     pygame.init()
