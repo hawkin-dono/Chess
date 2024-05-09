@@ -8,7 +8,7 @@ is_end_game = False
 OPENING_BOOK = chess.polyglot.open_reader("ai1/data/opening_book/3210elo.bin")
 
 def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):
-    if (depth < MAX_DEPTH) and board.is_game_over(): return -turn * score(board, is_end_game, is_game_over=True)
+    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)
     if depth == 0: return -turn * score(board, is_end_game)
 
     moves = organize_moves_quiescence(board)
@@ -41,9 +41,9 @@ def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bo
 
 def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
     # game over sẽ được xử lý trước, tránh trường hơp đang lợi thế mà các nước đi lặp lại liên tục dẫn đến hòa cờ.
-    if board.is_game_over(): return None, -turn * score(board, is_end_game, is_game_over=True)
-    
-    cache_key = (board.fen(), (depth if depth >= 0 else 0), alpha, beta, turn)
+    if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)
+
+    cache_key = (board.epd(), (depth if depth >= 0 else 0), alpha, beta, turn)
     if cache_key in cache: return cache[cache_key]
 
     if depth <= 0: 

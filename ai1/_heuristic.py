@@ -34,12 +34,14 @@ def get_move_score(board: chess.Board, move: chess.Move):
     return (-2 * PIECE_VALUES[chess.KING]) + get_move_static_score(board, move)
 
 def organize_moves_quiescence(board: chess.Board):
-    moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]
+    # moves = [move for move in board.legal_moves if (get_move_score(board, move) > 0)]
+    moves = [move for move in chess.LegalMoveGenerator(board) if (get_move_score(board, move) > 0)]
     moves.sort(key=lambda move: get_move_score(board, move), reverse=True)
     return moves
 
 def organize_moves(board: chess.Board):
-    moves = list(board.legal_moves)
+    # moves = list(board.legal_moves)
+    moves = list(chess.LegalMoveGenerator(board))
     moves.sort(key=lambda move: get_move_score(board, move), reverse=True)
     return moves
 

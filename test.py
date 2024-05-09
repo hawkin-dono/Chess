@@ -29,14 +29,23 @@ if __name__ == "__main__":
     # board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1P1K2P1/P7/2q2P2/8 b - - 2 39")
     # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
     # board = chess.Board("1k6/1N6/1K2B3/8/8/8/8/8 w - - 54 28")
-    board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") 
+    # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") 
     # board = chess.Board("4k3/8/8/8/8/3B4/8/4K1N1 b - - 1 1")
-    # board = chess.Board("r1q2rk1/1bpnbpp1/p3pn1p/1p6/3P1B2/P1NBPN2/1PQ2PPP/3R1RK1 w - - 1 14")
+    board = chess.Board("r1q2rk1/1bpnbpp1/p3pn1p/1p6/3P1B2/P1NBPN2/1PQ2PPP/3R1RK1 w - - 1 14")
 
     start_time = time.time()
     move = ai1.get_best_move(board)
     end_time = time.time()  
     print(move, end_time - start_time)
+
+    # print(board.fen())
+    # print(board.__str__)
+    # print(board.fen())
+    # print(board.epd())
+    # print(board.board_fen())
+    print(board.legal_moves)
+    print(chess.LegalMoveGenerator(board))
+    # print(board.pseudo_legal_moves)
 
     # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
     # board = chess.Board("8/4k3/8/8/8/3B4/8/4K1N1 w - - 2 2")
@@ -60,3 +69,6 @@ if __name__ == "__main__":
     # move = OPENING_BOOK.get(board).move
     # print(move)
     # print(EGTABLEBASE.get_wdl(board, 0))
+
+    # print(board.fen())
+    # print(board.epd())
