@@ -91,7 +91,7 @@
         "kind": 2,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int) -> float:\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)\n            eval = quiesecence(board, depth - 1, MAX_DEPTH, is_end_game, alpha, beta, -1)",
+        "peekOfCode": "def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)\n            eval = quiesecence(board, depth - 1, MAX_DEPTH, is_end_game, alpha, beta, -1)",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -100,7 +100,25 @@
         "kind": 2,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "def minimax(board : chess.Board, depth: int, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1) -> tuple[chess.Move, float]:\n    if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)\n    if depth <= 0: return None, quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)\n    # null move pruning\n    if turn == 1:\n        if (not is_end_game) and (beta != float('inf')) and ((1 < depth < 4) or ((-turn * score(board, is_end_game)) >= beta)):\n            if is_null_ok(board):\n                board.push(chess.Move.null())\n                _, eval = minimax(board, depth - 3, is_end_game, alpha, beta, -1)\n                board.pop()",
+        "peekOfCode": "def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)\n    cache_key = (chess.polyglot.zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)\n    try: return cache[cache_key]\n    except: pass\n    if depth <= 0: \n        eval = quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval\n    # null move pruning",
+        "detail": "ai1._engine",
+        "documentation": {}
+    },
+    {
+        "label": "cache",
+        "kind": 5,
+        "importPath": "ai1._engine",
+        "description": "ai1._engine",
+        "peekOfCode": "cache = {}\nis_end_game = False\nOPENING_BOOK = chess.polyglot.open_reader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')",
+        "detail": "ai1._engine",
+        "documentation": {}
+    },
+    {
+        "label": "is_end_game",
+        "kind": 5,
+        "importPath": "ai1._engine",
+        "description": "ai1._engine",
+        "peekOfCode": "is_end_game = False\nOPENING_BOOK = chess.polyglot.open_reader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:",
         "detail": "ai1._engine",
         "documentation": {}
     },
@@ -109,7 +127,7 @@
         "kind": 5,
         "importPath": "ai1._engine",
         "description": "ai1._engine",
-        "peekOfCode": "OPENING_BOOK = chess.polyglot.open_reader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int) -> float:\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if len(moves) == 0: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
+        "peekOfCode": "OPENING_BOOK = chess.polyglot.open_reader(\"ai1/data/opening_book/3210elo.bin\")\ndef quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
         "detail": "ai1._engine",
         "documentation": {}
     },
