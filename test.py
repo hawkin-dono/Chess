@@ -39,6 +39,8 @@ if __name__ == "__main__":
     end_time = time.time()  
     print(move, end_time - start_time)
 
+    # print(board.piece_at(1))
+
     # print(board.fen())
     # print(board.__str__)
     # print(board.fen())
@@ -76,3 +78,39 @@ if __name__ == "__main__":
 
     # a = chess.polyglot.zobrist_hash(board)
     # print(a)
+    # print(board)
+    # t = []
+    # t1 = time.time()
+    # for square in chess.scan_reversed(board.occupied):
+    #     piece = board.piece_at(square)
+        
+    # t2 = time.time()
+    # print(t2 - t1)
+    
+    # t1 = time.time()
+    # z = []
+    # for square, piece in board.piece_map().items():
+    #     z.append(square)
+    # t2 = time.time()
+    # print(t2 - t1)
+
+    # print(t)
+    # print(z)
+
+
+    # t = []
+    # for i in board.generate_legal_moves():
+    #     t.append(i)
+    # z = []
+    # for i in board.legal_moves:
+    #     z.append(i)
+
+    # print(t == z)
+    # print(t)
+
+    # print(len(list(chess.scan_reversed(board.occupied))))
+
+    # import timeit
+
+    board.legal_moves
+    

@@ -1,5 +1,6 @@
 import chess
-import chess.polyglot
+from chess import scan_reversed
+from chess.polyglot import zobrist_hash
 from ._heuristic import is_null_ok, organize_moves, organize_moves_quiescence, score
 
 cache = {}
@@ -41,7 +42,7 @@ def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bo
 def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
     if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)
 
-    cache_key = (chess.polyglot.zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)
+    cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)
     try: return cache[cache_key]
     except: pass
 
@@ -103,7 +104,7 @@ def _get_best_move(board: chess.Board):
     try: return OPENING_BOOK.weighted_choice(board).move.uci()
     except:
         global cache, is_end_game
-        if (not is_end_game) and (len(board.piece_map()) <= 5):
+        if (not is_end_game) and (len(list(scan_reversed(board.occupied))) <= 5):
             is_end_game = True
             cache = {}
 
