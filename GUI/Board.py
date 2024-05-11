@@ -150,6 +150,24 @@ class board:
                 updated = self.draw_board[x][y][1] if mode == 1 else 0
                 self.draw_board[x][y] = [piece if piece is not None else ".", updated]
 
+    def show_valid_moves_to_list(self): # xử lý
+        x, y = self.selected_piece  
+        selected_piece_pos = chr(y + ord('a')) + chr((7 - x) + ord('1'))  
+        for i in range(8):
+            for j in range(8):
+                target_pos = chr(j + ord('a')) + chr((7 - i) + ord('1'))
+                move = selected_piece_pos + target_pos  
+                if move != selected_piece_pos + selected_piece_pos:
+                    if self.board.is_legal(chess.Move.from_uci(move)):
+                        self.list_valid_moves.append([i, j])
+
+    def render_valid_moves(self, screen): #render
+        
+        for move in self.list_valid_moves:
+            if move != self.selected_piece:
+                square_center = (move[1] * self.square_width + self.square_width // 2, 
+                move[0] * self.square_height + self.square_height // 2)
+                pygame.draw.circle(screen, (255, 255, 100), square_center, self.square_width // 5)
 
     # def draw(self, screen):
     #     self.update()
