@@ -84,6 +84,15 @@
         "documentation": {}
     },
     {
+        "label": "ai1",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "ai1",
+        "description": "ai1",
+        "detail": "ai1",
+        "documentation": {}
+    },
+    {
         "label": "start_screen",
         "importPath": "start_window",
         "description": "start_window",
@@ -92,12 +101,11 @@
         "documentation": {}
     },
     {
-        "label": "ai1",
-        "kind": 6,
+        "label": "draw_board",
+        "importPath": "GUI.board_graphics",
+        "description": "GUI.board_graphics",
         "isExtraImport": true,
-        "importPath": "ai1",
-        "description": "ai1",
-        "detail": "ai1",
+        "detail": "GUI.board_graphics",
         "documentation": {}
     },
     {
@@ -506,6 +514,51 @@
         "documentation": {}
     },
     {
+        "label": "draw_board",
+        "kind": 2,
+        "importPath": "GUI.board_graphics",
+        "description": "GUI.board_graphics",
+        "peekOfCode": "def draw_board(board, screen):\n    board.update()\n    background_img = pygame.image.load('data/imgs/background-main.jpg')\n    background_img = pygame.transform.scale(background_img, (screen.get_width() - board.width, screen.get_height()))\n    # draw background\n    screen.blit(background_img, (board.width, 0))\n    for x in range(8):\n        for y in range(8):\n            loc = (x * (board.square_width), y * (board.square_height))\n            color = 'light' if (x + y) % 2 == 1 else 'dark'",
+        "detail": "GUI.board_graphics",
+        "documentation": {}
+    },
+    {
+        "label": "add_text",
+        "kind": 2,
+        "importPath": "GUI.board_graphics",
+        "description": "GUI.board_graphics",
+        "peekOfCode": "def add_text(screen, pos, text, color=(0, 0, 0), backgroundColor=(255, 255, 255), button=False):\n    title = pygame.font.SysFont('Arial', 25).render(text, True, color)\n    temp_surface = pygame.Surface(title.get_size())\n    temp_surface.fill(backgroundColor)\n    temp_surface.blit(title, (0, 0))\n    screen.blit(temp_surface, (pos[0], pos[1]))\ndef draw_promotion(board, screen):\n    team = 'white' if board.board.turn == chess.WHITE else 'black'\n    for i in range(4):\n        loc = board.square_height * i",
+        "detail": "GUI.board_graphics",
+        "documentation": {}
+    },
+    {
+        "label": "draw_promotion",
+        "kind": 2,
+        "importPath": "GUI.board_graphics",
+        "description": "GUI.board_graphics",
+        "peekOfCode": "def draw_promotion(board, screen):\n    team = 'white' if board.board.turn == chess.WHITE else 'black'\n    for i in range(4):\n        loc = board.square_height * i\n        draw_color = (0, 0, 0)\n        rect = pygame.Rect(600 + 20, loc + i * 2, board.square_width, board.square_height)\n        pygame.draw.rect(screen, draw_color, rect, 2)\n        img_path = f'./data/imgs/{team}-{promotion_list[i]}.png'\n        dude_path = os.path.join(img_path)\n        image = pygame.image.load(dude_path)",
+        "detail": "GUI.board_graphics",
+        "documentation": {}
+    },
+    {
+        "label": "unicode_to_algebraic",
+        "kind": 5,
+        "importPath": "GUI.board_graphics",
+        "description": "GUI.board_graphics",
+        "peekOfCode": "unicode_to_algebraic = {\n    '♚': 'K', '♛': 'Q', '♜': 'R', '♝': 'B', '♞': 'N', '♟': 'P',\n    '♔': 'k', '♕': 'q', '♖': 'r', '♗': 'b', '♘': 'n', '♙': 'p'\n}\npromotion_list = ['queen', 'rook', 'bishop', 'knight']\ndef draw_board(board, screen):\n    board.update()\n    background_img = pygame.image.load('data/imgs/background-main.jpg')\n    background_img = pygame.transform.scale(background_img, (screen.get_width() - board.width, screen.get_height()))\n    # draw background",
+        "detail": "GUI.board_graphics",
+        "documentation": {}
+    },
+    {
+        "label": "promotion_list",
+        "kind": 5,
+        "importPath": "GUI.board_graphics",
+        "description": "GUI.board_graphics",
+        "peekOfCode": "promotion_list = ['queen', 'rook', 'bishop', 'knight']\ndef draw_board(board, screen):\n    board.update()\n    background_img = pygame.image.load('data/imgs/background-main.jpg')\n    background_img = pygame.transform.scale(background_img, (screen.get_width() - board.width, screen.get_height()))\n    # draw background\n    screen.blit(background_img, (board.width, 0))\n    for x in range(8):\n        for y in range(8):\n            loc = (x * (board.square_width), y * (board.square_height))",
+        "detail": "GUI.board_graphics",
+        "documentation": {}
+    },
+    {
         "label": "Piece",
         "kind": 6,
         "importPath": "GUI.piece",
@@ -515,11 +568,83 @@
         "documentation": {}
     },
     {
-        "label": "main",
+        "label": "draw_start_screen",
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def main():\n    pygame.init()\n    window_size = (800, 600)\n    board_size = (600, 600)\n    team = [-1, -1]\n    # start screen\n    screen = pygame.display.set_mode(window_size)\n    main_start_screen = start_screen(window_size)\n    def draw_start_screen(screen):\n        screen.fill('white')",
+        "peekOfCode": "def draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "draw",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "window_size",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "window_size = (800, 600)\nboard_size = (600, 600)\nteam = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "board_size",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "board_size = (600, 600)\nteam = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "team",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "team = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()\nwhile True:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "screen",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "screen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): ",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "main_start_screen",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "main_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "main_board",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): ",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "best_move",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "best_move = -1\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:\n                if main_board.player[main_board.turn]:\n                    main_board.player_click(mx, my, screen)",
         "detail": "main",
         "documentation": {}
     },
