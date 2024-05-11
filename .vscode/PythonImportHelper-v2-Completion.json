@@ -33,15 +33,6 @@
         "documentation": {}
     },
     {
-        "label": "chess.polyglot",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "chess.polyglot",
-        "description": "chess.polyglot",
-        "detail": "chess.polyglot",
-        "documentation": {}
-    },
-    {
         "label": "zobrist_hash",
         "importPath": "chess.polyglot",
         "description": "chess.polyglot",
@@ -107,15 +98,6 @@
         "importPath": "ai1",
         "description": "ai1",
         "detail": "ai1",
-        "documentation": {}
-    },
-    {
-        "label": "time",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "time",
-        "description": "time",
-        "detail": "time",
         "documentation": {}
     },
     {
