@@ -2,7 +2,10 @@ import pygame
 import chess
 from GUI.Board import board
 from start_window import start_screen
+
 import ai1
+from GUI.board_graphics import draw_board 
+
 
 def main():
     pygame.init()
@@ -41,6 +44,7 @@ def main():
 
     best_move = -1
 
+
     while True:
         mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get(): 
@@ -54,6 +58,7 @@ def main():
             draw(screen)
             best_move = ai1.get_best_move(main_board.board)
             main_board.move(best_move)
+
         draw(screen)
 
         # Result handling
