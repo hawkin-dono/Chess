@@ -2,13 +2,10 @@
 https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
 https://www.chessprogramming.org/Tapered_Eval
 """
+from chess import Board, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, scan_reversed
 
-import chess
-from chess import scan_reversed
-
-
-MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]
-EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]
+MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]  # pawn, knight, bishop, rook, queen, king
+EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]  # pawn, knight, bishop, rook, queen, king
 
 PAWN_MG = [0,   0,   0,   0,   0,   0,  0,   0,
           98, 134,  61,  95,  68, 126, 34, -11,
@@ -121,7 +118,7 @@ KING_EG = [-74, -35, -18, -18, -11,  15,   4, -17,
 MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]
 EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]
 
-def calculate_score(board: chess.Board) -> float:
+def calculate_score(board: Board) -> float:
     mg_score, eg_score = 0, 0
     for square in scan_reversed(board.occupied):
         piece = board.piece_at(square)
@@ -136,10 +133,10 @@ def calculate_score(board: chess.Board) -> float:
     return score * (-1 if board.turn else 1)
 
 PHASE_VALUES = [0, 1, 1, 2, 4, 0]
-TOTAL_PHASE = (PHASE_VALUES[chess.PAWN - 1] * 16 + PHASE_VALUES[chess.KNIGHT - 1] * 4 + 
-               PHASE_VALUES[chess.BISHOP - 1] * 4 + PHASE_VALUES[chess.ROOK - 1] * 4 + PHASE_VALUES[chess.QUEEN - 1] * 2)
+TOTAL_PHASE = (PHASE_VALUES[PAWN - 1] * 16 + PHASE_VALUES[KNIGHT - 1] * 4 + 
+               PHASE_VALUES[BISHOP - 1] * 4 + PHASE_VALUES[ROOK - 1] * 4 + PHASE_VALUES[QUEEN - 1] * 2)
 
-def get_phase(board: chess.Board) -> float:
+def get_phase(board: Board) -> float:
     phase = TOTAL_PHASE - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed(board.occupied))
     return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
 

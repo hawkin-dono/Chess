@@ -1,13 +1,13 @@
-import chess
-from chess import scan_reversed
-from chess.polyglot import zobrist_hash
+# import chess
+from chess import Board, Move, scan_reversed
+from chess.polyglot import open_reader, zobrist_hash
 from ._heuristic import is_null_ok, organize_moves, organize_moves_quiescence, score
 
 cache = {}
 is_end_game = False
-OPENING_BOOK = chess.polyglot.open_reader("ai1/data/opening_book/3210elo.bin")
+OPENING_BOOK = open_reader("cow/data/opening_book/3210elo.bin")
 
-def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):
+def quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):
     if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)
     if depth == 0: return -turn * score(board, is_end_game)
 
@@ -39,12 +39,13 @@ def quiesecence(board : chess.Board, depth: int, MAX_DEPTH: int, is_end_game: bo
                 break
         return min_eval    
 
-def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
+def minimax(board : Board, depth: int, max_depth, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
     if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)
 
     cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)
-    try: return cache[cache_key]
-    except: pass
+    if (depth <= max_depth - 2):
+        try: return cache[cache_key]
+        except: pass
 
     if depth <= 0: 
         eval = quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)
@@ -55,15 +56,15 @@ def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alp
     if turn == 1:
         if (not is_end_game) and (beta != float('inf')) and ((1 < depth < 4) or ((-turn * score(board, is_end_game)) >= beta)):
             if is_null_ok(board):
-                board.push(chess.Move.null())
-                _, eval = minimax(board, depth - 3, cache, is_end_game, alpha, beta, -1)
+                board.push(Move.null())
+                _, eval = minimax(board, depth - 3, max_depth, cache, is_end_game, alpha, beta, -1)
                 board.pop()
                 if eval >= beta: return None, beta
     else:
         if (not is_end_game) and (alpha != -float('inf')) and ((1 < depth < 4) or ((-turn * score(board, is_end_game)) <= alpha)):
             if is_null_ok(board):
-                board.push(chess.Move.null())
-                _, eval = minimax(board, depth - 3, cache, is_end_game, alpha, beta, 1)
+                board.push(Move.null())
+                _, eval = minimax(board, depth - 3, max_depth, cache, is_end_game, alpha, beta, 1)
                 board.pop()
                 if eval <= alpha: return None, alpha
 
@@ -74,7 +75,7 @@ def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alp
         best_move = None
         for move in legal_moves:
             board.push(move)
-            _, eval = minimax(board, depth - 1, cache, is_end_game, alpha, beta, -1)
+            _, eval = minimax(board, depth - 1, max_depth, cache, is_end_game, alpha, beta, -1)
             board.pop()
             if eval > max_eval:
                 max_eval = eval
@@ -89,7 +90,7 @@ def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alp
         best_move = None
         for move in legal_moves:
             board.push(move)
-            _, eval = minimax(board, depth - 1, cache, is_end_game, alpha, beta, 1)
+            _, eval = minimax(board, depth - 1, max_depth, cache, is_end_game, alpha, beta, 1)
             board.pop()
             if eval < min_eval:
                 min_eval = eval
@@ -100,13 +101,17 @@ def minimax(board : chess.Board, depth: int, cache: dict, is_end_game: bool, alp
         cache[cache_key] = (best_move, min_eval)
         return (best_move, min_eval)
 
-def _get_best_move(board: chess.Board):
+def _get_best_move(board: Board, depth):
     try: return OPENING_BOOK.weighted_choice(board).move.uci()
     except:
         global cache, is_end_game
-        if (not is_end_game) and (len(list(scan_reversed(board.occupied))) <= 5):
+        pieces_count = len(list(scan_reversed(board.occupied)))
+        if (not is_end_game) and (pieces_count <= 5):
             is_end_game = True
             cache = {}
+        elif is_end_game and (pieces_count > 5):
+            is_end_game = False
+            cache = {}
 
-        move, _ = minimax(board, 4, cache, is_end_game)
+        move, _ = minimax(board, depth, depth, cache, is_end_game)
         return move.uci()
