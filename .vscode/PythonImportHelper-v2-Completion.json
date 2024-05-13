@@ -249,7 +249,7 @@
         "kind": 2,
         "importPath": "cow._engine",
         "description": "cow._engine",
-        "peekOfCode": "def minimax(board : Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)\n    cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)\n    try: return cache[cache_key]\n    except: pass\n    if depth <= 0: \n        eval = quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval\n    # null move pruning",
+        "peekOfCode": "def minimax(board : Board, depth: int, max_depth, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)\n    cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if (depth <= max_depth - 2):\n        try: return cache[cache_key]\n        except: pass\n    if depth <= 0: \n        eval = quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval",
         "detail": "cow._engine",
         "documentation": {}
     },
