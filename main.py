@@ -2,7 +2,7 @@ import pygame
 import chess
 
 from GUI.Board import board
-import ai1
+import cow
 from start_window import start_screen
 from GUI.board_graphics import draw_board 
 
@@ -56,7 +56,7 @@ while True:
                 
     if main_board.player[main_board.turn] == 0:
         draw(screen)
-        best_move = ai1.get_best_move(main_board.board)
+        best_move = cow.get_best_move(main_board.board)
         main_board.move(best_move)
     draw(screen)
 
