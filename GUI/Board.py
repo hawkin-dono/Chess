@@ -81,7 +81,7 @@ class board:
                     self.selected_piece = [x, y]
                     self.draw_board[7-x][y] = [unicode_to_algebraic[piece.unicode_symbol()], 1]
                     self.show_valid_moves_to_list()
-                    self.render_valid_moves(screen)   
+                    render_valid_moves(self, screen)   
                     updated = True
 
         else:
@@ -161,13 +161,13 @@ class board:
                     if self.board.is_legal(chess.Move.from_uci(move)):
                         self.list_valid_moves.append([i, j])
 
-    def render_valid_moves(self, screen): #render
+    # def render_valid_moves(self, screen): #render
         
-        for move in self.list_valid_moves:
-            if move != self.selected_piece:
-                square_center = (move[1] * self.square_width + self.square_width // 2, 
-                move[0] * self.square_height + self.square_height // 2)
-                pygame.draw.circle(screen, (255, 255, 100), square_center, self.square_width // 5)
+    #     for move in self.list_valid_moves:
+    #         if move != self.selected_piece:
+    #             square_center = (move[1] * self.square_width + self.square_width // 2, 
+    #             move[0] * self.square_height + self.square_height // 2)
+    #             pygame.draw.circle(screen, (255, 255, 100), square_center, self.square_width // 5)
 
     # def draw(self, screen):
     #     self.update()

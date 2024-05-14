@@ -52,6 +52,18 @@ def draw_board(board, screen):
     if board.promotion is not None:
         draw_promotion(board, screen)
 
+    if board.list_valid_moves:
+        render_valid_moves(board, screen)
+
+
+def render_valid_moves(board, screen): #render
+        
+        for move in board.list_valid_moves:
+            if move != board.selected_piece:
+                square_center = (move[1] * board.square_width + board.square_width // 2, 
+                move[0] * board.square_height + board.square_height // 2)
+                pygame.draw.circle(screen, (255, 255, 100), square_center, board.square_width // 5.5)
+
 def add_text(screen, pos, text, color=(0, 0, 0), backgroundColor=(255, 255, 255), button=False):
     title = pygame.font.SysFont('Arial', 25).render(text, True, color)
     temp_surface = pygame.Surface(title.get_size())
