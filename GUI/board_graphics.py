@@ -24,7 +24,7 @@ def draw_board(board, screen):
             color = 'light' if (x + y) % 2 == 1 else 'dark'
             pos = chr(y + ord('a')) + chr((7 - x) + ord('1'))
             piece = board.board.piece_at(chess.parse_square(pos))
-            draw_color = (238, 238, 210) if color == 'light' else (118, 150, 86)
+            draw_color = (118, 150, 86) if color == 'light' else (238, 238, 210)
             selected_color = (150, 255, 100)
             rect = pygame.Rect(loc[1], loc[0], board.square_width, board.square_height)
             pygame.draw.rect(screen, selected_color if board.draw_board[7-x][y][1] == 1 else draw_color, rect)
