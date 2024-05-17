@@ -5,6 +5,7 @@ from GUI.Board import board
 import cow
 from start_window import start_screen
 from GUI.board_graphics import draw_board 
+from end_window import EndGameWindow
 
 pygame.init()
 
@@ -64,17 +65,20 @@ while True:
     if main_board.board.is_game_over():
         if main_board.board.is_checkmate():
             if main_board.board.turn == chess.WHITE:
-                print("Black wins by checkmate!")
+                result = "Black wins by checkmate!"
             else:
-                print("White wins by checkmate!")
+                result = "White wins by checkmate!"
         elif main_board.board.is_stalemate():
-            print("Stalemate!")
+            result = "Stalemate!"
         elif main_board.board.is_insufficient_material():
-            print("Insufficient material for checkmate.")
+            result = "Insufficient material for checkmate."
         elif main_board.board.is_seventyfive_moves():
-            print("Draw due to 75-move rule.")
+            result = "Draw due to 75-move rule."
         elif main_board.board.is_fivefold_repetition():
-            print("Draw due to fivefold repetition.")
+            result = "Draw due to fivefold repetition."
         else:
-            print("Game over for some other reason.")
+            result = "Game over for some other reason."
+
+        end_game_window = EndGameWindow(window_size, result)
+        end_game_window.show(screen)
         break
