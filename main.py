@@ -61,20 +61,22 @@ while True:
     draw(screen)
 
     # Result handling
-    if main_board.board.is_game_over():
-        if main_board.board.is_checkmate():
-            if main_board.board.turn == chess.WHITE:
-                print("Black wins by checkmate!")
-            else:
-                print("White wins by checkmate!")
-        elif main_board.board.is_stalemate():
-            print("Stalemate!")
-        elif main_board.board.is_insufficient_material():
-            print("Insufficient material for checkmate.")
-        elif main_board.board.is_seventyfive_moves():
-            print("Draw due to 75-move rule.")
-        elif main_board.board.is_fivefold_repetition():
-            print("Draw due to fivefold repetition.")
+    if main_board.board.is_checkmate():
+        if main_board.board.turn == chess.WHITE:
+            print("Black wins by checkmate!")
         else:
-            print("Game over for some other reason.")
+            print("White wins by checkmate!")
         break
+    if main_board.board.is_stalemate():
+        print("Stalemate!")
+        break
+    if main_board.board.is_insufficient_material():
+        print("Insufficient material for checkmate.")
+        break
+    if main_board.board.is_fifty_moves():
+        print("Draw due to 50-move rule.")
+        break
+    if main_board.board.is_repetition(3):
+        print("Draw due to threefold repetition.")
+        break
+    
