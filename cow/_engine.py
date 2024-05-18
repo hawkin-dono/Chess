@@ -1,14 +1,20 @@
 # import chess
 from chess import Board, Move, scan_reversed
 from chess.polyglot import open_reader, zobrist_hash
-from ._heuristic import is_null_ok, organize_moves, organize_moves_quiescence, score
+from ._heuristic import END_GAME_SCORE, is_null_ok, organize_moves, organize_moves_quiescence, score
 
 cache = {}
 is_end_game = False
 OPENING_BOOK = open_reader("cow/data/opening_book/3210elo.bin")
 
 def quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):
-    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)
+    if (depth < MAX_DEPTH):
+        if board.is_checkmate(): return -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))
+        if board.is_insufficient_material(): return 0
+        if not any(board.generate_legal_moves()): return 0
+        if board.is_fifty_moves(): return 0
+        if board.is_repetition(3): return 0
+
     if depth == 0: return -turn * score(board, is_end_game)
 
     moves = organize_moves_quiescence(board)
@@ -40,10 +46,14 @@ def quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, al
         return min_eval    
 
 def minimax(board : Board, depth: int, max_depth, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
-    if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)
+    if board.is_checkmate(): return None, -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))
+    if board.is_insufficient_material(): return None, 0
+    if not any(board.generate_legal_moves()): return None, 0
+    if board.is_fifty_moves(): return None, 0
+    if board.is_repetition(3): return None, 0
 
     cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)
-    if (depth <= max_depth - 2):
+    if (depth <= max_depth - 3):
         try: return cache[cache_key]
         except: pass
 

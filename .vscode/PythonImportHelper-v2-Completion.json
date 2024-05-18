@@ -1,5 +1,88 @@
 [
     {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "Game",
+        "importPath": "alphazero.Game",
+        "description": "alphazero.Game",
+        "isExtraImport": true,
+        "detail": "alphazero.Game",
+        "documentation": {}
+    },
+    {
+        "label": "Game",
+        "importPath": "alphazero.Game",
+        "description": "alphazero.Game",
+        "isExtraImport": true,
+        "detail": "alphazero.Game",
+        "documentation": {}
+    },
+    {
+        "label": "Game",
+        "importPath": "alphazero.Game",
+        "description": "alphazero.Game",
+        "isExtraImport": true,
+        "detail": "alphazero.Game",
+        "documentation": {}
+    },
+    {
+        "label": "NeuralNet",
+        "importPath": "alphazero.NeuralNet",
+        "description": "alphazero.NeuralNet",
+        "isExtraImport": true,
+        "detail": "alphazero.NeuralNet",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "alphazero.utils",
+        "description": "alphazero.utils",
+        "isExtraImport": true,
+        "detail": "alphazero.utils",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "alphazero.utils",
+        "description": "alphazero.utils",
+        "isExtraImport": true,
+        "detail": "alphazero.utils",
+        "documentation": {}
+    },
+    {
+        "label": "MCTS",
+        "importPath": "alphazero.MCTS",
+        "description": "alphazero.MCTS",
+        "isExtraImport": true,
+        "detail": "alphazero.MCTS",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
         "label": "chess",
         "kind": 6,
         "isExtraImport": true,
@@ -153,6 +236,95 @@
         "documentation": {}
     },
     {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "torch.nn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch.nn",
+        "description": "torch.nn",
+        "detail": "torch.nn",
+        "documentation": {}
+    },
+    {
+        "label": "torch.nn.functional",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch.nn.functional",
+        "description": "torch.nn.functional",
+        "detail": "torch.nn.functional",
+        "documentation": {}
+    },
+    {
+        "label": "torch",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch",
+        "description": "torch",
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "tqdm",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "torch.optim",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch.optim",
+        "description": "torch.optim",
+        "detail": "torch.optim",
+        "documentation": {}
+    },
+    {
         "label": "open_reader",
         "importPath": "chess.polyglot",
         "description": "chess.polyglot",
@@ -186,15 +358,6 @@
         "documentation": {}
     },
     {
-        "label": "os",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
-        "documentation": {}
-    },
-    {
         "label": "Piece",
         "importPath": "GUI.piece",
         "description": "GUI.piece",
@@ -208,15 +371,6 @@
         "description": "GUI.Board",
         "isExtraImport": true,
         "detail": "GUI.Board",
-        "documentation": {}
-    },
-    {
-        "label": "cow",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "cow",
-        "description": "cow",
-        "detail": "cow",
         "documentation": {}
     },
     {
@@ -236,11 +390,190 @@
         "documentation": {}
     },
     {
+        "label": "EndGameWindow",
+        "importPath": "end_window",
+        "description": "end_window",
+        "isExtraImport": true,
+        "detail": "end_window",
+        "documentation": {}
+    },
+    {
+        "label": "cow",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "cow",
+        "description": "cow",
+        "detail": "cow",
+        "documentation": {}
+    },
+    {
+        "label": "AlphaZeroAI",
+        "kind": 6,
+        "importPath": "alphazero.AlphaZeroAI",
+        "description": "alphazero.AlphaZeroAI",
+        "peekOfCode": "class AlphaZeroAI:\n    def __init__(self):\n        self.game = Game()\n        self.nnet: nn = nn(self.game)\n        if args.load_model:\n            self.nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])\n        self.mcts = MCTS(self.game, self.nnet, args)\n    def get_best_move(self, board):\n        current_player = 1 if board.turn else -1\n        self.mcts = MCTS(self.game, self.nnet, args)",
+        "detail": "alphazero.AlphaZeroAI",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "alphazero.AlphaZeroAI",
+        "description": "alphazero.AlphaZeroAI",
+        "peekOfCode": "def main():\n    ai = AlphaZeroAI()\n    board = chess.Board('1k6/6R1/3K4/8/8/8/8/8 w - - 0 1')\n    print(board)\n    while True:\n        move = ai.get_best_move(board)\n        board.push(chess.Move.from_uci(move))\n        print(board)\n        if board.is_game_over():\n            break",
+        "detail": "alphazero.AlphaZeroAI",
+        "documentation": {}
+    },
+    {
+        "label": "log",
+        "kind": 5,
+        "importPath": "alphazero.AlphaZeroAI",
+        "description": "alphazero.AlphaZeroAI",
+        "peekOfCode": "log = logging.getLogger(__name__)\nargs = dotdict({\n    'numIters': 20,\n    # nums of playing multiple (parallel) games times\n    'numEps': 2,  # 20      # number of complete self-play prallel games to simulate during a new iteration.  \n    'num_parallel_games': 4,  #nums of parallel games at each episode       => self play numeps * num_parallel_games games\n    'tempThreshold': 15,        #\n    'updateThreshold': 0.51,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.\n    'maxlenOfQueue': 20000,  # Number of game examples to train the neural networks.\n    'numMCTSSims': 800,          # Number of games moves for MCTS to simulate.",
+        "detail": "alphazero.AlphaZeroAI",
+        "documentation": {}
+    },
+    {
+        "label": "args",
+        "kind": 5,
+        "importPath": "alphazero.AlphaZeroAI",
+        "description": "alphazero.AlphaZeroAI",
+        "peekOfCode": "args = dotdict({\n    'numIters': 20,\n    # nums of playing multiple (parallel) games times\n    'numEps': 2,  # 20      # number of complete self-play prallel games to simulate during a new iteration.  \n    'num_parallel_games': 4,  #nums of parallel games at each episode       => self play numeps * num_parallel_games games\n    'tempThreshold': 15,        #\n    'updateThreshold': 0.51,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.\n    'maxlenOfQueue': 20000,  # Number of game examples to train the neural networks.\n    'numMCTSSims': 800,          # Number of games moves for MCTS to simulate.\n    'arenaCompare': 4,         # Number of games to play during arena play to determine if new net will be accepted.",
+        "detail": "alphazero.AlphaZeroAI",
+        "documentation": {}
+    },
+    {
+        "label": "Game",
+        "kind": 6,
+        "importPath": "alphazero.Game",
+        "description": "alphazero.Game",
+        "peekOfCode": "class Game():\n    \"\"\"\n    This class specifies the base Game class. To define your own game, subclass\n    this class and implement the functions below. This works when the game is\n    two-player, adversarial and turn-based.\n    Use 1 for player1 and -1 for player2.\n    See othello/OthelloGame.py for an example implementation.\n    \"\"\"\n    def __init__(self):\n        pass",
+        "detail": "alphazero.Game",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "alphazero.Game",
+        "description": "alphazero.Game",
+        "peekOfCode": "def main():\n    ## test 1\n    game = Game()\n    board = game.getInitBoard()\n    print(board)\n    # print(game.getBoardSize())\n    # print(game.getActionSize())\n    ## test 2 get piece at position\n    # pos = (1, 0)\n    # print(game.get_piece_at(board, pos))",
+        "detail": "alphazero.Game",
+        "documentation": {}
+    },
+    {
+        "label": "MCTS",
+        "kind": 6,
+        "importPath": "alphazero.MCTS",
+        "description": "alphazero.MCTS",
+        "peekOfCode": "class MCTS():\n    \"\"\"\n    This class handles the MCTS tree.\n    \"\"\"\n    def __init__(self, game, nnet, args):\n        self.game: Game = game\n        self.nnet = nnet\n        self.args = args\n        self.Qsa = {}  # stores Q values for s,a (as defined in the paper)\n        self.Nsa = {}  # stores #times edge s,a was visited",
+        "detail": "alphazero.MCTS",
+        "documentation": {}
+    },
+    {
+        "label": "EPS",
+        "kind": 5,
+        "importPath": "alphazero.MCTS",
+        "description": "alphazero.MCTS",
+        "peekOfCode": "EPS = 1e-8\nlog = logging.getLogger(__name__)\nclass MCTS():\n    \"\"\"\n    This class handles the MCTS tree.\n    \"\"\"\n    def __init__(self, game, nnet, args):\n        self.game: Game = game\n        self.nnet = nnet\n        self.args = args",
+        "detail": "alphazero.MCTS",
+        "documentation": {}
+    },
+    {
+        "label": "log",
+        "kind": 5,
+        "importPath": "alphazero.MCTS",
+        "description": "alphazero.MCTS",
+        "peekOfCode": "log = logging.getLogger(__name__)\nclass MCTS():\n    \"\"\"\n    This class handles the MCTS tree.\n    \"\"\"\n    def __init__(self, game, nnet, args):\n        self.game: Game = game\n        self.nnet = nnet\n        self.args = args\n        self.Qsa = {}  # stores Q values for s,a (as defined in the paper)",
+        "detail": "alphazero.MCTS",
+        "documentation": {}
+    },
+    {
+        "label": "OthelloNNet",
+        "kind": 6,
+        "importPath": "alphazero.NeuralNet",
+        "description": "alphazero.NeuralNet",
+        "peekOfCode": "class OthelloNNet(nn.Module):\n    def __init__(self, game, args):\n        # game params\n        self.board_x, self.board_y = game.getBoardSize()\n        self.action_size = game.getActionSize()\n        self.args = args\n        super(OthelloNNet, self).__init__()\n        self.conv1 = nn.Conv2d(1, args.num_channels, 3, stride=1, padding=1)\n        self.conv2 = nn.Conv2d(args.num_channels, args.num_channels, 3, stride=1, padding=1)\n        self.conv3 = nn.Conv2d(args.num_channels, args.num_channels, 3, stride=1)",
+        "detail": "alphazero.NeuralNet",
+        "documentation": {}
+    },
+    {
+        "label": "ResNet",
+        "kind": 6,
+        "importPath": "alphazero.NeuralNet",
+        "description": "alphazero.NeuralNet",
+        "peekOfCode": "class ResNet(nn.Module):\n    def __init__(self, game, args):\n        super().__init__()\n        self.startBlock = nn.Sequential(\n            nn.Conv2d(in_channels=6, out_channels= args.num_channels, kernel_size=3, padding=1),\n            nn.BatchNorm2d( args.num_channels),\n            nn.ReLU(),\n        )\n        self.backBone = nn.ModuleList(\n            [ResBlock( args.num_channels) for i in range(args.num_resBlocks)]",
+        "detail": "alphazero.NeuralNet",
+        "documentation": {}
+    },
+    {
+        "label": "ResBlock",
+        "kind": 6,
+        "importPath": "alphazero.NeuralNet",
+        "description": "alphazero.NeuralNet",
+        "peekOfCode": "class ResBlock(nn.Module):\n    def __init__(self, num_hidden):\n        super().__init__()\n        self.conv1 = nn.Conv2d(in_channels=num_hidden, out_channels=num_hidden, kernel_size=3, padding=1)\n        self.bn1 = nn.BatchNorm2d(num_features=num_hidden)\n        self.conv2 = nn.Conv2d(in_channels=num_hidden, out_channels=num_hidden, kernel_size=3, padding=1)\n        self.bn2 = nn.BatchNorm2d(num_features=num_hidden)\n    def forward(self, x):\n        residual = x \n        x = F.relu(self.bn1(self.conv1(x)))",
+        "detail": "alphazero.NeuralNet",
+        "documentation": {}
+    },
+    {
+        "label": "NeuralNet",
+        "kind": 6,
+        "importPath": "alphazero.NeuralNet",
+        "description": "alphazero.NeuralNet",
+        "peekOfCode": "class NeuralNet():\n    \"\"\"\n    This class specifies the base NeuralNet class. To define your own neural\n    network, subclass this class and implement the functions below. The neural\n    network does not consider the current player, and instead only deals with\n    the canonical form of the board.\n    See othello/NNet.py for an example implementation.\n    \"\"\"\n    def __init__(self, game):\n        self.game = game",
+        "detail": "alphazero.NeuralNet",
+        "documentation": {}
+    },
+    {
+        "label": "count_parameters",
+        "kind": 2,
+        "importPath": "alphazero.NeuralNet",
+        "description": "alphazero.NeuralNet",
+        "peekOfCode": "def count_parameters(model):\n        return sum(p.numel() for p in model.parameters() if p.requires_grad)\ndef main():\n    ##test base model\n    print(args.device)\n    game = Game()\n    # model = ResNet(game, args)\n    # print(model)\n    # model = NeuralNet(game)\n    # model = OthelloNNet(game, args)",
+        "detail": "alphazero.NeuralNet",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "alphazero.NeuralNet",
+        "description": "alphazero.NeuralNet",
+        "peekOfCode": "def main():\n    ##test base model\n    print(args.device)\n    game = Game()\n    # model = ResNet(game, args)\n    # print(model)\n    # model = NeuralNet(game)\n    # model = OthelloNNet(game, args)\n    # board = game.getInitBoard()\n    # board = game.get_encoded_states(board)",
+        "detail": "alphazero.NeuralNet",
+        "documentation": {}
+    },
+    {
+        "label": "args",
+        "kind": 5,
+        "importPath": "alphazero.NeuralNet",
+        "description": "alphazero.NeuralNet",
+        "peekOfCode": "args = dotdict({\n    'lr': 0.001,\n    # 'weight_decay': 0.1,\n    'dropout': 0.3,\n    'epochs': 10,\n    'batch_size': 16, # 32,\n    # 'cuda': torch.cuda.is_available(),\n    'device': 'cuda' if torch.cuda.is_available() else 'cpu',\n    # 'device': 'cuda:1',\n    'num_channels': 128,",
+        "detail": "alphazero.NeuralNet",
+        "documentation": {}
+    },
+    {
+        "label": "AverageMeter",
+        "kind": 6,
+        "importPath": "alphazero.utils",
+        "description": "alphazero.utils",
+        "peekOfCode": "class AverageMeter(object):\n    \"\"\"From https://github.com/pytorch/examples/blob/master/imagenet/main.py\"\"\"\n    def __init__(self):\n        self.val = 0\n        self.avg = 0\n        self.sum = 0\n        self.count = 0\n    def __repr__(self):\n        return f'{self.avg:.2e}'\n    def update(self, val, n=1):",
+        "detail": "alphazero.utils",
+        "documentation": {}
+    },
+    {
+        "label": "dotdict",
+        "kind": 6,
+        "importPath": "alphazero.utils",
+        "description": "alphazero.utils",
+        "peekOfCode": "class dotdict(dict):\n    def __getattr__(self, name):\n        return self[name]",
+        "detail": "alphazero.utils",
+        "documentation": {}
+    },
+    {
         "label": "quiesecence",
         "kind": 2,
         "importPath": "cow._engine",
         "description": "cow._engine",
-        "peekOfCode": "def quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)\n            eval = quiesecence(board, depth - 1, MAX_DEPTH, is_end_game, alpha, beta, -1)",
+        "peekOfCode": "def quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH):\n        if board.is_checkmate(): return -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n        if board.is_insufficient_material(): return 0\n        if not any(board.generate_legal_moves()): return 0\n        if board.is_fifty_moves(): return 0\n        if board.is_repetition(3): return 0\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)",
         "detail": "cow._engine",
         "documentation": {}
     },
@@ -249,7 +582,7 @@
         "kind": 2,
         "importPath": "cow._engine",
         "description": "cow._engine",
-        "peekOfCode": "def minimax(board : Board, depth: int, max_depth, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    if board.outcome() is not None: return None, -turn * score(board, is_end_game, is_game_over=True)\n    cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if (depth <= max_depth - 2):\n        try: return cache[cache_key]\n        except: pass\n    if depth <= 0: \n        eval = quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)\n        cache[cache_key] = (None, eval)\n        return None, eval",
+        "peekOfCode": "def minimax(board : Board, depth: int, max_depth, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    if board.is_checkmate(): return None, -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n    if board.is_insufficient_material(): return None, 0\n    if not any(board.generate_legal_moves()): return None, 0\n    if board.is_fifty_moves(): return None, 0\n    if board.is_repetition(3): return None, 0\n    cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if (depth <= max_depth - 3):\n        try: return cache[cache_key]\n        except: pass",
         "detail": "cow._engine",
         "documentation": {}
     },
@@ -258,7 +591,7 @@
         "kind": 5,
         "importPath": "cow._engine",
         "description": "cow._engine",
-        "peekOfCode": "cache = {}\nis_end_game = False\nOPENING_BOOK = open_reader(\"cow/data/opening_book/3210elo.bin\")\ndef quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')",
+        "peekOfCode": "cache = {}\nis_end_game = False\nOPENING_BOOK = open_reader(\"cow/data/opening_book/3210elo.bin\")\ndef quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH):\n        if board.is_checkmate(): return -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n        if board.is_insufficient_material(): return 0\n        if not any(board.generate_legal_moves()): return 0\n        if board.is_fifty_moves(): return 0\n        if board.is_repetition(3): return 0",
         "detail": "cow._engine",
         "documentation": {}
     },
@@ -267,7 +600,7 @@
         "kind": 5,
         "importPath": "cow._engine",
         "description": "cow._engine",
-        "peekOfCode": "is_end_game = False\nOPENING_BOOK = open_reader(\"cow/data/opening_book/3210elo.bin\")\ndef quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:",
+        "peekOfCode": "is_end_game = False\nOPENING_BOOK = open_reader(\"cow/data/opening_book/3210elo.bin\")\ndef quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH):\n        if board.is_checkmate(): return -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n        if board.is_insufficient_material(): return 0\n        if not any(board.generate_legal_moves()): return 0\n        if board.is_fifty_moves(): return 0\n        if board.is_repetition(3): return 0\n    if depth == 0: return -turn * score(board, is_end_game)",
         "detail": "cow._engine",
         "documentation": {}
     },
@@ -276,7 +609,7 @@
         "kind": 5,
         "importPath": "cow._engine",
         "description": "cow._engine",
-        "peekOfCode": "OPENING_BOOK = open_reader(\"cow/data/opening_book/3210elo.bin\")\ndef quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH) and (board.outcome() is not None): return -turn * score(board, is_end_game, is_game_over=True)\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)\n    if not moves: return -turn * score(board, is_end_game)\n    if turn == 1:\n        max_eval = float('-inf')\n        for move in moves:\n            board.push(move)",
+        "peekOfCode": "OPENING_BOOK = open_reader(\"cow/data/opening_book/3210elo.bin\")\ndef quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH):\n        if board.is_checkmate(): return -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n        if board.is_insufficient_material(): return 0\n        if not any(board.generate_legal_moves()): return 0\n        if board.is_fifty_moves(): return 0\n        if board.is_repetition(3): return 0\n    if depth == 0: return -turn * score(board, is_end_game)\n    moves = organize_moves_quiescence(board)",
         "detail": "cow._engine",
         "documentation": {}
     },
@@ -285,7 +618,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def score(board: Board, is_end_game: bool, is_game_over: bool = False) -> float:\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n    return calculate_score(board) \nPIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king",
+        "peekOfCode": "def score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return (END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n    return calculate_score(board) \nPIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): ",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -294,7 +627,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not board.attackers(not board.turn, move.to_square): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    moves = [move for move in board.generate_legal_moves() if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)",
+        "peekOfCode": "def get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    moves = [move for move in board.generate_legal_moves() if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -330,7 +663,7 @@
         "kind": 5,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "END_GAME_SCORE = 1000000\nEGTABLEBASE = open_tablebase(\"cow/data/syzygy/3-4-5\")\ndef score(board: Board, is_end_game: bool, is_game_over: bool = False) -> float:\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz",
+        "peekOfCode": "END_GAME_SCORE = 10000000\nEGTABLEBASE = open_tablebase(\"cow/data/syzygy/3-4-5\")\ndef score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return (END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n    return calculate_score(board) \nPIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -339,7 +672,7 @@
         "kind": 5,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "EGTABLEBASE = open_tablebase(\"cow/data/syzygy/3-4-5\")\ndef score(board: Board, is_end_game: bool, is_game_over: bool = False) -> float:\n    if is_game_over:\n        if board.is_check(): return END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1)\n        return 0\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return END_GAME_SCORE - dtz\n        if dtz < 0: return -END_GAME_SCORE - dtz\n    return calculate_score(board) ",
+        "peekOfCode": "EGTABLEBASE = open_tablebase(\"cow/data/syzygy/3-4-5\")\ndef score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return (END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n    return calculate_score(board) \nPIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -348,7 +681,7 @@
         "kind": 5,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not board.attackers(not board.turn, move.to_square): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    moves = [move for move in board.generate_legal_moves() if (get_move_score(board, move) > 0)]",
+        "peekOfCode": "PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    moves = [move for move in board.generate_legal_moves() if (get_move_score(board, move) > 0)]",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -650,6 +983,15 @@
         "documentation": {}
     },
     {
+        "label": "render_valid_moves",
+        "kind": 2,
+        "importPath": "GUI.board_graphics",
+        "description": "GUI.board_graphics",
+        "peekOfCode": "def render_valid_moves(board, screen): #render\n        for move in board.list_valid_moves:\n            if move != board.selected_piece:\n                square_center = (move[1] * board.square_width + board.square_width // 2, \n                move[0] * board.square_height + board.square_height // 2)\n                pygame.draw.circle(screen, (255, 255, 100), square_center, board.square_width // 5.5)\ndef add_text(screen, pos, text, color=(0, 0, 0), backgroundColor=(255, 255, 255), button=False):\n    title = pygame.font.SysFont('Arial', 25).render(text, True, color)\n    temp_surface = pygame.Surface(title.get_size())\n    temp_surface.fill(backgroundColor)",
+        "detail": "GUI.board_graphics",
+        "documentation": {}
+    },
+    {
         "label": "add_text",
         "kind": 2,
         "importPath": "GUI.board_graphics",
@@ -695,6 +1037,15 @@
         "documentation": {}
     },
     {
+        "label": "EndGameWindow",
+        "kind": 6,
+        "importPath": "end_window",
+        "description": "end_window",
+        "peekOfCode": "class EndGameWindow:\n    def __init__(self, window_size, result):\n        self.window_size = window_size\n        self.result = result\n        self.font = pygame.font.Font(None, 36)\n    def draw_window(self, screen):\n        screen.fill('white')\n        text_surface = self.font.render(self.result, True, 'black')\n        text_rect = text_surface.get_rect()\n        text_rect.center = (self.window_size[0] // 2, self.window_size[1] // 2)",
+        "detail": "end_window",
+        "documentation": {}
+    },
+    {
         "label": "draw_start_screen",
         "kind": 2,
         "importPath": "main",
@@ -708,7 +1059,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()",
+        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\n# ai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): ",
         "detail": "main",
         "documentation": {}
     },
@@ -717,7 +1068,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "window_size = (800, 600)\nboard_size = (600, 600)\nteam = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)",
+        "peekOfCode": "window_size = (800, 600)\nboard_size = (600, 600)\nteam = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')",
         "detail": "main",
         "documentation": {}
     },
@@ -726,7 +1077,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "board_size = (600, 600)\nteam = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()",
+        "peekOfCode": "board_size = (600, 600)\nteam = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)",
         "detail": "main",
         "documentation": {}
     },
@@ -735,7 +1086,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "team = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()\nwhile True:",
+        "peekOfCode": "team = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()",
         "detail": "main",
         "documentation": {}
     },
@@ -762,7 +1113,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): ",
+        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\n# ai = AlphaZeroAI()\nwhile True:",
         "detail": "main",
         "documentation": {}
     },
@@ -771,7 +1122,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "best_move = -1\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:\n                if main_board.player[main_board.turn]:\n                    main_board.player_click(mx, my, screen)",
+        "peekOfCode": "best_move = -1\n###### Game loop ######\n# ai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:",
         "detail": "main",
         "documentation": {}
     },
@@ -780,7 +1131,7 @@
         "kind": 6,
         "importPath": "start_window",
         "description": "start_window",
-        "peekOfCode": "class start_screen:\n    def __init__(self, window_size):\n        self.max_width, self.max_height = window_size\n        self.font = pygame.font.SysFont('Arial', 25)\n        self.buttons = []\n        self.mode = [(1, 1), (0, 0), (1, 0), (0, 1)]\n    def draw_screen(self, screen):\n        self.addText(screen, (self.max_width // 2, self.max_height // 3), \"Chess game\")\n        self.addText(screen, (self.max_width // 4, (self.max_height * 3) // 5), \"Player vs. Player\")\n        self.addText(screen, (self.max_width // 2, (self.max_height * 3) // 5), \"Player vs. Bot\")",
+        "peekOfCode": "class start_screen:\n    def __init__(self, window_size):\n        self.max_width, self.max_height = window_size\n        self.font = pygame.font.SysFont('Arial', 25)\n        self.buttons = []\n        self.mode = [(1, 1), (0, 0), (1, 0), (0, 1)]\n    def draw_screen(self, screen):\n        self.addTextTitle(screen, (self.max_width // 2, self.max_height // 4.5), \"Chess Game\", 1)\n        self.addText(screen, (self.max_width // 2, (self.max_height // 1.55)), \"   Player vs Bot    \")\n        self.addTextTitle(screen, (self.max_width // 2, (self.max_height // 1.33)), \"   Please choose your side    \", 0)",
         "detail": "start_window",
         "documentation": {}
     }
