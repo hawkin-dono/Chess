@@ -2,16 +2,19 @@ import pygame
 import chess
 
 from GUI.Board import board
-from alphazero.AlphaZeroAI import AlphaZeroAI
+from alphazero.AlphaZeroAI import AlphaZeroAI 
 from start_window import start_screen
 from GUI.board_graphics import draw_board 
 from end_window import EndGameWindow
+import cow
 
 pygame.init()
 
 window_size = (800, 600)
 board_size = (600, 600)
 team = [-1, -1]
+
+#################### alpha zero ####################
 
 
 # start screen
@@ -60,7 +63,8 @@ while True:
                 
     if main_board.player[main_board.turn] == 0:
         draw(screen)
-        best_move = ai.get_best_move_no_search(main_board.board)
+        best_move = ai.get_best_move_no_search(main_board.board)          ########alpha zero########
+        # best_move = cow.get_best_move(main_board.board)               ##### cow #####
         main_board.move(best_move)
     draw(screen)
 
