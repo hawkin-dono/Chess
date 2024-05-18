@@ -69,21 +69,26 @@ while True:
     draw(screen)
 
     # Result handling
+    is_game_over = False
     if main_board.board.is_checkmate():
         if main_board.board.turn == chess.WHITE:
-            print("Black wins by checkmate!")
+            result = "Black wins by checkmate!"
         else:
-            print("White wins by checkmate!")
-        break
+            result = "White wins by checkmate!"
+        is_game_over = True
     if main_board.board.is_stalemate():
-        print("Stalemate!")
-        break
+        result = "Stalemate!"
+        is_game_over = True
     if main_board.board.is_insufficient_material():
-        print("Insufficient material for checkmate.")
-        break
+        result = "Insufficient material for checkmate."
+        is_game_over = True
     if main_board.board.is_fifty_moves():
-        print("Draw due to 50-move rule.")
-        break
+        result = "Draw due to 50-move rule."
+        is_game_over = True
     if main_board.board.is_repetition(3):
-        print("Draw due to threefold repetition.")
+        result = "Draw due to threefold repetition."
+        is_game_over = True
+    if is_game_over:
+        end_game_window = EndGameWindow(window_size, result)
+        end_game_window.show(screen)
         break
