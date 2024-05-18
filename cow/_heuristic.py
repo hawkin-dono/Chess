@@ -3,14 +3,14 @@ from chess.syzygy import open_tablebase
 from ._pesto_evaluation import calculate_score
 from ._piece_evaluation import get_move_static_score
 
-END_GAME_SCORE = 1000000
+END_GAME_SCORE = 10000000
 EGTABLEBASE = open_tablebase("cow/data/syzygy/3-4-5")
 
 def score(board: Board, is_end_game: bool) -> float:
     if is_end_game:
         dtz = -EGTABLEBASE.get_dtz(board, 0)
-        if dtz > 0: return END_GAME_SCORE - dtz
-        if dtz < 0: return -END_GAME_SCORE - dtz
+        if dtz > 0: return (END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100
+        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100
     return calculate_score(board) 
 
 PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king
