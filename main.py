@@ -16,9 +16,6 @@ board_size = (600, 600)
 team = [-1, -1]
 
 
-#################### alpha zero ####################
-
-
 # start screen
 screen = pygame.display.set_mode(window_size)
 main_start_screen = start_screen(window_size)
@@ -48,6 +45,22 @@ def draw(screen):
     draw_board(main_board, screen)
     pygame.display.update()
 
+def is_end_game(board):
+    if board.is_checkmate():
+        if board.turn == chess.WHITE:
+            return True, "Black wins by checkmate!"
+        else:
+            return True, "White wins by checkmate!"
+    elif board.is_stalemate():
+        return True, "Stalemate!"
+    elif board.is_insufficient_material():
+        return True, "Insufficient material for checkmate."
+    elif board.is_fifty_moves():
+        return True, "Draw due to 50-move rule."
+    elif board.is_repetition(3):
+        return True, "Draw due to threefold repetition."
+    return False, ""
+
 best_move = -1
 
 ###### Game loop ######
@@ -62,38 +75,21 @@ while True:
             if event.button == 1:
                 if main_board.player[main_board.turn]:
                     main_board.player_click(mx, my, screen)
-                
-    if main_board.player[main_board.turn] == 0:
+
+    is_game_over, result = is_end_game(main_board.board)
+    if (not is_game_over) and main_board.player[main_board.turn] == 0:
         print("check", main_board.turn)
         draw(screen)
         if team[2] == 1: 
-            best_move = alphazero.get_best_move(main_board.board)          ########alpha zero########
+            best_move = alphazero.get_best_move(main_board.board)          
         else:
-            best_move = cow.get_best_move(main_board.board)               ##### cow #####
+            best_move = cow.get_best_move(main_board.board)               
         
         main_board.move(best_move)
     draw(screen)
 
     # Result handling
-    is_game_over = False
-    if main_board.board.is_checkmate():
-        if main_board.board.turn == chess.WHITE:
-            result = "Black wins by checkmate!"
-        else:
-            result = "White wins by checkmate!"
-        is_game_over = True
-    elif main_board.board.is_stalemate():
-        result = "Stalemate!"
-        is_game_over = True
-    elif main_board.board.is_insufficient_material():
-        result = "Insufficient material for checkmate."
-        is_game_over = True
-    elif main_board.board.is_fifty_moves():
-        result = "Draw due to 50-move rule."
-        is_game_over = True
-    elif main_board.board.is_repetition(3):
-        result = "Draw due to threefold repetition."
-        is_game_over = True
+    is_game_over, result = is_end_game(main_board.board)
     if is_game_over:
         end_game_window = EndGameWindow(window_size, result)
         end_game_window.show(screen)

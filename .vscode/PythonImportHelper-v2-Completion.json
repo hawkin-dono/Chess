@@ -382,6 +382,14 @@
         "documentation": {}
     },
     {
+        "label": "AlphaZeroAI",
+        "importPath": "alphazero.AlphaZeroAI",
+        "description": "alphazero.AlphaZeroAI",
+        "isExtraImport": true,
+        "detail": "alphazero.AlphaZeroAI",
+        "documentation": {}
+    },
+    {
         "label": "start_screen",
         "importPath": "start_window",
         "description": "start_window",
@@ -1049,7 +1057,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): ",
+        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\ndef is_end_game(board):\n    if board.is_checkmate():\n        if board.turn == chess.WHITE:\n            return True, \"Black wins by checkmate!\"\n        else:\n            return True, \"White wins by checkmate!\"",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "is_end_game",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def is_end_game(board):\n    if board.is_checkmate():\n        if board.turn == chess.WHITE:\n            return True, \"Black wins by checkmate!\"\n        else:\n            return True, \"White wins by checkmate!\"\n    elif board.is_stalemate():\n        return True, \"Stalemate!\"\n    elif board.is_insufficient_material():\n        return True, \"Insufficient material for checkmate.\"",
         "detail": "main",
         "documentation": {}
     },
@@ -1058,7 +1075,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "window_size = (800, 600)\nboard_size = (600, 600)\nteam = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')",
+        "peekOfCode": "window_size = (800, 600)\nboard_size = (600, 600)\nteam = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)",
         "detail": "main",
         "documentation": {}
     },
@@ -1067,7 +1084,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "board_size = (600, 600)\nteam = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)",
+        "peekOfCode": "board_size = (600, 600)\nteam = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()",
         "detail": "main",
         "documentation": {}
     },
@@ -1076,7 +1093,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "team = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()",
+        "peekOfCode": "team = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()\nwhile True:",
         "detail": "main",
         "documentation": {}
     },
@@ -1103,7 +1120,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:",
+        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\ndef is_end_game(board):\n    if board.is_checkmate():\n        if board.turn == chess.WHITE:\n            return True, \"Black wins by checkmate!\"",
         "detail": "main",
         "documentation": {}
     },
@@ -1112,16 +1129,16 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "best_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:",
+        "peekOfCode": "best_move = -1\n###### Game loop ######\nalphazero = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:",
         "detail": "main",
         "documentation": {}
     },
     {
-        "label": "ai",
+        "label": "alphazero",
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "ai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:\n                if main_board.player[main_board.turn]:\n                    main_board.player_click(mx, my, screen)",
+        "peekOfCode": "alphazero = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:\n                if main_board.player[main_board.turn]:\n                    main_board.player_click(mx, my, screen)",
         "detail": "main",
         "documentation": {}
     },
@@ -1130,7 +1147,7 @@
         "kind": 6,
         "importPath": "start_window",
         "description": "start_window",
-        "peekOfCode": "class start_screen:\n    def __init__(self, window_size):\n        self.max_width, self.max_height = window_size\n        self.font = pygame.font.SysFont('Arial', 25)\n        self.buttons = []\n        self.mode = [(1, 1), (0, 0), (1, 0), (0, 1)]\n    def draw_screen(self, screen):\n        self.addTextTitle(screen, (self.max_width // 2, self.max_height // 4.5), \"Chess Game\", 1)\n        self.addText(screen, (self.max_width // 2, (self.max_height // 1.55)), \"   Player vs Bot    \")\n        self.addTextTitle(screen, (self.max_width // 2, (self.max_height // 1.33)), \"   Please choose your side    \", 0)",
+        "peekOfCode": "class start_screen:\n    def __init__(self, window_size):\n        self.max_width, self.max_height = window_size\n        self.font = pygame.font.SysFont('Arial', 25)\n        self.buttons = []\n        self.mode = [(1, 1, 0), (0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 0, 1), (0, 1, 1)]\n    def draw_screen(self, screen):\n        self.addTextTitle(screen, (self.max_width // 2, self.max_height // 4.8), \"Chess Game\", 1)\n        self.addText(screen, (self.max_width // 2, (self.max_height // 1.65)), \"   Player vs Bot    \")\n        self.addTextTitle(screen, (self.max_width // 2, (self.max_height // 1.43)), \"   Please choose your opponent    \", 0)",
         "detail": "start_window",
         "documentation": {}
     }
