@@ -374,6 +374,14 @@
         "documentation": {}
     },
     {
+        "label": "AlphaZeroAI",
+        "importPath": "alphazero.AlphaZeroAI",
+        "description": "alphazero.AlphaZeroAI",
+        "isExtraImport": true,
+        "detail": "alphazero.AlphaZeroAI",
+        "documentation": {}
+    },
+    {
         "label": "start_screen",
         "importPath": "start_window",
         "description": "start_window",
@@ -582,25 +590,7 @@
         "kind": 2,
         "importPath": "cow._engine",
         "description": "cow._engine",
-        "peekOfCode": "def minimax(board : Board, depth: int, max_depth, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    if board.is_checkmate(): return None, -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n    if board.is_insufficient_material(): return None, 0\n    if not any(board.generate_legal_moves()): return None, 0\n    if board.is_fifty_moves(): return None, 0\n    if board.is_repetition(3): return None, 0\n    cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if (depth <= max_depth - 3):\n        try: return cache[cache_key]\n        except: pass",
-        "detail": "cow._engine",
-        "documentation": {}
-    },
-    {
-        "label": "cache",
-        "kind": 5,
-        "importPath": "cow._engine",
-        "description": "cow._engine",
-        "peekOfCode": "cache = {}\nis_end_game = False\nOPENING_BOOK = open_reader(\"cow/data/opening_book/3210elo.bin\")\ndef quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH):\n        if board.is_checkmate(): return -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n        if board.is_insufficient_material(): return 0\n        if not any(board.generate_legal_moves()): return 0\n        if board.is_fifty_moves(): return 0\n        if board.is_repetition(3): return 0",
-        "detail": "cow._engine",
-        "documentation": {}
-    },
-    {
-        "label": "is_end_game",
-        "kind": 5,
-        "importPath": "cow._engine",
-        "description": "cow._engine",
-        "peekOfCode": "is_end_game = False\nOPENING_BOOK = open_reader(\"cow/data/opening_book/3210elo.bin\")\ndef quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):\n    if (depth < MAX_DEPTH):\n        if board.is_checkmate(): return -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n        if board.is_insufficient_material(): return 0\n        if not any(board.generate_legal_moves()): return 0\n        if board.is_fifty_moves(): return 0\n        if board.is_repetition(3): return 0\n    if depth == 0: return -turn * score(board, is_end_game)",
+        "peekOfCode": "def minimax(board : Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):\n    if board.is_checkmate(): return None, -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))\n    if board.is_insufficient_material(): return None, 0\n    if not any(board.generate_legal_moves()): return None, 0\n    if board.is_fifty_moves(): return None, 0\n    if board.is_repetition(3): return None, 0\n    cache_key = (zobrist_hash(board), (depth if depth >= 0 else 0), alpha, beta, turn)\n    if cache_key in cache: return cache[cache_key]\n    if depth <= 0: \n        eval = quiesecence(board, 12, 12, is_end_game, alpha, beta, turn)",
         "detail": "cow._engine",
         "documentation": {}
     },
@@ -627,7 +617,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    moves = [move for move in board.generate_legal_moves() if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)",
+        "peekOfCode": "def get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],\n                   key=lambda move: get_move_score(board, move), reverse=True)",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -636,7 +626,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def organize_moves_quiescence(board: Board) -> list[Move]:\n    moves = [move for move in board.generate_legal_moves() if (get_move_score(board, move) > 0)]\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\n    return moves\ndef organize_moves(board: Board) -> list[Move]:\n    moves = list(board.generate_legal_moves())\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\n    return moves\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False",
+        "peekOfCode": "def organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],\n                   key=lambda move: get_move_score(board, move), reverse=True)\ndef organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -645,7 +635,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def organize_moves(board: Board) -> list[Move]:\n    moves = list(board.generate_legal_moves())\n    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)\n    return moves\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if (piece.color == board.turn) and (piece.piece_type not in [KING, PAWN]):",
+        "peekOfCode": "def organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if (piece.color == board.turn) and (piece.piece_type not in [KING, PAWN]):\n            return True\n    return False",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -681,7 +671,7 @@
         "kind": 5,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    moves = [move for move in board.generate_legal_moves() if (get_move_score(board, move) > 0)]",
+        "peekOfCode": "PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -1059,7 +1049,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\n# ai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): ",
+        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): ",
         "detail": "main",
         "documentation": {}
     },
@@ -1113,7 +1103,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\n# ai = AlphaZeroAI()\nwhile True:",
+        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:",
         "detail": "main",
         "documentation": {}
     },
@@ -1122,7 +1112,16 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "best_move = -1\n###### Game loop ######\n# ai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:",
+        "peekOfCode": "best_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "ai",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "ai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:\n                if main_board.player[main_board.turn]:\n                    main_board.player_click(mx, my, screen)",
         "detail": "main",
         "documentation": {}
     },
