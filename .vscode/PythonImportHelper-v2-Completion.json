@@ -212,6 +212,22 @@
         "documentation": {}
     },
     {
+        "label": "WHITE",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "BLACK",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
         "label": "scan_reversed",
         "importPath": "chess",
         "description": "chess",
@@ -634,7 +650,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],\n                   key=lambda move: get_move_score(board, move), reverse=True)\ndef organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)",
+        "peekOfCode": "def organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],\n                   key=lambda move: get_move_score(board, move), reverse=True)\ndef organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check() or (board.peek == Move.null()): return False\n    for square in scan_reversed(board.occupied_co[board.turn]):\n        if board.piece_type_at(square) not in [KING, PAWN]:\n            return True",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -643,7 +659,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if (piece.color == board.turn) and (piece.piece_type not in [KING, PAWN]):\n            return True\n    return False",
+        "peekOfCode": "def organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check() or (board.peek == Move.null()): return False\n    for square in scan_reversed(board.occupied_co[board.turn]):\n        if board.piece_type_at(square) not in [KING, PAWN]:\n            return True\n    return False",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -652,7 +668,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if (piece.color == board.turn) and (piece.piece_type not in [KING, PAWN]):\n            return True\n    return False",
+        "peekOfCode": "def is_null_ok(board: Board) -> bool:\n    if board.is_check() or (board.peek == Move.null()): return False\n    for square in scan_reversed(board.occupied_co[board.turn]):\n        if board.piece_type_at(square) not in [KING, PAWN]:\n            return True\n    return False",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -688,7 +704,7 @@
         "kind": 2,
         "importPath": "cow._pesto_evaluation",
         "description": "cow._pesto_evaluation",
-        "peekOfCode": "def calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if piece.color:\n            mg_score += MG_PESTO[piece.piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece.piece_type - 1]\n            eg_score += EG_PESTO[piece.piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece.piece_type - 1]\n        else:\n            mg_score -= MG_PESTO[piece.piece_type - 1][square] + MG_PIECE_VALUES[piece.piece_type - 1]\n            eg_score -= EG_PESTO[piece.piece_type - 1][square] + EG_PIECE_VALUES[piece.piece_type - 1]",
+        "peekOfCode": "def calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied_co[WHITE]):\n        piece_type = board.piece_type_at(square)\n        mg_score += MG_PESTO[piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece_type - 1]\n        eg_score += EG_PESTO[piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece_type - 1]\n    for square in scan_reversed(board.occupied_co[BLACK]):\n        piece_type = board.piece_type_at(square)\n        mg_score -= MG_PESTO[piece_type - 1][square] + MG_PIECE_VALUES[piece_type - 1]\n        eg_score -= EG_PESTO[piece_type - 1][square] + EG_PIECE_VALUES[piece_type - 1]",
         "detail": "cow._pesto_evaluation",
         "documentation": {}
     },
@@ -832,7 +848,7 @@
         "kind": 5,
         "importPath": "cow._pesto_evaluation",
         "description": "cow._pesto_evaluation",
-        "peekOfCode": "MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]\nEG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]\ndef calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if piece.color:\n            mg_score += MG_PESTO[piece.piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece.piece_type - 1]\n            eg_score += EG_PESTO[piece.piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece.piece_type - 1]\n        else:",
+        "peekOfCode": "MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]\nEG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]\ndef calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied_co[WHITE]):\n        piece_type = board.piece_type_at(square)\n        mg_score += MG_PESTO[piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece_type - 1]\n        eg_score += EG_PESTO[piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece_type - 1]\n    for square in scan_reversed(board.occupied_co[BLACK]):\n        piece_type = board.piece_type_at(square)",
         "detail": "cow._pesto_evaluation",
         "documentation": {}
     },
@@ -841,7 +857,7 @@
         "kind": 5,
         "importPath": "cow._pesto_evaluation",
         "description": "cow._pesto_evaluation",
-        "peekOfCode": "EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]\ndef calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if piece.color:\n            mg_score += MG_PESTO[piece.piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece.piece_type - 1]\n            eg_score += EG_PESTO[piece.piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece.piece_type - 1]\n        else:\n            mg_score -= MG_PESTO[piece.piece_type - 1][square] + MG_PIECE_VALUES[piece.piece_type - 1]",
+        "peekOfCode": "EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]\ndef calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied_co[WHITE]):\n        piece_type = board.piece_type_at(square)\n        mg_score += MG_PESTO[piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece_type - 1]\n        eg_score += EG_PESTO[piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece_type - 1]\n    for square in scan_reversed(board.occupied_co[BLACK]):\n        piece_type = board.piece_type_at(square)\n        mg_score -= MG_PESTO[piece_type - 1][square] + MG_PIECE_VALUES[piece_type - 1]",
         "detail": "cow._pesto_evaluation",
         "documentation": {}
     },
@@ -1120,7 +1136,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\ndef is_end_game(board):\n    if board.is_checkmate():\n        if board.turn == chess.WHITE:\n            return True, \"Black wins by checkmate!\"",
+        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\ndef is_end_game(board):\n    if board.is_checkmate():\n        if board.turn == chess.WHITE:\n            return True, \"Black wins by checkmate!\"\n        else:",
         "detail": "main",
         "documentation": {}
     },

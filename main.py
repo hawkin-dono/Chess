@@ -38,7 +38,6 @@ while True:
         break
 
 main_board = board(board_size[0], board_size[1], team)
-print(main_board)
 
 def draw(screen):
     screen.fill('white')
@@ -78,7 +77,6 @@ while True:
 
     is_game_over, result = is_end_game(main_board.board)
     if (not is_game_over) and main_board.player[main_board.turn] == 0:
-        print("check", main_board.turn)
         draw(screen)
         if team[2] == 1: 
             best_move = alphazero.get_best_move(main_board.board)          
