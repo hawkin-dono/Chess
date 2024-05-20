@@ -24,14 +24,11 @@ def get_move_score(board: Board, move: Move) -> int:
     return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)
 
 def organize_moves_quiescence(board: Board) -> list[Move]:
-    moves = [move for move in board.generate_legal_moves() if (get_move_score(board, move) > 0)]
-    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)
-    return moves
+    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],
+                   key=lambda move: get_move_score(board, move), reverse=True)
 
 def organize_moves(board: Board) -> list[Move]:
-    moves = list(board.generate_legal_moves())
-    moves.sort(key=lambda move: get_move_score(board, move), reverse=True)
-    return moves
+    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)
 
 def is_null_ok(board: Board) -> bool:
     if board.is_check(): return False
