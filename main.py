@@ -2,7 +2,7 @@ import pygame
 import chess
 
 from GUI.Board import board
-# from alphazero.AlphaZeroAI import AlphaZeroAI 
+from alphazero.AlphaZeroAI import AlphaZeroAI 
 from start_window import start_screen
 from GUI.board_graphics import draw_board 
 from end_window import EndGameWindow
@@ -51,7 +51,7 @@ def draw(screen):
 best_move = -1
 
 ###### Game loop ######
-# ai = AlphaZeroAI()
+ai = AlphaZeroAI()
 
 while True:
     mx, my = pygame.mouse.get_pos()
@@ -82,16 +82,16 @@ while True:
         else:
             result = "White wins by checkmate!"
         is_game_over = True
-    if main_board.board.is_stalemate():
+    elif main_board.board.is_stalemate():
         result = "Stalemate!"
         is_game_over = True
-    if main_board.board.is_insufficient_material():
+    elif main_board.board.is_insufficient_material():
         result = "Insufficient material for checkmate."
         is_game_over = True
-    if main_board.board.is_fifty_moves():
+    elif main_board.board.is_fifty_moves():
         result = "Draw due to 50-move rule."
         is_game_over = True
-    if main_board.board.is_repetition(3):
+    elif main_board.board.is_repetition(3):
         result = "Draw due to threefold repetition."
         is_game_over = True
     if is_game_over:
