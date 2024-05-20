@@ -51,7 +51,7 @@ def draw(screen):
 best_move = -1
 
 ###### Game loop ######
-ai = AlphaZeroAI()
+alphazero = AlphaZeroAI()
 
 while True:
     mx, my = pygame.mouse.get_pos()
@@ -67,7 +67,7 @@ while True:
         print("check", main_board.turn)
         draw(screen)
         if team[2] == 1: 
-            best_move = AlphaZeroAI.get_best_move_no_search(AlphaZeroAI, main_board.board)          ########alpha zero########
+            best_move = alphazero.get_best_move(main_board.board)          ########alpha zero########
         else:
             best_move = cow.get_best_move(main_board.board)               ##### cow #####
         
