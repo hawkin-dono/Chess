@@ -54,7 +54,7 @@ class AlphaZeroAI:
         
         return action 
     
-    def get_best_move_no_search(self, board):
+    def get_best_move_no_search(self, board: chess.Board):
         current_player = 1 if board.turn else -1
         self.mcts = MCTS(self.game, self.nnet, args)
         canonicalBoard = self.game.getCanonicalForm(board, current_player)

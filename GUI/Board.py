@@ -46,6 +46,9 @@ class board:
         return foo
 
     def player_click(self, mx, my, screen):
+        print(self.player)
+        print(self.turn)
+        print(self.player[self.turn])
         if self.player[self.turn] == 0:
             return
         y = mx // self.square_width

@@ -7,12 +7,14 @@ from start_window import start_screen
 from GUI.board_graphics import draw_board 
 from end_window import EndGameWindow
 import cow
+from alphazero.AlphaZeroAI import AlphaZeroAI
 
 pygame.init()
 
 window_size = (800, 600)
 board_size = (600, 600)
 team = [-1, -1]
+
 
 #################### alpha zero ####################
 
@@ -62,9 +64,13 @@ while True:
                     main_board.player_click(mx, my, screen)
                 
     if main_board.player[main_board.turn] == 0:
+        print("check", main_board.turn)
         draw(screen)
-        # best_move = ai.get_best_move_no_search(main_board.board)          ########alpha zero########
-        best_move = cow.get_best_move(main_board.board)               ##### cow #####
+        if team[2] == 1: 
+            best_move = AlphaZeroAI.get_best_move_no_search(AlphaZeroAI, main_board.board)          ########alpha zero########
+        else:
+            best_move = cow.get_best_move(main_board.board)               ##### cow #####
+        
         main_board.move(best_move)
     draw(screen)
 
