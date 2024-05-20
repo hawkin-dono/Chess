@@ -31,11 +31,9 @@ def organize_moves(board: Board) -> list[Move]:
     return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)
 
 def is_null_ok(board: Board) -> bool:
-    if board.is_check(): return False
-    if board.peek == Move.null(): return False
-    for square in scan_reversed(board.occupied):
-        piece = board.piece_at(square)
-        if (piece.color == board.turn) and (piece.piece_type not in [KING, PAWN]):
+    if board.is_check() or (board.peek == Move.null()): return False
+    for square in scan_reversed(board.occupied_co[board.turn]):
+        if board.piece_type_at(square) not in [KING, PAWN]:
             return True
     return False
 

@@ -2,7 +2,7 @@
 https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
 https://www.chessprogramming.org/Tapered_Eval
 """
-from chess import Board, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, scan_reversed
+from chess import Board, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, WHITE, BLACK, scan_reversed
 
 MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]  # pawn, knight, bishop, rook, queen, king
 EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]  # pawn, knight, bishop, rook, queen, king
@@ -120,14 +120,15 @@ EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]
 
 def calculate_score(board: Board) -> float:
     mg_score, eg_score = 0, 0
-    for square in scan_reversed(board.occupied):
-        piece = board.piece_at(square)
-        if piece.color:
-            mg_score += MG_PESTO[piece.piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece.piece_type - 1]
-            eg_score += EG_PESTO[piece.piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece.piece_type - 1]
-        else:
-            mg_score -= MG_PESTO[piece.piece_type - 1][square] + MG_PIECE_VALUES[piece.piece_type - 1]
-            eg_score -= EG_PESTO[piece.piece_type - 1][square] + EG_PIECE_VALUES[piece.piece_type - 1]
+    for square in scan_reversed(board.occupied_co[WHITE]):
+        piece_type = board.piece_type_at(square)
+        mg_score += MG_PESTO[piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece_type - 1]
+        eg_score += EG_PESTO[piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece_type - 1]
+    for square in scan_reversed(board.occupied_co[BLACK]):
+        piece_type = board.piece_type_at(square)
+        mg_score -= MG_PESTO[piece_type - 1][square] + MG_PIECE_VALUES[piece_type - 1]
+        eg_score -= EG_PESTO[piece_type - 1][square] + EG_PIECE_VALUES[piece_type - 1]
+
     phase = get_phase(board)
     score = (mg_score * (256 - phase) + eg_score * phase) / 256
     return score * (-1 if board.turn else 1)
