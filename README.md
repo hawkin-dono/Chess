@@ -1,9 +1,9 @@
 # Chess game made by N9
 ### Thành viên:
-- Vũ Trung Hiếu - MSSV: 
-- Vũ Minh Khải - MSSV:
+- Vũ Trung Hiếu - MSSV: 22022515
+- Vũ Minh Khải - MSSV: 22022556
 - Vũ Đình Quang Huy - MSSV: 22022628
-- Bùi Thế Long - MSSV:
+- Bùi Thế Long - MSSV: 22022647
 ### Mô tả:
 - Cờ vua là một thể loại board game trí tuệ có nguồn gốc từ từ các trò chơi cổ của Ấn Độ và Ba Tư. Ứng dụng của chúng tôi tái hiện lại trò chơi trên và cho phép người chơi thực hiện các chế độ PvP, PvE và EvE.
 
