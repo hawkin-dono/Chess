@@ -26,15 +26,17 @@ def draw_board(board, screen):
             piece = board.board.piece_at(chess.parse_square(pos))
             draw_color = (238, 238, 210) if color == 'light' else (118, 150, 86)
             selected_color = (150, 255, 100)
-            last_move_color = (255, 255, 100)
+            last_move_color1 = (255, 255, 100)
+            last_move_color2 = (255, 255, 40)
             rect = pygame.Rect(loc[1], loc[0], board.square_width, board.square_height)
             pygame.draw.rect(screen, selected_color if board.draw_board[7-x][y][1] == 1 else draw_color, rect)
 
             #thêm
             if board.move_history_to_see:
                 if pos == board.move_history_to_see[-1][:2] and board.check_move:
-                    print(1)
-                    pygame.draw.rect(screen, last_move_color, rect)
+                    pygame.draw.rect(screen, last_move_color1, rect)
+                if pos == board.move_history_to_see[-1][2:] and board.check_move:
+                    pygame.draw.rect(screen, last_move_color2, rect)
             #
             if piece is not None:
                 piece_code = unicode_to_algebraic[piece.unicode_symbol()]

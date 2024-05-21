@@ -8,6 +8,7 @@ from GUI.board_graphics import draw_board
 from end_window import EndGameWindow
 import cow
 from alphazero.AlphaZeroAI import AlphaZeroAI
+import time
 
 pygame.init()
 
@@ -89,6 +90,7 @@ while True:
     # Result handling
     is_game_over, result = is_end_game(main_board.board)
     if is_game_over:
+        
         end_game_window = EndGameWindow(window_size, result)
         end_game_window.show(screen)
         break
