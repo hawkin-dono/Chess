@@ -23,9 +23,10 @@ class board:
         self.board = chess.Board() 
         self.draw_board = self.convert_board()
         self.player = player
-        self.turn = True
-
-        self.move_history = []
+        self.turn = True 
+        self.move_history_to_see = [] # thêm
+        self.move_history = [] #thêm
+        self.check_move = False # thêm
    
 
         
@@ -46,9 +47,7 @@ class board:
         return foo
 
     def player_click(self, mx, my, screen):
-        print(self.player)
-        print(self.turn)
-        print(self.player[self.turn])
+        
         if self.player[self.turn] == 0:
             return
         y = mx // self.square_width
@@ -121,7 +120,9 @@ class board:
 
     def move(self, move):
         if self.board.is_legal(chess.Move.from_uci(move)):
+            self.move_history_to_see.append(move) # thêm
             self.move_history.append(self.board.fen())  
+            self.check_move = True #thêm
             self.turn = not self.turn
             self.board.push_uci(move)
             self.update(0)
@@ -129,12 +130,14 @@ class board:
         return False
     
     def undo(self):
+        self.check_move = False #thêm
         if self.player[0] + self.player[1] == 0:
             return
         
         elif self.player[0] + self.player[1] == 1:
             if len(self.move_history) < 2 or self.player[self.turn] == 0:
                 return
+            self.move_history_to_see.pop() # thêm
             self.move_history.pop()
             last_pos = self.move_history.pop()
             self.board = chess.Board(last_pos)

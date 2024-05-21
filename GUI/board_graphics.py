@@ -26,9 +26,16 @@ def draw_board(board, screen):
             piece = board.board.piece_at(chess.parse_square(pos))
             draw_color = (238, 238, 210) if color == 'light' else (118, 150, 86)
             selected_color = (150, 255, 100)
+            last_move_color = (255, 255, 100)
             rect = pygame.Rect(loc[1], loc[0], board.square_width, board.square_height)
             pygame.draw.rect(screen, selected_color if board.draw_board[7-x][y][1] == 1 else draw_color, rect)
 
+            #thêm
+            if board.move_history_to_see:
+                if pos == board.move_history_to_see[-1][:2] and board.check_move:
+                    print(1)
+                    pygame.draw.rect(screen, last_move_color, rect)
+            #
             if piece is not None:
                 piece_code = unicode_to_algebraic[piece.unicode_symbol()]
                 team_code = 'white' if piece_code.islower() else 'black'
@@ -63,12 +70,16 @@ def render_valid_moves(board, screen): #render
                 move[0] * board.square_height + board.square_height // 2)
                 pygame.draw.circle(screen, (255, 255, 100), square_center, board.square_width // 5.5)
 
+
+
 def add_text(screen, pos, text, color=(0, 0, 0), backgroundColor=(255, 255, 255), button=False):
     title = pygame.font.SysFont('Arial', 25).render(text, True, color)
     temp_surface = pygame.Surface(title.get_size())
     temp_surface.fill(backgroundColor)
     temp_surface.blit(title, (0, 0))
     screen.blit(temp_surface, (pos[0], pos[1]))
+
+
 
 def draw_promotion(board, screen):
     team = 'white' if board.board.turn == chess.WHITE else 'black'
