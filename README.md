@@ -36,8 +36,7 @@ Chess Game được thiết kế để cung cấp trải nghiệm chơi cờ vua
     ```
 3. Cài đặt các phụ thuộc:
     ```bash
-    > pip install pygame
-    > pip install chess
+    > pip install -r requirements.txt
     ```
 4. Chạy game:
     ```bash
@@ -49,8 +48,10 @@ Chess Game được thiết kế để cung cấp trải nghiệm chơi cờ vua
 Sau khi cài đặt, bạn có thể chạy game bằng lệnh `python main.py`. Giao diện người dùng sẽ hiện ra và bạn có thể bắt đầu chơi cờ vua.
 
 ### Cách chơi
-- Chọn "New Game" để bắt đầu một ván mới.
-- Chọn "Player vs Player" hoặc "Player vs Computer".
+
+- Chọn "Player vs Player" để chơi chế độ 2 người chơi
+- Chọn "Player vs Bot" để chơi với máy
+- Chọn "Bot vs Bot" để demo cho hai máy chơi với nhau
 - Nếu chơi với máy tính, chọn mức độ khó.
 - Sử dụng chuột để di chuyển các quân cờ.
 
