@@ -2,6 +2,9 @@ import chess
 import numpy as np
 import random
 import re
+
+reward_dict = {'p': 0.04, 'n': 0.12, 'b': 0.12, 'r': 0.2, 'q': 0.36}
+
 class Game():
     """
     This class specifies the base Game class. To define your own game, subclass
@@ -466,12 +469,24 @@ class Game():
             res.append(self.get_encoded_single_state(i))
         return np.array(res).astype(np.float32)
     
+    def get_bonus_reward(self, canonicalBoard: chess.Board, action: str):
+        res = 0
+        from_square = self.string_to_position(action[:2])
+        to_square = self.string_to_position(action[2:4])
+        promtion = action[4:]
+        if self.get_piece_at(canonicalBoard, to_square) is not None:
+            res += reward_dict[self.get_piece_at(canonicalBoard, to_square).symbol()]
+        
+        if promtion != '':
+            res += reward_dict[promtion]
+        
+        return res
     
 def main():
     ## test 1
     game = Game()
     board = game.getInitBoard()
-    print(board)
+    # print(board)
     # print(game.getBoardSize())
     # print(game.getActionSize())
     
@@ -499,10 +514,11 @@ def main():
     board = chess.Board('n2k4/1P6/2K5/8/8/8/8/8 w - - 0 1')
     print(board)
     
-    action = 'b7a8r'
-    policy_idx = game.action_to_policy_idx(board, action)
-    print(policy_idx)
-    print(game.policy_idx_to_action(policy_idx, board))
+    print(game.get_bonus_reward(board, 'b7a8q'))
+    # action = 'b7a8r'
+    # policy_idx = game.action_to_policy_idx(board, action)
+    # print(policy_idx)
+    # print(game.policy_idx_to_action(policy_idx, board))
     
     
     
