@@ -161,7 +161,7 @@ class MCTS():
         next_s, next_player = self.game.getNextState(canonicalBoard, 1, action)
         next_s = self.game.getCanonicalForm(next_s, next_player)
 
-        v = self.search(next_s) + self.game.get_bonus_reward(canonicalBoard= canonicalBoard, action= action)  # next_s is the new state after taking action a from state s
+        v = self.args.gamma * self.search(next_s) + self.game.get_bonus_reward(canonicalBoard= canonicalBoard, action= action)  # next_s is the new state after taking action a from state s
 
         if (s, a) in self.Qsa:
             self.Qsa[(s, a)] = (self.Nsa[(s, a)] * self.Qsa[(s, a)] + v) / (self.Nsa[(s, a)] + 1)
