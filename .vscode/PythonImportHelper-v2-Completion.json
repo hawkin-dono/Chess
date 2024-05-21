@@ -212,6 +212,22 @@
         "documentation": {}
     },
     {
+        "label": "WHITE",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "BLACK",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
         "label": "scan_reversed",
         "importPath": "chess",
         "description": "chess",
@@ -371,6 +387,14 @@
         "description": "GUI.Board",
         "isExtraImport": true,
         "detail": "GUI.Board",
+        "documentation": {}
+    },
+    {
+        "label": "AlphaZeroAI",
+        "importPath": "alphazero.AlphaZeroAI",
+        "description": "alphazero.AlphaZeroAI",
+        "isExtraImport": true,
+        "detail": "alphazero.AlphaZeroAI",
         "documentation": {}
     },
     {
@@ -626,7 +650,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],\n                   key=lambda move: get_move_score(board, move), reverse=True)\ndef organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)",
+        "peekOfCode": "def organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],\n                   key=lambda move: get_move_score(board, move), reverse=True)\ndef organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check() or (board.peek == Move.null()): return False\n    for square in scan_reversed(board.occupied_co[board.turn]):\n        if board.piece_type_at(square) not in [KING, PAWN]:\n            return True",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -635,7 +659,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if (piece.color == board.turn) and (piece.piece_type not in [KING, PAWN]):\n            return True\n    return False",
+        "peekOfCode": "def organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check() or (board.peek == Move.null()): return False\n    for square in scan_reversed(board.occupied_co[board.turn]):\n        if board.piece_type_at(square) not in [KING, PAWN]:\n            return True\n    return False",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -644,7 +668,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def is_null_ok(board: Board) -> bool:\n    if board.is_check(): return False\n    if board.peek == Move.null(): return False\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if (piece.color == board.turn) and (piece.piece_type not in [KING, PAWN]):\n            return True\n    return False",
+        "peekOfCode": "def is_null_ok(board: Board) -> bool:\n    if board.is_check() or (board.peek == Move.null()): return False\n    for square in scan_reversed(board.occupied_co[board.turn]):\n        if board.piece_type_at(square) not in [KING, PAWN]:\n            return True\n    return False",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -680,7 +704,7 @@
         "kind": 2,
         "importPath": "cow._pesto_evaluation",
         "description": "cow._pesto_evaluation",
-        "peekOfCode": "def calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if piece.color:\n            mg_score += MG_PESTO[piece.piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece.piece_type - 1]\n            eg_score += EG_PESTO[piece.piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece.piece_type - 1]\n        else:\n            mg_score -= MG_PESTO[piece.piece_type - 1][square] + MG_PIECE_VALUES[piece.piece_type - 1]\n            eg_score -= EG_PESTO[piece.piece_type - 1][square] + EG_PIECE_VALUES[piece.piece_type - 1]",
+        "peekOfCode": "def calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied_co[WHITE]):\n        piece_type = board.piece_type_at(square)\n        mg_score += MG_PESTO[piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece_type - 1]\n        eg_score += EG_PESTO[piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece_type - 1]\n    for square in scan_reversed(board.occupied_co[BLACK]):\n        piece_type = board.piece_type_at(square)\n        mg_score -= MG_PESTO[piece_type - 1][square] + MG_PIECE_VALUES[piece_type - 1]\n        eg_score -= EG_PESTO[piece_type - 1][square] + EG_PIECE_VALUES[piece_type - 1]",
         "detail": "cow._pesto_evaluation",
         "documentation": {}
     },
@@ -824,7 +848,7 @@
         "kind": 5,
         "importPath": "cow._pesto_evaluation",
         "description": "cow._pesto_evaluation",
-        "peekOfCode": "MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]\nEG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]\ndef calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if piece.color:\n            mg_score += MG_PESTO[piece.piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece.piece_type - 1]\n            eg_score += EG_PESTO[piece.piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece.piece_type - 1]\n        else:",
+        "peekOfCode": "MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]\nEG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]\ndef calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied_co[WHITE]):\n        piece_type = board.piece_type_at(square)\n        mg_score += MG_PESTO[piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece_type - 1]\n        eg_score += EG_PESTO[piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece_type - 1]\n    for square in scan_reversed(board.occupied_co[BLACK]):\n        piece_type = board.piece_type_at(square)",
         "detail": "cow._pesto_evaluation",
         "documentation": {}
     },
@@ -833,7 +857,7 @@
         "kind": 5,
         "importPath": "cow._pesto_evaluation",
         "description": "cow._pesto_evaluation",
-        "peekOfCode": "EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]\ndef calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied):\n        piece = board.piece_at(square)\n        if piece.color:\n            mg_score += MG_PESTO[piece.piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece.piece_type - 1]\n            eg_score += EG_PESTO[piece.piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece.piece_type - 1]\n        else:\n            mg_score -= MG_PESTO[piece.piece_type - 1][square] + MG_PIECE_VALUES[piece.piece_type - 1]",
+        "peekOfCode": "EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]\ndef calculate_score(board: Board) -> float:\n    mg_score, eg_score = 0, 0\n    for square in scan_reversed(board.occupied_co[WHITE]):\n        piece_type = board.piece_type_at(square)\n        mg_score += MG_PESTO[piece_type - 1][square ^ 56] + MG_PIECE_VALUES[piece_type - 1]\n        eg_score += EG_PESTO[piece_type - 1][square ^ 56] + EG_PIECE_VALUES[piece_type - 1]\n    for square in scan_reversed(board.occupied_co[BLACK]):\n        piece_type = board.piece_type_at(square)\n        mg_score -= MG_PESTO[piece_type - 1][square] + MG_PIECE_VALUES[piece_type - 1]",
         "detail": "cow._pesto_evaluation",
         "documentation": {}
     },
@@ -1049,7 +1073,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): ",
+        "peekOfCode": "def draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\ndef is_end_game(board):\n    if board.is_checkmate():\n        if board.turn == chess.WHITE:\n            return True, \"Black wins by checkmate!\"\n        else:\n            return True, \"White wins by checkmate!\"",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "is_end_game",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def is_end_game(board):\n    if board.is_checkmate():\n        if board.turn == chess.WHITE:\n            return True, \"Black wins by checkmate!\"\n        else:\n            return True, \"White wins by checkmate!\"\n    elif board.is_stalemate():\n        return True, \"Stalemate!\"\n    elif board.is_insufficient_material():\n        return True, \"Insufficient material for checkmate.\"",
         "detail": "main",
         "documentation": {}
     },
@@ -1058,7 +1091,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "window_size = (800, 600)\nboard_size = (600, 600)\nteam = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')",
+        "peekOfCode": "window_size = (800, 600)\nboard_size = (600, 600)\nteam = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)",
         "detail": "main",
         "documentation": {}
     },
@@ -1067,7 +1100,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "board_size = (600, 600)\nteam = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)",
+        "peekOfCode": "board_size = (600, 600)\nteam = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()",
         "detail": "main",
         "documentation": {}
     },
@@ -1076,7 +1109,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "team = [-1, -1]\n#################### alpha zero ####################\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()",
+        "peekOfCode": "team = [-1, -1]\n# start screen\nscreen = pygame.display.set_mode(window_size)\nmain_start_screen = start_screen(window_size)\ndef draw_start_screen(screen):\n    #screen.blit(background, (0, 0))\n    screen.fill('white')\n    main_start_screen.draw_screen(screen)\n    pygame.display.update()\nwhile True:",
         "detail": "main",
         "documentation": {}
     },
@@ -1103,7 +1136,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\nprint(main_board)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\nbest_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:",
+        "peekOfCode": "main_board = board(board_size[0], board_size[1], team)\ndef draw(screen):\n    screen.fill('white')\n    draw_board(main_board, screen)\n    pygame.display.update()\ndef is_end_game(board):\n    if board.is_checkmate():\n        if board.turn == chess.WHITE:\n            return True, \"Black wins by checkmate!\"\n        else:",
         "detail": "main",
         "documentation": {}
     },
@@ -1112,16 +1145,16 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "best_move = -1\n###### Game loop ######\nai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:",
+        "peekOfCode": "best_move = -1\n###### Game loop ######\nalphazero = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:",
         "detail": "main",
         "documentation": {}
     },
     {
-        "label": "ai",
+        "label": "alphazero",
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "ai = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:\n                if main_board.player[main_board.turn]:\n                    main_board.player_click(mx, my, screen)",
+        "peekOfCode": "alphazero = AlphaZeroAI()\nwhile True:\n    mx, my = pygame.mouse.get_pos()\n    for event in pygame.event.get(): \n        if event.type == pygame.QUIT:\n            exit()\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if event.button == 1:\n                if main_board.player[main_board.turn]:\n                    main_board.player_click(mx, my, screen)",
         "detail": "main",
         "documentation": {}
     },
@@ -1130,7 +1163,7 @@
         "kind": 6,
         "importPath": "start_window",
         "description": "start_window",
-        "peekOfCode": "class start_screen:\n    def __init__(self, window_size):\n        self.max_width, self.max_height = window_size\n        self.font = pygame.font.SysFont('Arial', 25)\n        self.buttons = []\n        self.mode = [(1, 1), (0, 0), (1, 0), (0, 1)]\n    def draw_screen(self, screen):\n        self.addTextTitle(screen, (self.max_width // 2, self.max_height // 4.5), \"Chess Game\", 1)\n        self.addText(screen, (self.max_width // 2, (self.max_height // 1.55)), \"   Player vs Bot    \")\n        self.addTextTitle(screen, (self.max_width // 2, (self.max_height // 1.33)), \"   Please choose your side    \", 0)",
+        "peekOfCode": "class start_screen:\n    def __init__(self, window_size):\n        self.max_width, self.max_height = window_size\n        self.font = pygame.font.SysFont('Arial', 25)\n        self.buttons = []\n        self.mode = [(1, 1, 0), (0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 0, 1), (0, 1, 1)]\n    def draw_screen(self, screen):\n        self.addTextTitle(screen, (self.max_width // 2, self.max_height // 4.8), \"Chess Game\", 1)\n        self.addText(screen, (self.max_width // 2, (self.max_height // 1.65)), \"   Player vs Bot    \")\n        self.addTextTitle(screen, (self.max_width // 2, (self.max_height // 1.43)), \"   Please choose your opponent    \", 0)",
         "detail": "start_window",
         "documentation": {}
     }

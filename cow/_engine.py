@@ -13,7 +13,6 @@ def quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, al
         if board.is_repetition(3): return 0
 
     if depth == 0: return -turn * score(board, is_end_game)
-
     moves = organize_moves_quiescence(board)
     if not moves: return -turn * score(board, is_end_game)
     
