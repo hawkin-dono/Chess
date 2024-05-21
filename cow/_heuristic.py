@@ -49,6 +49,3 @@ def is_null_ok(board: Board) -> bool:
         if board.piece_type_at(square) not in [KING, PAWN]:
             return True
     return False
-
-
-

@@ -79,10 +79,14 @@ while True:
     is_game_over, result = is_end_game(main_board.board)
     if (not is_game_over) and main_board.player[main_board.turn] == 0:
         draw(screen)
+        start_time = time.time()
         if team[2] == 1: 
             best_move = alphazero.get_best_move(main_board.board)          
         else:
-            best_move = cow.get_best_move(main_board.board)               
+            best_move = cow.get_best_move(main_board.board)    
+        end_time = time.time()   
+        if (end_time - start_time) < 0.5:
+            time.sleep(0.5 - (end_time - start_time))      
         
         main_board.move(best_move)
     draw(screen)
