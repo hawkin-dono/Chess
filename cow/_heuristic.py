@@ -11,7 +11,10 @@ EGTABLEBASE = open_tablebase("cow/data/syzygy/3-4-5")
 def score(board: Board, is_end_game: bool) -> float:
     if is_end_game:
         dtz = -EGTABLEBASE.get_dtz(board, 0)
-        if dtz > 0: return (END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100
+        if dtz > 0: 
+            return (END_GAME_SCORE - dtz * 1000 
+                    - any(board.pieces(PAWN, not board.turn)) * END_GAME_SCORE / 10 
+                    + calculate_score(board) / 100)           
         if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100
     return calculate_score(board) 
 
