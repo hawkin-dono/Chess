@@ -7,7 +7,7 @@ class EndGameWindow:
         self.font = pygame.font.Font(None, 36)
 
     def draw_window(self, screen):
-        screen.fill('white')
+        
         text_surface = self.font.render(self.result, True, 'black')
         text_rect = text_surface.get_rect()
         text_rect.center = (self.window_size[0] // 2, self.window_size[1] // 2)

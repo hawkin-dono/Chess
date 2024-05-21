@@ -116,6 +116,78 @@
         "documentation": {}
     },
     {
+        "label": "Move",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "QUEEN",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "BB_ALL",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "BLACK",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "WHITE",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "BB_PAWN_ATTACKS",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "square_rank",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "msb",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
+        "label": "scan_reversed",
+        "importPath": "chess",
+        "description": "chess",
+        "isExtraImport": true,
+        "detail": "chess",
+        "documentation": {}
+    },
+    {
         "label": "Board",
         "importPath": "chess",
         "description": "chess",
@@ -357,6 +429,14 @@
         "documentation": {}
     },
     {
+        "label": "chain",
+        "importPath": "itertools",
+        "description": "itertools",
+        "isExtraImport": true,
+        "detail": "itertools",
+        "documentation": {}
+    },
+    {
         "label": "open_tablebase",
         "importPath": "chess.syzygy",
         "description": "chess.syzygy",
@@ -488,7 +568,16 @@
         "kind": 2,
         "importPath": "alphazero.Game",
         "description": "alphazero.Game",
-        "peekOfCode": "def main():\n    ## test 1\n    game = Game()\n    board = game.getInitBoard()\n    print(board)\n    # print(game.getBoardSize())\n    # print(game.getActionSize())\n    ## test 2 get piece at position\n    # pos = (1, 0)\n    # print(game.get_piece_at(board, pos))",
+        "peekOfCode": "def main():\n    ## test 1\n    game = Game()\n    board = game.getInitBoard()\n    # print(board)\n    # print(game.getBoardSize())\n    # print(game.getActionSize())\n    ## test 2 get piece at position\n    # pos = (1, 0)\n    # print(game.get_piece_at(board, pos))",
+        "detail": "alphazero.Game",
+        "documentation": {}
+    },
+    {
+        "label": "reward_dict",
+        "kind": 5,
+        "importPath": "alphazero.Game",
+        "description": "alphazero.Game",
+        "peekOfCode": "reward_dict = {'p': 0.04, 'n': 0.12, 'b': 0.12, 'r': 0.2, 'q': 0.36}\nclass Game():\n    \"\"\"\n    This class specifies the base Game class. To define your own game, subclass\n    this class and implement the functions below. This works when the game is\n    two-player, adversarial and turn-based.\n    Use 1 for player1 and -1 for player2.\n    See othello/OthelloGame.py for an example implementation.\n    \"\"\"\n    def __init__(self):",
         "detail": "alphazero.Game",
         "documentation": {}
     },
@@ -628,11 +717,29 @@
         "documentation": {}
     },
     {
+        "label": "generate_pseudo_legal_promotion_queen",
+        "kind": 2,
+        "importPath": "cow._helper",
+        "description": "cow._helper",
+        "peekOfCode": "def generate_pseudo_legal_promotion_queen(board, from_mask = BB_ALL, to_mask = BB_ALL):\n    pawns = board.pawns & board.occupied_co[board.turn] & from_mask\n    if not pawns:\n        return\n    for from_square in scan_reversed(pawns):\n        targets = (\n            BB_PAWN_ATTACKS[board.turn][from_square] &\n            board.occupied_co[not board.turn] & to_mask)\n        for to_square in scan_reversed(targets):\n            if square_rank(to_square) in [0, 7]:",
+        "detail": "cow._helper",
+        "documentation": {}
+    },
+    {
+        "label": "generate_legal_promotion_queen",
+        "kind": 2,
+        "importPath": "cow._helper",
+        "description": "cow._helper",
+        "peekOfCode": "def generate_legal_promotion_queen(board, from_mask = BB_ALL, to_mask = BB_ALL):\n    king_mask = board.kings & board.occupied_co[board.turn]\n    if king_mask:\n        king = msb(king_mask)\n        blockers = board._slider_blockers(king)\n        checkers = board.attackers_mask(not board.turn, king)\n        if checkers:\n            for move in board._generate_evasions(king, checkers, from_mask, to_mask):\n                if move.promotion == QUEEN and board._is_safe(king, blockers, move):\n                    yield move",
+        "detail": "cow._helper",
+        "documentation": {}
+    },
+    {
         "label": "score",
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return (END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n    return calculate_score(board) \nPIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): ",
+        "peekOfCode": "def score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: \n            return (END_GAME_SCORE - dtz * 1000 \n                    - any(board.pieces(PAWN, not board.turn)) * END_GAME_SCORE / 10 \n                    + calculate_score(board) / 100)           \n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n    return calculate_score(board) \nPIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -641,7 +748,16 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],\n                   key=lambda move: get_move_score(board, move), reverse=True)",
+        "peekOfCode": "def get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef get_move_score_qs(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_en_passant(move): return 0",
+        "detail": "cow._heuristic",
+        "documentation": {}
+    },
+    {
+        "label": "get_move_score_qs",
+        "kind": 2,
+        "importPath": "cow._heuristic",
+        "description": "cow._heuristic",
+        "peekOfCode": "def get_move_score_qs(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_en_passant(move): return 0\n    if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n    return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in set(chain(board.generate_legal_captures(), \n                                              generate_legal_promotion_queen(board)))\n                                              if get_move_score_qs(board, move) > 0], \n                   key=lambda move: get_move_score_qs(board, move), reverse=True)",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -650,7 +766,7 @@
         "kind": 2,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "def organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],\n                   key=lambda move: get_move_score(board, move), reverse=True)\ndef organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check() or (board.peek == Move.null()): return False\n    for square in scan_reversed(board.occupied_co[board.turn]):\n        if board.piece_type_at(square) not in [KING, PAWN]:\n            return True",
+        "peekOfCode": "def organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in set(chain(board.generate_legal_captures(), \n                                              generate_legal_promotion_queen(board)))\n                                              if get_move_score_qs(board, move) > 0], \n                   key=lambda move: get_move_score_qs(board, move), reverse=True)\ndef organize_moves(board: Board) -> list[Move]:\n    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)\ndef is_null_ok(board: Board) -> bool:\n    if board.is_check() or (board.peek == Move.null()): return False\n    for square in scan_reversed(board.occupied_co[board.turn]):",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -677,7 +793,7 @@
         "kind": 5,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "END_GAME_SCORE = 10000000\nEGTABLEBASE = open_tablebase(\"cow/data/syzygy/3-4-5\")\ndef score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return (END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n    return calculate_score(board) \nPIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:",
+        "peekOfCode": "END_GAME_SCORE = 10000000\nEGTABLEBASE = open_tablebase(\"cow/data/syzygy/3-4-5\")\ndef score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: \n            return (END_GAME_SCORE - dtz * 1000 \n                    - any(board.pieces(PAWN, not board.turn)) * END_GAME_SCORE / 10 \n                    + calculate_score(board) / 100)           \n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -686,7 +802,7 @@
         "kind": 5,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "EGTABLEBASE = open_tablebase(\"cow/data/syzygy/3-4-5\")\ndef score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: return (END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n    return calculate_score(board) \nPIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1",
+        "peekOfCode": "EGTABLEBASE = open_tablebase(\"cow/data/syzygy/3-4-5\")\ndef score(board: Board, is_end_game: bool) -> float:\n    if is_end_game:\n        dtz = -EGTABLEBASE.get_dtz(board, 0)\n        if dtz > 0: \n            return (END_GAME_SCORE - dtz * 1000 \n                    - any(board.pieces(PAWN, not board.turn)) * END_GAME_SCORE / 10 \n                    + calculate_score(board) / 100)           \n        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100\n    return calculate_score(board) ",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -695,7 +811,7 @@
         "kind": 5,
         "importPath": "cow._heuristic",
         "description": "cow._heuristic",
-        "peekOfCode": "PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef organize_moves_quiescence(board: Board) -> list[Move]:\n    return sorted([move for move in board.generate_legal_moves() if get_move_score(board, move) > 0],",
+        "peekOfCode": "PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king\ndef get_move_score(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1\n    if board.is_capture(move): \n        if board.is_en_passant(move): return 0\n        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]\n        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]\n    return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)\ndef get_move_score_qs(board: Board, move: Move) -> int:\n    if move.promotion == QUEEN: return 1",
         "detail": "cow._heuristic",
         "documentation": {}
     },
@@ -1055,7 +1171,7 @@
         "kind": 6,
         "importPath": "end_window",
         "description": "end_window",
-        "peekOfCode": "class EndGameWindow:\n    def __init__(self, window_size, result):\n        self.window_size = window_size\n        self.result = result\n        self.font = pygame.font.Font(None, 36)\n    def draw_window(self, screen):\n        screen.fill('white')\n        text_surface = self.font.render(self.result, True, 'black')\n        text_rect = text_surface.get_rect()\n        text_rect.center = (self.window_size[0] // 2, self.window_size[1] // 2)",
+        "peekOfCode": "class EndGameWindow:\n    def __init__(self, window_size, result):\n        self.window_size = window_size\n        self.result = result\n        self.font = pygame.font.Font(None, 36)\n    def draw_window(self, screen):\n        text_surface = self.font.render(self.result, True, 'black')\n        text_rect = text_surface.get_rect()\n        text_rect.center = (self.window_size[0] // 2, self.window_size[1] // 2)\n        screen.blit(text_surface, text_rect)",
         "detail": "end_window",
         "documentation": {}
     },

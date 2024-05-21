@@ -25,9 +25,10 @@ args = dotdict({
     'checkpoint': './model/',
     'load_model': False,
     'load_data': False,
-    'load_folder_file': ('model/','checkpoint_12.pth.tar'),
+    'load_folder_file': ('model/','best.pth.tar'),
     'load_data_file': ('model/', 'checkpoint_0.pth.tar'),
     'numItersForTrainExamplesHistory': 10,
+    'gamma': 0.96,
 })
 
 class AlphaZeroAI:
