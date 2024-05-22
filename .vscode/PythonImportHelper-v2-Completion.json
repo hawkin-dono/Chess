@@ -568,7 +568,16 @@
         "kind": 2,
         "importPath": "alphazero.Game",
         "description": "alphazero.Game",
-        "peekOfCode": "def main():\n    ## test 1\n    game = Game()\n    board = game.getInitBoard()\n    print(board)\n    # print(game.getBoardSize())\n    # print(game.getActionSize())\n    ## test 2 get piece at position\n    # pos = (1, 0)\n    # print(game.get_piece_at(board, pos))",
+        "peekOfCode": "def main():\n    ## test 1\n    game = Game()\n    board = game.getInitBoard()\n    # print(board)\n    # print(game.getBoardSize())\n    # print(game.getActionSize())\n    ## test 2 get piece at position\n    # pos = (1, 0)\n    # print(game.get_piece_at(board, pos))",
+        "detail": "alphazero.Game",
+        "documentation": {}
+    },
+    {
+        "label": "reward_dict",
+        "kind": 5,
+        "importPath": "alphazero.Game",
+        "description": "alphazero.Game",
+        "peekOfCode": "reward_dict = {'p': 0.04, 'n': 0.12, 'b': 0.12, 'r': 0.2, 'q': 0.36}\nclass Game():\n    \"\"\"\n    This class specifies the base Game class. To define your own game, subclass\n    this class and implement the functions below. This works when the game is\n    two-player, adversarial and turn-based.\n    Use 1 for player1 and -1 for player2.\n    See othello/OthelloGame.py for an example implementation.\n    \"\"\"\n    def __init__(self):",
         "detail": "alphazero.Game",
         "documentation": {}
     },
@@ -1162,7 +1171,7 @@
         "kind": 6,
         "importPath": "end_window",
         "description": "end_window",
-        "peekOfCode": "class EndGameWindow:\n    def __init__(self, window_size, result):\n        self.window_size = window_size\n        self.result = result\n        self.font = pygame.font.Font(None, 36)\n    def draw_window(self, screen):\n        screen.fill('white')\n        text_surface = self.font.render(self.result, True, 'black')\n        text_rect = text_surface.get_rect()\n        text_rect.center = (self.window_size[0] // 2, self.window_size[1] // 2)",
+        "peekOfCode": "class EndGameWindow:\n    def __init__(self, window_size, result):\n        self.window_size = window_size\n        self.result = result\n        self.font = pygame.font.Font(None, 36)\n    def draw_window(self, screen):\n        text_surface = self.font.render(self.result, True, 'black')\n        text_rect = text_surface.get_rect()\n        text_rect.center = (self.window_size[0] // 2, self.window_size[1] // 2)\n        screen.blit(text_surface, text_rect)",
         "detail": "end_window",
         "documentation": {}
     },
