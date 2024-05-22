@@ -17,8 +17,8 @@ class start_screen:
         self.addTextTitle(screen, (self.max_width // 2, (self.max_height // 1.43)), "   Please choose your opponent    ", 0)
         self.addTextTitle(screen, (self.max_width // 2.8, (self.max_height // 1.08)), "    Black          White  ", 0)
         self.addTextTitle(screen, (self.max_width // 1.53, (self.max_height // 1.08)), "    Black          White  ", 0)
-        self.addTextTitle(screen, (self.max_width // 2.8, (self.max_height // 1.3)), "  John (AI1)", 0)
-        self.addTextTitle(screen, (self.max_width // 1.53, (self.max_height // 1.3)), "  Stuart (AI2)", 0)
+        self.addTextTitle(screen, (self.max_width // 2.8, (self.max_height // 1.3)), "Cow", 0)
+        self.addTextTitle(screen, (self.max_width // 1.53, (self.max_height // 1.3)), "AlphaZero", 0)
         self.addButton(screen) 
 
 
