@@ -2,12 +2,10 @@ import pygame
 import chess
 
 from GUI.Board import board
-from alphazero.AlphaZeroAI import AlphaZeroAI 
 from start_window import start_screen
 from GUI.board_graphics import draw_board 
 from end_window import EndGameWindow
 import cow
-from alphazero.AlphaZeroAI import AlphaZeroAI
 import time
 
 pygame.init()
@@ -15,7 +13,6 @@ pygame.init()
 window_size = (800, 600)
 board_size = (600, 600)
 team = [-1, -1]
-
 
 # start screen
 screen = pygame.display.set_mode(window_size)
@@ -64,7 +61,6 @@ def is_end_game(board):
 best_move = -1
 
 ###### Game loop ######
-alphazero = AlphaZeroAI()
 
 while True:
     mx, my = pygame.mouse.get_pos()
@@ -80,10 +76,7 @@ while True:
     if (not is_game_over) and main_board.player[main_board.turn] == 0:
         draw(screen)
         start_time = time.time()
-        if team[2] == 1: 
-            best_move = alphazero.get_best_move(main_board.board)          
-        else:
-            best_move = cow.get_best_move(main_board.board)    
+        best_move = cow.play(main_board.board)    
         end_time = time.time()   
         if (end_time - start_time) < 0.5:
             time.sleep(0.5 - (end_time - start_time))      

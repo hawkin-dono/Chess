@@ -1,5 +1,1 @@
 pygame
-chess
-torch
-numpy
-tqdm

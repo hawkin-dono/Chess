@@ -60,6 +60,11 @@ KING_TABLE = [-50,-40,-30,-20,-20,-30,-40,-50,
 PIECES = [PAWN_TABLE, KNIGHT_TABLE, BISHOP_TABLE, ROOK_TABLE, QUEEN_TABLE, KING_TABLE]
 
 def get_move_static_score(board: Board, move: Move) -> int:
+    """
+    Trả về điểm số tĩnh của nước đi.
+    
+    Điểm số này được sử dụng để sắp xếp nước đi.
+    """
     piece = board.piece_at(move.from_square)
     if piece.color:
         return PIECES[piece.piece_type - 1][move.to_square] - PIECES[piece.piece_type - 1][move.from_square]
