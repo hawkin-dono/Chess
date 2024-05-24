@@ -1,6 +1,5 @@
 import pygame
 import chess
-
 from GUI.Board import board
 from start_window import start_screen
 from GUI.board_graphics import draw_board 

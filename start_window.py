@@ -67,7 +67,7 @@ class start_screen:
         for i in range(2):
             rect = pygame.Rect(x_pos[i] - width // 2, y_pos, width, height)
             pygame.draw.rect(screen, color[i], rect)
-            img_path = './data/imgs/{0}-king.png'.format('white' if i == 1 else 'black')
+            img_path = './res/imgs/{0}-king.png'.format('white' if i == 1 else 'black')
                         
             base_path = os.path.dirname(__file__)
             dude_path = os.path.join(base_path, img_path)

@@ -1,7 +1,7 @@
 """Hàm tạo các nước đi phong hậu không ăn quân đối phương."""
 from chess import Board, Move, QUEEN, BB_ALL, BLACK, WHITE, BB_PAWN_ATTACKS, square_rank, msb, scan_reversed
 
-def generate_pseudo_legal_promotion_queen_non_capture(board, from_mask = BB_ALL, to_mask = BB_ALL):
+def generate_pseudo_legal_promotion_queen_non_capture(board: Board, from_mask = BB_ALL, to_mask = BB_ALL):
     pawns = board.pawns & board.occupied_co[board.turn] & from_mask
     if not pawns:
         return

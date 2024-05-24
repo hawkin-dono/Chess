@@ -33,14 +33,16 @@ def get_move_score(board: Board, move: Move) -> int:
     if move.promotion == QUEEN: return 1
     if board.is_capture(move): 
         if board.is_en_passant(move): return 0
-        if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]
+        if not board._attackers_mask(not board.turn, move.to_square, board.occupied): 
+            return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]
         return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]
     return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)
 
 def get_move_score_qs(board: Board, move: Move) -> int:
     """Trả về điểm số của nước đi (được sử dụng để sắp xếp nước đi cho hàm quiescence)."""
     if move.promotion == QUEEN: return 1
-    if not any(board.attackers(not board.turn, move.to_square)): return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]
+    if not board._attackers_mask(not board.turn, move.to_square, board.occupied): 
+        return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]
     return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]
 
 def organize_moves_quiescence(board: Board) -> list[Move]:
@@ -58,6 +60,6 @@ def is_null_ok(board: Board) -> bool:
     """Kiểm tra xem có thể thực hiện nước đi null không."""
     if board.is_check() or (board.peek == Move.null()): return False
     for square in scan_reversed(board.occupied_co[board.turn]):
-        if board.piece_type_at(square) not in [KING, PAWN]:
+        if board.piece_type_at(square) not in [PAWN, KING]:
             return True
     return False
