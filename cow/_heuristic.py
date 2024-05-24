@@ -30,9 +30,10 @@ def score(board: Board, is_end_game: bool) -> float:
 
 PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king
 
-def get_move_score(board: Board, move: Move) -> int:
+def get_move_score(board: Board, move: Move, is_end_game: bool) -> int:
     """Trả về điểm số của nước đi (được sử dụng để sắp xếp nước đi)."""
-    if move.promotion == QUEEN: return 1
+    if move.promotion == QUEEN: return 2
+    if is_end_game and board.gives_check(move): return 1
     if board.is_capture(move): 
         if board.is_en_passant(move): return 0
         if not board._attackers_mask(not board.turn, move.to_square, board.occupied): 
@@ -42,7 +43,7 @@ def get_move_score(board: Board, move: Move) -> int:
 
 def get_move_score_qs(board: Board, move: Move) -> int:
     """Trả về điểm số của nước đi (được sử dụng để sắp xếp nước đi cho hàm quiescence)."""
-    if move.promotion == QUEEN: return 1
+    if move.promotion == QUEEN: return 2
     if not board._attackers_mask(not board.turn, move.to_square, board.occupied): 
         return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]
     return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]
@@ -54,9 +55,9 @@ def organize_moves_quiescence(board: Board) -> list[Move]:
                                               if get_move_score_qs(board, move) > 0], 
                    key=lambda move: get_move_score_qs(board, move), reverse=True)
 
-def organize_moves(board: Board) -> list[Move]:
+def organize_moves(board: Board, is_end_game: bool) -> list[Move]:
     """Trả về các nước đi hợp lệ sau khi đã sắp xếp."""
-    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)
+    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move, is_end_game), reverse=True)
 
 def is_null_ok(board: Board) -> bool:
     """Kiểm tra xem có thể thực hiện nước đi null không."""
