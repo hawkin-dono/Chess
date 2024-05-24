@@ -6,13 +6,13 @@ Cow đã đấu với Wally 10 trận (5 trận quân trắng, 5 trận quân đ
 > ![](res/gif/cow-wally.gif)
 
 ## Thuật toán:
-### Cow sử dụng thuật toán tìm kiếm minimax, kết hợp với một loạt kỹ thuật sau
+### Cow sử dụng thuật toán tìm kiếm minimax, kết hợp với một loạt kỹ thuật sau:
 - Alpha-Beta Pruning
 - Move Ordering
 - Null Move Pruning
 - Transposition table
 - Quiescence search
-### Đánh giá sử dụng
+### Hàm đánh giá:
 - Simplified Evaluation
 - PeSTO's Evaluation
 - Tapered Eval
