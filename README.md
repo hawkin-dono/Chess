@@ -37,5 +37,6 @@ Chạy main.py
 ## Yêu cầu:
 - Python
 - Pygame
-- Có sử dụng thư viện [python-chess]('https://github.com/niklasf/python-chess') (đã tích hợp trong mã nguồn)
+  
+Có sử dụng thư viện [python-chess](https://github.com/niklasf/python-chess) (đã tích hợp trong mã nguồn)
 
