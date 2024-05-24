@@ -33,12 +33,12 @@ PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, 
 def get_move_score(board: Board, move: Move, is_end_game: bool) -> int:
     """Trả về điểm số của nước đi (được sử dụng để sắp xếp nước đi)."""
     if move.promotion == QUEEN: return 2
-    if is_end_game and board.gives_check(move): return 1
     if board.is_capture(move): 
         if board.is_en_passant(move): return 0
         if not board._attackers_mask(not board.turn, move.to_square, board.occupied): 
             return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]
         return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]
+    if is_end_game and board.gives_check(move): return 1
     return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)
 
 def get_move_score_qs(board: Board, move: Move) -> int:
