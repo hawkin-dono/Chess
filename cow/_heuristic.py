@@ -12,18 +12,20 @@ def score(board: Board, is_end_game: bool) -> float:
     """
     Trả về điểm số trạng thái hiện tại của bàn cờ.
 
-    Bao gồm điểm số từ bảng đánh giá kết hợp thông tin từ bảng kết thúc game.
+    Điểm được tính theo bên vừa di chuyển.
     """
     if is_end_game:
         dtz = -EGTABLEBASE.get_dtz(board, 0)
         if dtz > 0: 
-            # Vẫn xử lý kém ở các trường hợp tàn cuộc mà bên đang thắng có tốt. 
-            # Sẽ cải thiện trong tương lai.
             pawns = board.pawns & board.occupied_co[not board.turn] & BB_ALL
             return (END_GAME_SCORE - dtz * 1000 
                     - any(scan_reversed(pawns)) * END_GAME_SCORE / 10 
-                    + calculate_score(board) / 100)           
-        if dtz < 0: return (-END_GAME_SCORE - dtz * 1000) + calculate_score(board) / 100
+                    + calculate_score(board) / 10)           
+        if dtz < 0: 
+            pawns = board.pawns & board.occupied_co[board.turn] & BB_ALL
+            return (-END_GAME_SCORE - dtz * 1000 
+                    + any(scan_reversed(pawns)) * END_GAME_SCORE / 10 
+                    + calculate_score(board) / 10)
     return calculate_score(board) 
 
 PIECE_VALUES = [10, 30, 30, 50, 90, 1000]  # pawn, knight, bishop, rook, queen, king
