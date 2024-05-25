@@ -1,5 +1,5 @@
 from functools import lru_cache
-from chess import Board, Move, QUEEN, BLACK, WHITE, BB_SQUARES, Bitboard, square_rank, msb, scan_reversed
+from chess import Board, Move, QUEEN, BLACK, WHITE, BB_SQUARES, Bitboard, square_rank, msb
 
 def generate_pseudo_legal_promotion_queen_non_capture(board: Board):
     pawns = board.pawns & board.occupied_co[board.turn]
@@ -9,7 +9,8 @@ def generate_pseudo_legal_promotion_queen_non_capture(board: Board):
     if board.turn == WHITE: single_moves = pawns << 8 & ~board.occupied
     else: single_moves = pawns >> 8 & ~board.occupied
 
-    for to_square in scan_reversed(single_moves):
+    # for to_square in scan_reversed(single_moves):
+    for to_square in scan_reversed_new(single_moves):
         from_square = to_square + (8 if board.turn == BLACK else -8)
         if square_rank(to_square) in [0, 7]:
             yield Move(from_square, to_square, QUEEN)
@@ -30,7 +31,7 @@ def generate_legal_promotion_queen_non_capture(board: Board):
                 if board._is_safe(king, blockers, move):
                     yield move
 
-@lru_cache(maxsize=100000)
+@lru_cache(maxsize=25000)
 def scan_reversed_new(bb: Bitboard):
     z = []
     while bb:

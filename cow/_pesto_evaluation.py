@@ -141,6 +141,7 @@ def calculate_score(board: Board) -> float:
 
 def get_phase(board: Board) -> float:
     """Trả về giai đoạn của trò chơi. """
-    phase = TOTAL_PHASE - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed_new(board.occupied))
+    phase = (TOTAL_PHASE 
+             - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed_new(board.occupied_co[WHITE]))
+             - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed_new(board.occupied_co[BLACK])))
     return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
-
