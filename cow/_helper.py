@@ -31,7 +31,7 @@ def generate_legal_promotion_queen_non_capture(board: Board):
                 if board._is_safe(king, blockers, move):
                     yield move
 
-@lru_cache(maxsize=25000)
+@lru_cache(maxsize=2500)
 def scan_reversed_new(bb: Bitboard):
     z = []
     while bb:

@@ -2,11 +2,8 @@
 https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
 https://www.chessprogramming.org/Tapered_Eval
 """
-from chess import Board, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, WHITE, BLACK
-from ._helper import scan_reversed_new
-
-MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]  # pawn, knight, bishop, rook, queen, king
-EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]  # pawn, knight, bishop, rook, queen, king
+from functools import lru_cache
+from chess import Board, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, WHITE, BLACK, scan_reversed
 
 PAWN_MG = [0,   0,   0,   0,   0,   0,  0,   0,
           98, 134,  61,  95,  68, 126, 34, -11,
@@ -116,32 +113,40 @@ KING_EG = [-74, -35, -18, -18, -11,  15,   4, -17,
            -27, -11,   4,  13,  14,   4,  -5, -17,
            -53, -34, -21, -11, -28, -14, -24, -43,]
 
+MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]  # pawn, knight, bishop, rook, queen, king
+EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]  # pawn, knight, bishop, rook, queen, king
 MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]
 EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]
 
 PHASE_VALUES = [0, 1, 1, 2, 4, 0]
-TOTAL_PHASE = (PHASE_VALUES[PAWN - 1] * 16 + PHASE_VALUES[KNIGHT - 1] * 4 + 
-               PHASE_VALUES[BISHOP - 1] * 4 + PHASE_VALUES[ROOK - 1] * 4 + PHASE_VALUES[QUEEN - 1] * 2)
+TOTAL_PHASE = (PHASE_VALUES[PAWN - 1] * 16 + PHASE_VALUES[KNIGHT - 1] * 4 
+               + PHASE_VALUES[BISHOP - 1] * 4 + PHASE_VALUES[ROOK - 1] * 4 + PHASE_VALUES[QUEEN - 1] * 2)
 
 def calculate_score(board: Board) -> float:
     """Trả về điểm số trạng thái hiện tại của bàn cờ."""
-    mg_score, eg_score = 0, 0
-    for square in scan_reversed_new(board.occupied_co[WHITE]):
-        piece_type = board.piece_type_at(square) - 1
-        mg_score += MG_PESTO[piece_type][square ^ 56] + MG_PIECE_VALUES[piece_type]
-        eg_score += EG_PESTO[piece_type][square ^ 56] + EG_PIECE_VALUES[piece_type]
-    for square in scan_reversed_new(board.occupied_co[BLACK]):
-        piece_type = board.piece_type_at(square) - 1
-        mg_score -= MG_PESTO[piece_type][square] + MG_PIECE_VALUES[piece_type]
-        eg_score -= EG_PESTO[piece_type][square] + EG_PIECE_VALUES[piece_type]
-
-    phase = get_phase(board)
+    mg_score, eg_score, phase_score = 0, 0, TOTAL_PHASE
+    piece_bitboards = [board.pawns, board.knights, board.bishops, board.rooks, board.queens, board.kings]
+    for i in range(0, 6):
+        rw = calculate_piece_scores(i, piece_bitboards[i] & board.occupied_co[WHITE], WHITE)
+        rb = calculate_piece_scores(i, piece_bitboards[i] & board.occupied_co[BLACK], BLACK)
+        mg_score += rw[0] - rb[0]
+        eg_score += rw[1] - rb[1]
+        phase_score -= rw[2] + rb[2]
+    phase = (phase_score * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
     score = (mg_score * (256 - phase) + eg_score * phase) / 256
     return -score if board.turn else score
 
-def get_phase(board: Board) -> float:
-    """Trả về giai đoạn của trò chơi. """
-    phase = (TOTAL_PHASE 
-             - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed_new(board.occupied_co[WHITE]))
-             - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed_new(board.occupied_co[BLACK])))
-    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
+@lru_cache(maxsize = 5000)
+def calculate_piece_scores(piece_type, bb, color):
+    mg_score, eg_score, phase_score = 0, 0, 0
+    if color:
+        for square in scan_reversed(bb):
+            mg_score += MG_PESTO[piece_type][square ^ 56] + MG_PIECE_VALUES[piece_type]
+            eg_score += EG_PESTO[piece_type][square ^ 56] + EG_PIECE_VALUES[piece_type]
+            phase_score += PHASE_VALUES[piece_type]
+    else:
+        for square in scan_reversed(bb):
+            mg_score += MG_PESTO[piece_type][square] + MG_PIECE_VALUES[piece_type]
+            eg_score += EG_PESTO[piece_type][square] + EG_PIECE_VALUES[piece_type]
+            phase_score += PHASE_VALUES[piece_type]
+    return mg_score, eg_score, phase_score

@@ -5,11 +5,14 @@ from cow import play
 
 # board = chess.Board('1k6/1N6/1K2B3/8/8/8/8/8 w - - 54 28')
 # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1")
-board = chess.Board("r2qr1k1/1bp2ppp/p7/1p1pP3/3P2Q1/1P2R3/1P1N1PPP/R5K1 b - - 2 17")
+# board = chess.Board("r2qr1k1/1bp2ppp/p7/1p1pP3/3P2Q1/1P2R3/1P1N1PPP/R5K1 b - - 2 17")
+board = chess.Board("r2qr1k1/1bp2ppp/p7/1p1pP3/3P2Q1/1P2R3/1P1N1PPP/n3R1K1 w - - 2 17")
+move = play(board)
+board.push_uci(move)
 
 
 with Profile() as profile:
-    print(f"{play(board) = }")
+    print(f"{play(board, 4) = }")
     (
         Stats(profile)
         .strip_dirs()
