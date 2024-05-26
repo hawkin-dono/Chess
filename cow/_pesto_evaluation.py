@@ -113,8 +113,6 @@ KING_EG = [-74, -35, -18, -18, -11,  15,   4, -17,
            -27, -11,   4,  13,  14,   4,  -5, -17,
            -53, -34, -21, -11, -28, -14, -24, -43,]
 
-PIECE_TYPES = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING]
-
 MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]  # pawn, knight, bishop, rook, queen, king
 EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]  # pawn, knight, bishop, rook, queen, king
 MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]
@@ -128,12 +126,12 @@ def calculate_score(board: Board) -> float:
     """Trả về điểm số trạng thái hiện tại của bàn cờ."""
     mg_score, eg_score, phase_score = 0, 0, TOTAL_PHASE
     piece_bitboards = [board.pawns, board.knights, board.bishops, board.rooks, board.queens, board.kings]
-    for piece_type in PIECE_TYPES:
-            rw = calculate_piece_scores(piece_type - 1, piece_bitboards[piece_type - 1] & board.occupied_co[WHITE], WHITE)
-            rb = calculate_piece_scores(piece_type - 1, piece_bitboards[piece_type - 1] & board.occupied_co[BLACK], BLACK)
-            mg_score += rw[0] - rb[0]
-            eg_score += rw[1] - rb[1]
-            phase_score -= rw[2] + rb[2]
+    for i in range(0, 6):
+        rw = calculate_piece_scores(i, piece_bitboards[i] & board.occupied_co[WHITE], WHITE)
+        rb = calculate_piece_scores(i, piece_bitboards[i] & board.occupied_co[BLACK], BLACK)
+        mg_score += rw[0] - rb[0]
+        eg_score += rw[1] - rb[1]
+        phase_score -= rw[2] + rb[2]
     phase = (phase_score * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
     score = (mg_score * (256 - phase) + eg_score * phase) / 256
     return -score if board.turn else score
