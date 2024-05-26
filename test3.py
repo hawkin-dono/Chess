@@ -12,7 +12,7 @@ board.push_uci(move)
 
 
 with Profile() as profile:
-    print(f"{play(board) = }")
+    print(f"{play(board, 4) = }")
     (
         Stats(profile)
         .strip_dirs()

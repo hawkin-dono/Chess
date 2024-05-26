@@ -26,31 +26,18 @@ if __name__ == "__main__":
     board = chess.Board("r7/4k1Pp/2n1p3/1p6/1b5N/2pP4/5PPP/5RK1 w - - 0 31") # h4f3
     board = chess.Board("8/5k2/1p2p3/2p2p2/p1Pn2q1/P2Q2P1/1P3P2/5BK1 b - - 0 37") # d4f3
     board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1PK3P1/P7/5P2/3q4 b - - 0 38") # d1c2
-    # board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1P1K2P1/P7/2q2P2/8 b - - 2 39") # c2f2
+    board = chess.Board("5k2/Q6p/3p2p1/1P1P4/1P1K2P1/P7/2q2P2/8 b - - 2 39") # c2f2
     board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") # e1e2
-    # board = chess.Board("1k6/1N6/1K2B3/8/8/8/8/8 w - - 54 28") # b7c5
-    # board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") # e1e2
-    # board = chess.Board("4k3/8/8/8/8/3B4/8/4K1N1 b - - 1 1") # e8e7
-    # board = chess.Board("r1q2rk1/1bpnbpp1/p3pn1p/1p6/3P1B2/P1NBPN2/1PQ2PPP/3R1RK1 w - - 1 14") # h2h3
-    # board = chess.Board("r3K3/1P1P3P/8/4n3/3P4/8/5k2/8 w - - 0 1")
-    # board = chess.Board("6k1/2r5/5K2/7Q/8/8/8/8 w - - 0 1")
-
-
-    # from cow._helper import scan_reversed_new
-    # print(scan_reversed_new.cache_info())
-
-    # board = chess.Board("r2qr1k1/1bp2ppp/p7/1p1pP3/3P2Q1/1P2R3/1P1N1PPP/n3R1K1 w - - 2 17")
-
-    # start_time = time.time()
-    # move = cow.play(board)
-    # end_time = time.time()  
-    # print(move, end_time - start_time)
-
-
+    board = chess.Board("1k6/1N6/1K2B3/8/8/8/8/8 w - - 54 28") # b7c5
+    board = chess.Board("4k3/8/8/8/8/8/8/4KBN1 w - - 0 1") # e1e2
+    board = chess.Board("4k3/8/8/8/8/3B4/8/4K1N1 b - - 1 1") # e8e7
+    board = chess.Board("r1q2rk1/1bpnbpp1/p3pn1p/1p6/3P1B2/P1NBPN2/1PQ2PPP/3R1RK1 w - - 1 14") # h2h3
+    board = chess.Board("r3K3/1P1P3P/8/4n3/3P4/8/5k2/8 w - - 0 1")
+    board = chess.Board("6k1/2r5/5K2/7Q/8/8/8/8 w - - 0 1")
     board = chess.Board("r2qr1k1/1bp2ppp/p7/1p1pP3/3P2Q1/1P2R3/1P1N1PPP/R5K1 b - - 2 17") # d8c8
 
     start_time = time.time()
-    move = cow.play(board)
+    move = cow.play(board, 4)
     end_time = time.time()  
     print(move, end_time - start_time)
 

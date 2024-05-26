@@ -79,7 +79,7 @@ def minimax(board : Board, depth: int, cache: dict, is_end_game: bool, alpha: fl
                 if eval <= alpha: return None, alpha
 
     # Tạo nước đi hợp lệ.
-    legal_moves = organize_moves(board, is_end_game)
+    legal_moves = organize_moves(board)
     
     # Tìm kiếm minimax
     if turn == 1:

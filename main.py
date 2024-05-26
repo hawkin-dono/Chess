@@ -83,10 +83,11 @@ while True:
         main_board.move(best_move)
     draw(screen)
 
-    # from cow._pesto_evaluation import tttw, tttb
-    # print(tttw.cache_info())
-    # print(tttb.cache_info())
-    # print("---------------------------------------------------")
+    # from cow._pesto_evaluation import calculate_piece_scores
+    # from cow._helper import scan_reversed_new
+    # print(calculate_piece_scores.cache_info())
+    # print(scan_reversed_new.cache_info())
+    # print("--------------------------------------------------------")
 
     # Result handling
     is_game_over, result = is_end_game(main_board.board)

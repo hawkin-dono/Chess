@@ -4,10 +4,6 @@ https://www.chessprogramming.org/Tapered_Eval
 """
 from functools import lru_cache
 from chess import Board, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, WHITE, BLACK, scan_reversed
-from ._helper import scan_reversed_new
-
-MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]  # pawn, knight, bishop, rook, queen, king
-EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]  # pawn, knight, bishop, rook, queen, king
 
 PAWN_MG = [0,   0,   0,   0,   0,   0,  0,   0,
           98, 134,  61,  95,  68, 126, 34, -11,
@@ -117,89 +113,42 @@ KING_EG = [-74, -35, -18, -18, -11,  15,   4, -17,
            -27, -11,   4,  13,  14,   4,  -5, -17,
            -53, -34, -21, -11, -28, -14, -24, -43,]
 
+PIECE_TYPES = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING]
+
+MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]  # pawn, knight, bishop, rook, queen, king
+EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]  # pawn, knight, bishop, rook, queen, king
 MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]
 EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]
 
 PHASE_VALUES = [0, 1, 1, 2, 4, 0]
-TOTAL_PHASE = (PHASE_VALUES[PAWN - 1] * 16 + PHASE_VALUES[KNIGHT - 1] * 4 + 
-               PHASE_VALUES[BISHOP - 1] * 4 + PHASE_VALUES[ROOK - 1] * 4 + PHASE_VALUES[QUEEN - 1] * 2)
-
-# def calculate_score1(board: Board) -> float:
-#     """Trả về điểm số trạng thái hiện tại của bàn cờ."""
-#     mg_score, eg_score = 0, 0
-#     for square in scan_reversed_new(board.occupied_co[WHITE]):
-#         piece_type = board.piece_type_at(square) - 1
-#         mg_score += MG_PESTO[piece_type][square ^ 56] + MG_PIECE_VALUES[piece_type]
-#         eg_score += EG_PESTO[piece_type][square ^ 56] + EG_PIECE_VALUES[piece_type]
-#     for square in scan_reversed_new(board.occupied_co[BLACK]):
-#         piece_type = board.piece_type_at(square) - 1
-#         mg_score -= MG_PESTO[piece_type][square] + MG_PIECE_VALUES[piece_type]
-#         eg_score -= EG_PESTO[piece_type][square] + EG_PIECE_VALUES[piece_type]
-
-#     phase = get_phase(board)
-#     score = (mg_score * (256 - phase) + eg_score * phase) / 256
-#     return -score if board.turn else score
+TOTAL_PHASE = (PHASE_VALUES[PAWN - 1] * 16 + PHASE_VALUES[KNIGHT - 1] * 4 
+               + PHASE_VALUES[BISHOP - 1] * 4 + PHASE_VALUES[ROOK - 1] * 4 + PHASE_VALUES[QUEEN - 1] * 2)
 
 def calculate_score(board: Board) -> float:
     """Trả về điểm số trạng thái hiện tại của bàn cờ."""
-    wpawns = board.pawns & board.occupied_co[WHITE]
-    bpawns = board.pawns & board.occupied_co[BLACK]
-    wknights = board.knights & board.occupied_co[WHITE]
-    bknights = board.knights & board.occupied_co[BLACK]
-    wbishops = board.bishops & board.occupied_co[WHITE]
-    bbishops = board.bishops & board.occupied_co[BLACK]
-    wrooks = board.rooks & board.occupied_co[WHITE]
-    brooks = board.rooks & board.occupied_co[BLACK]
-    wqueens = board.queens & board.occupied_co[WHITE]
-    bqueens = board.queens & board.occupied_co[BLACK]
-    wkings = board.kings & board.occupied_co[WHITE]
-    bkings = board.kings & board.occupied_co[BLACK]
-
-    rw1 = tttw(PAWN - 1, wpawns)
-    rw2 = tttw(KNIGHT - 1, wknights)
-    rw3 = tttw(BISHOP - 1, wbishops)
-    rw4 = tttw(ROOK - 1, wrooks)
-    rw5 = tttw(QUEEN - 1, wqueens)
-    rw6 = tttw(KING - 1, wkings)
-
-    rb1 = tttb(PAWN - 1, bpawns)
-    rb2 = tttb(KNIGHT - 1, bknights)
-    rb3 = tttb(BISHOP - 1, bbishops)
-    rb4 = tttb(ROOK - 1, brooks)
-    rb5 = tttb(QUEEN - 1, bqueens)
-    rb6 = tttb(KING - 1, bkings)
-
-    mg_score = rw1[0] + rw2[0] + rw3[0] + rw4[0] + rw5[0] + rw6[0] - rb1[0] - rb2[0] - rb3[0] - rb4[0] - rb5[0] - rb6[0]
-    eg_score = rw1[1] + rw2[1] + rw3[1] + rw4[1] + rw5[1] + rw6[1] - rb1[1] - rb2[1] - rb3[1] - rb4[1] - rb5[1] - rb6[1]
-
-    phase = get_phase(board)
+    mg_score, eg_score, phase_score = 0, 0, TOTAL_PHASE
+    piece_bitboards = [board.pawns, board.knights, board.bishops, board.rooks, board.queens, board.kings]
+    for piece_type in PIECE_TYPES:
+            rw = calculate_piece_scores(piece_type - 1, piece_bitboards[piece_type - 1] & board.occupied_co[WHITE], WHITE)
+            rb = calculate_piece_scores(piece_type - 1, piece_bitboards[piece_type - 1] & board.occupied_co[BLACK], BLACK)
+            mg_score += rw[0] - rb[0]
+            eg_score += rw[1] - rb[1]
+            phase_score -= rw[2] + rb[2]
+    phase = (phase_score * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
     score = (mg_score * (256 - phase) + eg_score * phase) / 256
     return -score if board.turn else score
 
 @lru_cache(maxsize = 5000)
-def tttw(piece_type, bb):
-    mg_score, eg_score = 0, 0
-    for square in scan_reversed(bb):
-        mg_score += MG_PESTO[piece_type][square ^ 56] + MG_PIECE_VALUES[piece_type]
-        eg_score += EG_PESTO[piece_type][square ^ 56] + EG_PIECE_VALUES[piece_type]
-    return mg_score, eg_score
-
-@lru_cache(maxsize = 5000)
-def tttb(piece_type, bb):
-    mg_score, eg_score = 0, 0
-    for square in scan_reversed(bb):
-        mg_score += MG_PESTO[piece_type][square] + MG_PIECE_VALUES[piece_type]
-        eg_score += EG_PESTO[piece_type][square] + EG_PIECE_VALUES[piece_type]
-    return mg_score, eg_score
-
-def get_phase(board: Board) -> float:
-    """Trả về giai đoạn của trò chơi. """
-    phase = (TOTAL_PHASE 
-             - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed_new(board.occupied_co[WHITE]))
-             - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed_new(board.occupied_co[BLACK])))
-    return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
-
-# def get_phase(board: Board) -> float:
-#     """Trả về giai đoạn của trò chơi. """
-#     phase = TOTAL_PHASE - sum(PHASE_VALUES[board.piece_type_at(square) - 1] for square in scan_reversed(board.occupied))
-#     return (phase * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
+def calculate_piece_scores(piece_type, bb, color):
+    mg_score, eg_score, phase_score = 0, 0, 0
+    if color:
+        for square in scan_reversed(bb):
+            mg_score += MG_PESTO[piece_type][square ^ 56] + MG_PIECE_VALUES[piece_type]
+            eg_score += EG_PESTO[piece_type][square ^ 56] + EG_PIECE_VALUES[piece_type]
+            phase_score += PHASE_VALUES[piece_type]
+    else:
+        for square in scan_reversed(bb):
+            mg_score += MG_PESTO[piece_type][square] + MG_PIECE_VALUES[piece_type]
+            eg_score += EG_PESTO[piece_type][square] + EG_PIECE_VALUES[piece_type]
+            phase_score += PHASE_VALUES[piece_type]
+    return mg_score, eg_score, phase_score
