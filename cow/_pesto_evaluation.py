@@ -124,22 +124,27 @@ TOTAL_PHASE = (PHASE_VALUES[PAWN - 1] * 16 + PHASE_VALUES[KNIGHT - 1] * 4
 
 def calculate_score(board: Board) -> float:
     """Trả về điểm số trạng thái hiện tại của bàn cờ."""
-    mg_score, eg_score, phase_score = 0, 0, TOTAL_PHASE
+    phase_score = TOTAL_PHASE
+    mg_score, eg_score = 0, 0 
     piece_bitboards = [board.pawns, board.knights, board.bishops, board.rooks, board.queens, board.kings]
-    for i in range(0, 6):
-        rw = calculate_piece_scores(i, piece_bitboards[i] & board.occupied_co[WHITE], WHITE)
-        rb = calculate_piece_scores(i, piece_bitboards[i] & board.occupied_co[BLACK], BLACK)
-        mg_score += rw[0] - rb[0]
-        eg_score += rw[1] - rb[1]
-        phase_score -= rw[2] + rb[2]
+
+    for piece_type in range(6):
+        rw_mg, rw_eg, rw_phase = calculate_piece_scores(piece_type, piece_bitboards[piece_type] & board.occupied_co[WHITE], WHITE)
+        rb_mg, rb_eg, rb_phase = calculate_piece_scores(piece_type, piece_bitboards[piece_type] & board.occupied_co[BLACK], BLACK)
+        
+        mg_score += rw_mg - rb_mg
+        eg_score += rw_eg - rb_eg
+        phase_score -= rw_phase + rb_phase
+
     phase = (phase_score * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
     score = (mg_score * (256 - phase) + eg_score * phase) / 256
+
     return -score if board.turn else score
 
 @lru_cache(maxsize = 5000)
 def calculate_piece_scores(piece_type, bb, color):
     mg_score, eg_score, phase_score = 0, 0, 0
-    if color:
+    if color == WHITE:
         for square in scan_reversed(bb):
             mg_score += MG_PESTO[piece_type][square ^ 56] + MG_PIECE_VALUES[piece_type]
             eg_score += EG_PESTO[piece_type][square ^ 56] + EG_PIECE_VALUES[piece_type]

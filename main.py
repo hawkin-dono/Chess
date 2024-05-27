@@ -84,9 +84,7 @@ while True:
     draw(screen)
 
     # from cow._pesto_evaluation import calculate_piece_scores
-    # from cow._helper import scan_reversed_new
     # print(calculate_piece_scores.cache_info())
-    # print(scan_reversed_new.cache_info())
     # print("--------------------------------------------------------")
 
     # Result handling
