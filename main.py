@@ -17,7 +17,6 @@ team = [-1, -1]
 screen = pygame.display.set_mode(window_size)
 main_start_screen = start_screen(window_size)
 def draw_start_screen(screen):
-    #screen.blit(background, (0, 0))
     screen.fill('white')
     main_start_screen.draw_screen(screen)
     pygame.display.update()
@@ -82,10 +81,6 @@ while True:
         
         main_board.move(best_move)
     draw(screen)
-
-    # from cow._pesto_evaluation import calculate_piece_scores
-    # print(calculate_piece_scores.cache_info())
-    # print("--------------------------------------------------------")
 
     # Result handling
     is_game_over, result = is_end_game(main_board.board)

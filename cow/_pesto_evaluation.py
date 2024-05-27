@@ -123,7 +123,16 @@ TOTAL_PHASE = (PHASE_VALUES[PAWN - 1] * 16 + PHASE_VALUES[KNIGHT - 1] * 4
                + PHASE_VALUES[BISHOP - 1] * 4 + PHASE_VALUES[ROOK - 1] * 4 + PHASE_VALUES[QUEEN - 1] * 2)
 
 def calculate_score(board: Board) -> float:
-    """Trả về điểm số trạng thái hiện tại của bàn cờ."""
+    """
+    Trả về điểm số trạng thái hiện tại của bàn cờ.
+
+    Sử dụng các bảng tính điểm midgame và endgame của PeSTO và đánh giá giảm dần (tapered evaluation) 
+    để tính điểm cho trạng thái hiện tại của bàn cờ
+    https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
+    https://www.chessprogramming.org/Tapered_Eval
+
+    Việc chia theo từng loại quân cờ, màu quân cờ để tính điểm rồi gộp lại giúp tăng hiệu suất tính toán.
+    """
     phase_score = TOTAL_PHASE
     mg_score, eg_score = 0, 0 
     piece_bitboards = [board.pawns, board.knights, board.bishops, board.rooks, board.queens, board.kings]
@@ -143,6 +152,19 @@ def calculate_score(board: Board) -> float:
 
 @lru_cache(maxsize = 5000)
 def calculate_piece_scores(piece_type, bb, color):
+    """
+    Trả về điểm số midgame, endgame, phase_score của một loại quân cờ trên bàn cờ.
+
+    Sử dụng lru_cache để lưu kết quả tính toán, tránh việc tính toán lại nếu đã tính trước đó.
+
+    Thống kê khi kết thục một trận đấu với độ sâu 4 nửa nước đi:
+
+    CacheInfo(hits=11558341, misses=8267, maxsize=5000, currsize=5000)
+    - hits: số lần sử dụng kết quả đã tính toán trước đó
+    - misses: số lần phải tính toán thực tế
+    - maxsize: số lượng kết quả tối đa được lưu
+    - currsize: số lượng kết quả đang được lưu
+    """
     mg_score, eg_score, phase_score = 0, 0, 0
     if color == WHITE:
         for square in scan_reversed(bb):
