@@ -27,3 +27,9 @@ def generate_legal_promotion_queen_non_capture(board: Board):
                 move = Move(from_square, to_square, QUEEN)
                 if board._is_safe(king, blockers, move):
                     yield move
+
+def is_draw(board: Board):
+    return (board.is_insufficient_material() 
+            or (not any(board.generate_legal_moves())) 
+            or board.is_fifty_moves() 
+            or board.is_repetition(3))

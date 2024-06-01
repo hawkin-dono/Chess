@@ -58,8 +58,6 @@ def get_move_score(board: Board, move: Move) -> int:
     - Nước đi ăn quân thua 
     - Nước đi không ăn quân, sắp xếp theo điểm số di chuyển tĩnh.
     """
-    if move.promotion == QUEEN: return 2
-
     if board.is_capture(move): 
         # Bắt tốt qua đường
         if board.is_en_passant(move): 
@@ -71,6 +69,9 @@ def get_move_score(board: Board, move: Move) -> int:
         if not board._attackers_mask(not board.turn, move.to_square, board.occupied): 
             return PIECE_VALUES[board.piece_type_at(move.to_square) - 1]
         return PIECE_VALUES[board.piece_type_at(move.to_square) - 1] - PIECE_VALUES[board.piece_type_at(move.from_square) - 1]
+    
+    if move.promotion == QUEEN: return 2
+    
     return (-2 * PIECE_VALUES[KING - 1]) + get_move_static_score(board, move)
 
 def organize_moves(board: Board) -> list[Move]:
@@ -90,7 +91,7 @@ def get_move_score_qs(board: Board, move: Move) -> int:
     - Nước đi ăn quân thắng
     - Nước đi phong hậu
     """
-    if move.promotion == QUEEN: return 2
+    if move.promotion == QUEEN and (not board.is_capture(move)): return 2
 
     # Bắt tốt qua đường
     if board.is_en_passant(move):

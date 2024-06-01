@@ -1,6 +1,7 @@
-from chess import Board, Move, scan_reversed
+from chess import Board, Move
 from chess.polyglot import open_reader
 from ._heuristic import END_GAME_SCORE, EGTABLEBASE, is_null_ok, organize_moves, organize_moves_quiescence, score
+from ._helper import is_draw
 
 OPENING_BOOK = open_reader("cow/data/opening_book/3210elo.bin")
     
@@ -8,10 +9,7 @@ def quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, al
     # Kiểm tra kết thúc game.
     if (depth < MAX_DEPTH):
         if board.is_checkmate(): return -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))
-        if board.is_insufficient_material(): return 0
-        if not any(board.generate_legal_moves()): return 0
-        if board.is_fifty_moves(): return 0
-        if board.is_repetition(3): return 0
+        if is_draw(board): return 0
     if depth == 0: return -turn * score(board, is_end_game)
     
     # Tạo nước đi hợp lệ cho quiescence search.
@@ -47,10 +45,7 @@ def quiesecence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, al
 def minimax(board : Board, depth: int, cache: dict, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
     # Kiểm tra kết thúc game.
     if board.is_checkmate(): return None, -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))
-    if board.is_insufficient_material(): return None, 0
-    if not any(board.generate_legal_moves()): return None, 0
-    if board.is_fifty_moves(): return None, 0
-    if board.is_repetition(3): return None, 0
+    if is_draw(board): return None, 0
 
     # Transposition table
     cache_key = (board._transposition_key(), (depth if depth >= 0 else 0), alpha, beta, turn)
@@ -93,6 +88,7 @@ def minimax(board : Board, depth: int, cache: dict, is_end_game: bool, alpha: fl
             if eval > max_eval:
                 max_eval = eval
                 best_move = move
+
             alpha = max(alpha, eval)
             if beta <= alpha:
                 break
@@ -109,6 +105,7 @@ def minimax(board : Board, depth: int, cache: dict, is_end_game: bool, alpha: fl
             if eval < min_eval:
                 min_eval = eval
                 best_move = move
+                
             beta = min(beta, eval)
             if beta <= alpha:
                 break
