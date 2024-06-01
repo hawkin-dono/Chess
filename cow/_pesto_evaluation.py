@@ -124,23 +124,35 @@ TOTAL_PHASE = (PHASE_VALUES[PAWN - 1] * 16 + PHASE_VALUES[KNIGHT - 1] * 4
                + PHASE_VALUES[BISHOP - 1] * 4 + PHASE_VALUES[ROOK - 1] * 4 + PHASE_VALUES[QUEEN - 1] * 2)
 
 def calculate_score(board: Board) -> float:
+    """Trả về điểm số trạng thái hiện tại của bàn cờ (tính cho bên vừa di chuyển)."""
+    score = _calculate_score((board.pawns, board.knights, board.bishops, board.rooks, board.queens, board.kings), 
+                             tuple(board.occupied_co))
+    return -score if board.turn else score
+    
+@lru_cache(maxsize = 50000)
+def _calculate_score(piece_bitboards: tuple, board_occupied_co: tuple) -> float:
     """
-    Trả về điểm số trạng thái hiện tại của bàn cờ (tính cho bên vừa di chuyển).
+    Trả về điểm số trạng thái hiện tại của bàn cờ (tính theo điểm trắng trừ đen).
 
     Sử dụng các bảng tính điểm midgame và endgame của PeSTO và đánh giá giảm dần (tapered evaluation) 
     để tính điểm cho trạng thái hiện tại của bàn cờ
     https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
     https://www.chessprogramming.org/Tapered_Eval
 
-    Việc chia theo từng loại quân cờ, màu quân cờ để tính điểm rồi gộp lại giúp tăng hiệu suất tính toán.
+    Sử dụng @lru_cache cho bot vs bot, độ sâu 4 nửa nước đi, thống kê khi kết thúc:
+
+    CacheInfo(hits=426361, misses=578954, maxsize=50000, currsize=50000)
+    - hits: số lần sử dụng kết quả đã tính toán trước đó
+    - misses: số lần phải tính toán thực tế
+    - maxsize: số lượng kết quả tối đa được lưu
+    - currsize: số lượng kết quả đang được lưu
     """
     mg_score, eg_score = 0, 0 
     phase_score = TOTAL_PHASE
-    piece_bitboards = [board.pawns, board.knights, board.bishops, board.rooks, board.queens, board.kings]
 
     for piece_type in range(6):
-        rw_mg, rw_eg, rw_phase = calculate_piece_scores(piece_type, piece_bitboards[piece_type] & board.occupied_co[WHITE], WHITE)
-        rb_mg, rb_eg, rb_phase = calculate_piece_scores(piece_type, piece_bitboards[piece_type] & board.occupied_co[BLACK], BLACK)
+        rw_mg, rw_eg, rw_phase = calculate_piece_scores(piece_type, piece_bitboards[piece_type] & board_occupied_co[WHITE], WHITE)
+        rb_mg, rb_eg, rb_phase = calculate_piece_scores(piece_type, piece_bitboards[piece_type] & board_occupied_co[BLACK], BLACK)
         
         mg_score += rw_mg - rb_mg
         eg_score += rw_eg - rb_eg
@@ -148,19 +160,16 @@ def calculate_score(board: Board) -> float:
 
     phase = (phase_score * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
     score = (mg_score * (256 - phase) + eg_score * phase) / 256
-
-    return -score if board.turn else score
+    return score
 
 @lru_cache(maxsize = 5000)
 def calculate_piece_scores(piece_type, bb, color):
     """
     Trả về điểm số midgame, endgame, phase_score của một loại quân cờ trên bàn cờ.
 
-    Sử dụng lru_cache để lưu kết quả tính toán, tránh việc tính toán lại nếu đã tính trước đó.
+    Sử dụng @lru_cache cho bot vs bot, độ sâu 4 nửa nước đi, thống kê khi kết thúc:
 
-    Thống kê khi kết thúc một trận đấu với độ sâu 4 nửa nước đi:
-
-    CacheInfo(hits=11558341, misses=8267, maxsize=5000, currsize=5000)
+    CacheInfo(hits=6939265, misses=8183, maxsize=5000, currsize=5000)
     - hits: số lần sử dụng kết quả đã tính toán trước đó
     - misses: số lần phải tính toán thực tế
     - maxsize: số lượng kết quả tối đa được lưu
