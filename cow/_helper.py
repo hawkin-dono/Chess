@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from chess import Board, Move, QUEEN, BLACK, WHITE, BB_RANK_1, BB_RANK_8, msb, scan_reversed
 
 def generate_legal_promotion_queen_non_capture(board: Board):
@@ -33,3 +34,39 @@ def is_draw(board: Board):
             or (not any(board.generate_legal_moves())) 
             or board.is_fifty_moves() 
             or board.is_repetition(3))
+
+class TranspositionTable:
+    def __init__(self, max_size: int = 100000):
+        self.__max_size = max_size
+        self.__table = OrderedDict()
+
+    def add(self, key, value):
+        if key in self.__table:
+            self.__table.move_to_end(key)
+        elif len(self.__table) >= self.__max_size:
+            self.__table.popitem(last=False)
+        self.__table[key] = value
+
+    def get(self, key, depth, alpha, beta):
+        if key not in self.__table: 
+            return None
+        
+        v_depth, v_move, v_eval = self.__table[key]
+        
+        if depth <= v_depth: 
+            if v_depth == 0:
+                return v_move, v_eval
+            
+            if key[-1] == 1:
+                if v_eval <= alpha: 
+                    return v_move, v_eval
+            else:
+                if v_eval >= beta: 
+                    return v_move, v_eval
+        
+        return None
+    
+    def __contains__(self, key):
+        return key in self.__table
+
+
