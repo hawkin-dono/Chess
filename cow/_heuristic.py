@@ -38,12 +38,12 @@ def score(board: Board, is_end_game: bool) -> float:
             return (END_GAME_SCORE - dtz * 1000 
                     - ((board.pawns & board.occupied_co[not board.turn]) != 0) * END_GAME_SCORE / 10
                     - board.occupied_co[board.turn].bit_count() * END_GAME_SCORE / 200
-                    + calculate_score(board) / 10)           
+                    + calculate_score(board) / 100)           
         if dtz < 0: 
             return (-END_GAME_SCORE - dtz * 1000 
                     + ((board.pawns & board.occupied_co[board.turn]) != 0) * END_GAME_SCORE / 10
                     + board.occupied_co[not board.turn].bit_count() * END_GAME_SCORE / 200 
-                    + calculate_score(board) / 10)
+                    + calculate_score(board) / 100)
     return calculate_score(board) 
 
 def get_move_score(board: Board, move: Move) -> int:

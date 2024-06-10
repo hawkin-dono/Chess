@@ -1,10 +1,12 @@
 from chess import Board, Move
 from chess.polyglot import open_reader
+from chess.engine import T
 from ._heuristic import END_GAME_SCORE, EGTABLEBASE, is_null_ok, organize_moves, organize_moves_quiescence, score
 from ._helper import is_draw, TranspositionTable
 
 OPENING_BOOK = open_reader("cow/data/opening_book/3210elo.bin")
 TRANSPOSITION_TABLE = TranspositionTable(100000)
+reset_transposition_table_flag = False
     
 def quiescence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alpha: float, beta: float, turn: int):
     # Kiểm tra kết thúc game.
@@ -44,6 +46,7 @@ def quiescence(board : Board, depth: int, MAX_DEPTH: int, is_end_game: bool, alp
         return min_eval    
 
 def minimax(board : Board, depth: int, MAX_DEPTH: int, cache: TranspositionTable, is_end_game: bool, alpha: float = -float('inf'), beta: float = float('inf'), turn: int = 1):
+    """depth, MAX_DEPTH: số nửa nước đi."""
     # Kiểm tra kết thúc game.
     if board.is_checkmate(): return None, -turn * (END_GAME_SCORE + END_GAME_SCORE / (board.fullmove_number + 1))
     if is_draw(board): return None, 0
@@ -53,11 +56,10 @@ def minimax(board : Board, depth: int, MAX_DEPTH: int, cache: TranspositionTable
 
     if (depth + 2 <= MAX_DEPTH): 
         if (value := cache.get(cache_key, depth, alpha, beta)): 
-            # print(value)
             return value
 
     # Trường hợp cơ sở.
-    if depth <= 0: 
+    if depth <= 0:
         eval = quiescence(board, 12, 12, is_end_game, alpha, beta, turn)
         cache.add(cache_key, (0, None, eval))
         return None, eval
@@ -118,7 +120,7 @@ def minimax(board : Board, depth: int, MAX_DEPTH: int, cache: TranspositionTable
         return best_move, min_eval
     
 def get_best_move(board: Board, depth):
-    """Trả về nước đi tốt nhất"""
+    """depth: số nước đi"""
     # Tra sách khai cuộc
     try: return OPENING_BOOK.weighted_choice(board).move.uci()
     except:
@@ -136,8 +138,19 @@ def get_best_move(board: Board, depth):
                 if not (board.pawns & board.occupied_co[not board.turn]):
                     return _get_best_move(board)
 
+        # reset transposition table khi số quân cờ <= 5 
+        # (Do khi đó sử dụng thêm Endgame tablebase cho score() nên điểm số có thể thay đổi).
+        global reset_transposition_table_flag
+        if (not reset_transposition_table_flag) and is_end_game:
+            reset_transposition_table_flag = True
+            TRANSPOSITION_TABLE.clear()
+
+        if reset_transposition_table_flag and (not is_end_game): 
+            reset_transposition_table_flag = False
+            TRANSPOSITION_TABLE.clear()
+
         # Tìm kiếm nước đi tốt nhất bằng minimax
-        move, _ = minimax(board, depth, depth, TRANSPOSITION_TABLE, is_end_game)
+        move, _ = minimax(board, depth * 2, depth * 2, TRANSPOSITION_TABLE, is_end_game)
         return move.uci()
     
 def _get_best_move(board: Board):
@@ -159,6 +172,7 @@ def _get_best_move(board: Board):
         board.pop()
     return max(z, key=z.get).uci()
 
-def play(board: Board, depth: int = 4):
+def play(board: Board, depth: int = 2):
+    """depth: số nước đi """
     return get_best_move(board, depth)
 

@@ -4,6 +4,7 @@ https://www.chessprogramming.org/Tapered_Eval
 """
 from functools import lru_cache
 from chess import Board, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, WHITE, BLACK, scan_reversed
+from cow._helper import count_doubled_pawns, t
 
 PAWN_MG = [0,   0,   0,   0,   0,   0,  0,   0,
           98, 134,  61,  95,  68, 126, 34, -11,
@@ -113,8 +114,8 @@ KING_EG = [-74, -35, -18, -18, -11,  15,   4, -17,
            -27, -11,   4,  13,  14,   4,  -5, -17,
            -53, -34, -21, -11, -28, -14, -24, -43,]
 
-MG_PIECE_VALUES = [82, 337, 365, 477, 1025, 24000]  # pawn, knight, bishop, rook, queen, king
-EG_PIECE_VALUES = [94, 281, 297, 512, 936, 24000]  # pawn, knight, bishop, rook, queen, king
+MG_PIECE_VALUES = [i * 4 for i in [82, 337, 365, 477, 1025, 24000]]  # pawn, knight, bishop, rook, queen, king
+EG_PIECE_VALUES = [i * 4 for i in [94, 281, 297, 512, 936, 24000]]  # pawn, knight, bishop, rook, queen, king
 
 MG_PESTO = [PAWN_MG, KNIGHT_MG, BISHOP_MG, ROOK_MG, QUEEN_MG, KING_MG]
 EG_PESTO = [PAWN_EG, KNIGHT_EG, BISHOP_EG, ROOK_EG, QUEEN_EG, KING_EG]
@@ -147,7 +148,20 @@ def _calculate_score(piece_bitboards: tuple, board_occupied_co: tuple) -> float:
     - maxsize: số lượng kết quả tối đa được lưu
     - currsize: số lượng kết quả đang được lưu
     """
-    mg_score, eg_score = 0, 0 
+    wbishop_count = (board_occupied_co[WHITE] & piece_bitboards[BISHOP - 1]).bit_count()
+    bbishop_count = (board_occupied_co[BLACK] & piece_bitboards[BISHOP - 1]).bit_count()
+
+    wpawns = piece_bitboards[PAWN - 1] & board_occupied_co[WHITE]
+    bpawns = piece_bitboards[PAWN - 1] & board_occupied_co[BLACK]
+
+    wdoubled_pawns_count, bdoubled_pawns_count = count_doubled_pawns(wpawns, bpawns)
+    z1, z2 = t(wpawns, bpawns)
+
+    score = (((wbishop_count >= 2) - (bbishop_count >= 2)) * 20
+            - (wdoubled_pawns_count - bdoubled_pawns_count) * 20
+            + (z1 - z2) * 10) 
+    
+    mg_score, eg_score = 0, 0
     phase_score = TOTAL_PHASE
 
     for piece_type in range(6):
@@ -159,7 +173,7 @@ def _calculate_score(piece_bitboards: tuple, board_occupied_co: tuple) -> float:
         phase_score -= rw_phase + rb_phase
 
     phase = (phase_score * 256 + (TOTAL_PHASE / 2)) / TOTAL_PHASE
-    score = (mg_score * (256 - phase) + eg_score * phase) / 256
+    score += (mg_score * (256 - phase) + eg_score * phase) / 256
     return score
 
 @lru_cache(maxsize = 5000)

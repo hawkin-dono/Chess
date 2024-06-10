@@ -74,7 +74,7 @@ while True:
     if (not is_game_over) and main_board.player[main_board.turn] == 0:
         draw(screen)
         start_time = time.time()
-        best_move = cow.play(main_board.board)    
+        best_move = cow.play(main_board.board, 2)    
         end_time = time.time()   
         if (end_time - start_time) < 0.5:
             time.sleep(0.5 - (end_time - start_time))      
@@ -85,7 +85,9 @@ while True:
     # Result handling
     is_game_over, result = is_end_game(main_board.board)
     if is_game_over:
-        
+        import chess.pgn
+        pgn = chess.pgn.Game.from_board(main_board.board)
+        print(pgn)
         end_game_window = EndGameWindow(window_size, result)
         end_game_window.show(screen)
         break
