@@ -12,7 +12,7 @@ class Piece(pygame.sprite.Sprite):
 
     def load_image(self, piece_code, team_code, square_width, square_height):
         piece_str = self.get_piece_string(piece_code)
-        img_path = f'./data/imgs/{team_code}-{piece_str}.png'
+        img_path = f'./res/imgs/{team_code}-{piece_str}.png'
         image = pygame.image.load(img_path)
         return pygame.transform.scale(image, (square_width, square_height))
 

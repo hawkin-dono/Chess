@@ -13,7 +13,7 @@ promotion_list = ['queen', 'rook', 'bishop', 'knight']
 
 def draw_board(board, screen):
     board.update()
-    background_img = pygame.image.load('data/imgs/background-main.jpg')
+    background_img = pygame.image.load('res/imgs/background-main.jpg')
     background_img = pygame.transform.scale(background_img, (screen.get_width() - board.width, screen.get_height()))
 
     # draw background
@@ -46,7 +46,7 @@ def draw_board(board, screen):
                 piece_obj.draw(screen, piece_pos)
 
 
-    # background_img = pygame.image.load('data/imgs/background_mainChess.jpg')
+    # background_img = pygame.image.load('res/imgs/background_mainChess.jpg')
     # background_img = pygame.transform.scale(background_img, (200,600))
 
     # # Vẽ background
@@ -54,7 +54,7 @@ def draw_board(board, screen):
     
 
     if board.player[0] + board.player[1] > 0:
-        undo_button_img = pygame.image.load('data/imgs/undo_button.png')
+        undo_button_img = pygame.image.load('res/imgs/undo_button.png')
         undo_button_img = pygame.transform.scale(undo_button_img, (board.square_width*2, board.square_height))
         screen.blit(undo_button_img, (600 + 20, board.square_height * 7))
         
@@ -90,7 +90,7 @@ def draw_promotion(board, screen):
         draw_color = (0, 0, 0)
         rect = pygame.Rect(600 + 20, loc + i * 2, board.square_width, board.square_height)
         pygame.draw.rect(screen, draw_color, rect, 2)
-        img_path = f'./data/imgs/{team}-{promotion_list[i]}.png'
+        img_path = f'./res/imgs/{team}-{promotion_list[i]}.png'
         dude_path = os.path.join(img_path)
         image = pygame.image.load(dude_path)
         image = pygame.transform.scale(image, (board.square_width, board.square_height))
