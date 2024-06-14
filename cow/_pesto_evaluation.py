@@ -4,7 +4,7 @@ https://www.chessprogramming.org/Tapered_Eval
 """
 from functools import lru_cache
 from chess import Board, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, WHITE, BLACK, scan_reversed
-from cow._helper import count_doubled_pawns, t
+from cow._helper import count_doubled_pawns, calculate_passed_pawns_score
 
 PAWN_MG = [0,   0,   0,   0,   0,   0,  0,   0,
           98, 134,  61,  95,  68, 126, 34, -11,
@@ -155,7 +155,7 @@ def _calculate_score(piece_bitboards: tuple, board_occupied_co: tuple) -> float:
     bpawns = piece_bitboards[PAWN - 1] & board_occupied_co[BLACK]
 
     wdoubled_pawns_count, bdoubled_pawns_count = count_doubled_pawns(wpawns, bpawns)
-    z1, z2 = t(wpawns, bpawns)
+    z1, z2 = calculate_passed_pawns_score(wpawns, bpawns)
 
     score = (((wbishop_count >= 2) - (bbishop_count >= 2)) * 20
             - (wdoubled_pawns_count - bdoubled_pawns_count) * 20

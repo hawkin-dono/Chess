@@ -89,7 +89,7 @@ def count_doubled_pawns(wpawns, bpawns):
     return wdoubled_pawns_count, bdoubled_pawns_count
 
 @lru_cache(maxsize=2000)
-def t(wpawns, bpawns):
+def calculate_passed_pawns_score(wpawns, bpawns):
     """Những con tốt có thể bị bắt bằng cách bắt tốt qua đường cũng được tính là tốt thông"""
     wp, bp = 0, 0
     for i in range(1, 6):
@@ -119,13 +119,5 @@ def t(wpawns, bpawns):
         z2 += 8 - square // 8
     
     return z1, z2
-
-
-
-
-    # wpassed_pawns_count = (wpawns & ~bp & ~bp2).bit_count()
-    # bpassed_pawns_count = (bpawns & ~wp & ~wp2).bit_count()
-
-    # return wpassed_pawns_count, bpassed_pawns_count
 
 

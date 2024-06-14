@@ -76,7 +76,7 @@ def get_move_score(board: Board, move: Move) -> int:
 
 def organize_moves(board: Board) -> list[Move]:
     """ Sinh ra tất cả các nước đi hợp lệ và sắp xếp chúng theo thứ tự giảm dần của get_move_score() """
-    return sorted(board.generate_legal_moves(), key=lambda move: get_move_score(board, move), reverse=True)
+    return sorted(list(board.generate_legal_moves()), key=lambda move: get_move_score(board, move), reverse=True)
 
 def get_move_score_qs(board: Board, move: Move) -> int:
     """

@@ -5,7 +5,6 @@ from start_window import start_screen
 from GUI.board_graphics import draw_board 
 from end_window import EndGameWindow
 import cow
-import time
 
 pygame.init()
 
@@ -73,11 +72,7 @@ while True:
     is_game_over, result = is_end_game(main_board.board)
     if (not is_game_over) and main_board.player[main_board.turn] == 0:
         draw(screen)
-        start_time = time.time()
         best_move = cow.play(main_board.board, 2)    
-        end_time = time.time()   
-        if (end_time - start_time) < 0.5:
-            time.sleep(0.5 - (end_time - start_time))      
         
         main_board.move(best_move)
     draw(screen)
